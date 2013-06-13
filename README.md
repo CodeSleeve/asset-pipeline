@@ -1,7 +1,3 @@
-
-This Laravel 4 package provides a very simple and easy to use asset pipeline. It was inspired by the Rails asset pipeline and MeteorJS. We make user of the wonderful Assetic package to do most of the heavy lifting.
-
-
 ## Installation
 
 Begin by installing this package through Composer. Edit your project's `composer.json` file to require `codesleeve/asset-pipeline`.
