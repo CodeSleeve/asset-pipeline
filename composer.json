@@ -1,6 +1,6 @@
 {
     "name": "codesleeve/asset-pipeline",
-    "description": "",
+    "description": "A very simple and easy to use asset pipeline for laravel 4.",
     "authors": [
         {
             "name": "Kelt Dockins",
