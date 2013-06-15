@@ -13,9 +13,13 @@ class AssetPipelineController extends Controller {
 	 * 
 	 * @return \Illuminate\Support\Facades\Response
 	 */
-	public function javascript($path)
+	public function javascript($path1, $path2 = null, $path3 = null, $path4 = null)
 	{
-		$pipeline = Asset::javascripts($path);
+		$path1 = ($path2) ? $path1 . "/$path2" : $path1;
+		$path1 = ($path3) ? $path1 . "/$path3" : $path1;
+		$path1 = ($path4) ? $path1 . "/$path4" : $path1;
+
+		$pipeline = Asset::javascripts($path1);
 
 		$javascript = $pipeline;
 
@@ -31,9 +35,13 @@ class AssetPipelineController extends Controller {
 	 * 
 	 * @return \Illuminate\Support\Facades\Response
 	 */
-	public function css($path)
+	public function css($path1, $path2 = null, $path3 = null, $path4 = null)
 	{
-		$pipeline = Asset::stylesheets($path);
+		$path1 = ($path2) ? $path1 . "/$path2" : $path1;
+		$path1 = ($path3) ? $path1 . "/$path3" : $path1;
+		$path1 = ($path4) ? $path1 . "/$path4" : $path1;
+
+		$pipeline = Asset::stylesheets($path1);
 
 		$stylesheet = $pipeline;
 		
