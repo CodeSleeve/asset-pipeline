@@ -23,7 +23,9 @@ Once this operation completes, the final step is to add the service provider. Op
     'Codesleeve\AssetPipeline\AssetPipelineServiceProvider'
 ```
 
-We need to make sure your environment is setup correctly because the Asset Pipeline caches assets differently on a production environment than the development environment. So it is important that you put your development machine in the `bootstrap/start.php` or your assets will be cached. If you're unsure what to put here for your machine name then do a `dd(gethostname());` to find out.
+We need to make sure your environment is setup correctly because the Asset Pipeline caches assets differently on a production environment than the development environment. So it is important that you put your development machine in the `bootstrap/start.php`. 
+
+If you're unsure what to put here for your machine name then do a `dd(gethostname());` to find out.
 
 ```php
   $env = $app->detectEnvironment(array(
