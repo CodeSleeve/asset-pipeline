@@ -97,7 +97,7 @@ You can access any file in your `app/assets` folder by going directly to the url
 
     http://<your laravel project>/assets/font/FontAwesome.otf
 
-This also means we can use route filters to protect our assets. (See [filtering][https://github.com/CodeSleeve/asset-pipeline/#filtering] section below).
+This also means we can use route filters to protect our assets. If that tickles your fancy, then see [filtering](#filtering) section below.
 
 
 
