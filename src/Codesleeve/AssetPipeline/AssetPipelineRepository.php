@@ -36,7 +36,7 @@ class AssetPipelineRepository implements AssetPipelineInterface {
 	 */
 	public function javascripts($path = 'javascripts')
 	{
-		$path = $this->basePath . '/' . $this->config('assetPipeline::path') . '/' . $this->protect($path);
+		$path = $this->getPath($path);
 
 		$this->checkDirectory($path);
 
@@ -52,7 +52,7 @@ class AssetPipelineRepository implements AssetPipelineInterface {
 	 */
 	public function stylesheets($path = 'stylesheets')
 	{
-		$path = $this->basePath . '/' . $this->config('assetPipeline::path') . '/' . $this->protect($path);
+		$path = $this->getPath($path);
 
 		$this->checkDirectory($path);
 
@@ -81,6 +81,16 @@ class AssetPipelineRepository implements AssetPipelineInterface {
 		}
 
 		return $lastUpdatedAt;
+	}
+
+	/**
+	 * Returns the base path of where all the assets are located
+	 * 
+	 * @return [type] [description]
+	 */
+	public function getPath($path)
+	{
+		return $this->basePath . '/' . $this->config('assetPipeline::path') . '/' . $this->protect($path);
 	}
 
 	/**

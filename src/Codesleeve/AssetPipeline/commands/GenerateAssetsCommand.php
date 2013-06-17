@@ -28,10 +28,7 @@ class GenerateAssetsCommand extends Command {
     public function fire()
     {
         $structure = __DIR__ . '/../../../../structure';
-        $public = __DIR__ . '/../../../../public';
-
         $basePath = base_path() . '/' . \Config::get('assetPipeline::path');
-        $publicPath = public_path() . '/assets';
 
         if (!is_dir("$basePath") && mkdir("$basePath", 0755, true))
         {
@@ -40,16 +37,6 @@ class GenerateAssetsCommand extends Command {
             $this->line("Copied some cool assets in there for you. Remove what you don't want.");
         } else {
             $this->line("The assets folder $basePath alerady exists, so I'm not doing anything.");
-        }
-
-        if (!is_dir("$publicPath") && mkdir("$publicPath", 0775, true))
-        {
-            $this->line("Creating $publicPath");
-            $this->xcopy(realpath($public), realpath($publicPath));
-            $this->line("Copied font and imgs into your public assets directory.");
-            $this->line("Remove what you don't want.");
-        } else {
-            $this->line("The public assets folder already exists in $publicPath, so I'm not doing anything.");
         }
 
         $this->line("Finished. Have a nice day!");
