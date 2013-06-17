@@ -41,6 +41,7 @@ class IgnoreFilesFilter implements FilterInterface
         {
             if (strpos($shortFilePath, $pattern) !== false) {
                 $ignore = true;
+                break;
             }
         }
 

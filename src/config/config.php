@@ -67,5 +67,42 @@ return [
 		'/tests/'
 	],
 
+	/*
+	|--------------------------------------------------------------------------
+	| scanDirectory
+	|--------------------------------------------------------------------------
+	|
+	| ** on production environment only **
+	| This controls how often we scan the directory relative to where our assets 
+	| are. If we scan the assets directory and a file is found to have been changed 
+	| based on greatest filemtime then we will rebuild our cache of those assets. 
+	| We may not want to scan a directory of assets for changes everytime we hit 
+	| the server so this only happens every <you pick below> minutes.
+	| 
+	| ** on development environment **
+	| This value doesn't do anything because we just scan the directory 
+	| everytime and rebuild the assets cache anytime a file has been added 
+	| or changed.
+	|
+	| ** this is in minutes **
+	|
+	*/
+	'directoryScan' => 10,
 
+	/*
+	|--------------------------------------------------------------------------
+	| forget
+	|--------------------------------------------------------------------------
+	|
+	| This allows us to pass in a forget parameter at anytime and forget
+	| our cached resources. So if we go to:
+
+	| 	http://<sitename>/assets/application/javascripts.js?forget=Ch4nG3M3!
+
+	| it will rebuild the javascript cache on the server. This is useful if
+	| for some reason you want to manually trigger the cache rebuild on your
+	| production environment and can't wait for the 'directoryScan' to kick in.
+	|
+	*/
+	'forget' => 'Ch4nG3M3!'
 ];

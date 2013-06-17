@@ -22,8 +22,7 @@
     },
     "autoload": {
         "classmap": [
-            "src/controllers",
-            "src/models"
+            "src/controllers"
         ],
         "psr-0": {
             "Codesleeve\\AssetPipeline": "src/"
