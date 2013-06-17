@@ -97,7 +97,7 @@ You can access any file in your `app/assets` folder by going directly to the url
 
     http://<your laravel project>/assets/font/FontAwesome.otf
 
-This also means we can use route filters to protect our assets. (See filtering section below).
+This also means we can use route filters to protect our assets. (See [filtering][https://github.com/CodeSleeve/asset-pipeline/#filtering] section below).
 
 
 
@@ -181,7 +181,7 @@ an option (that I could find) to turn off obscurify.
 
 So, for example, if you use handlebars.js then you will likely get an error when that file is compressed because 
 (from what I can tell) when that handlebars.js is obscurified it just flat out breaks. So a work around for this is 
-to go ahead and compress handlebars.js yourself using `http://refresh-sf.com/yui/` and make sure 
+to go ahead and compress handlebars.js yourself using <http://refresh-sf.com/yui/> and make sure 
 `Minify only, no symbol obfuscation.` is checked.
 
 ```php
