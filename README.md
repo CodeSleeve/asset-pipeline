@@ -23,7 +23,7 @@ Once this operation completes, the final step is to add the service provider. Op
     'Codesleeve\AssetPipeline\AssetPipelineServiceProvider'
 ```
 
-We need to make sure your environment is setup correctly because the Asset Pipeline caches assets differently on a production environment than the development environment. So it is important that you put your development machine in the `bootstrap/start.php` or your assets will be cached. If you're unsure what to put here for your machine name then do a `dd (gethostname());` to find out.
+We need to make sure your environment is setup correctly because the Asset Pipeline caches assets differently on a production environment than the development environment. So it is important that you put your development machine in the `bootstrap/start.php` or your assets will be cached. If you're unsure what to put here for your machine name then do a `dd(gethostname());` to find out.
 
 ```php
   $env = $app->detectEnvironment(array(
@@ -45,49 +45,56 @@ Next you will need to point your browser to the correct location in order to get
 
 Try going to:
 
-    http://<your laravel project>/assets/javascripts.js
+    http://<your laravel project>/assets/application/javascripts.js
     
 Or for styles:
 
-    http://<your laravel project>/assets/stylesheets.js
+    http://<your laravel project>/assets/application/stylesheets.js
 
 
 Modify your layout view (or any view) to have something similar to this in it
 
 ```php
-  <script src="<?= asset('assets/javascripts.js') ?>"></script>
+  <script src="<?= asset('assets/application/javascripts.js') ?>"></script>
 ```
 
 And a similar line of code for styles
 
 ```php
-  <link href="<?= asset('assets/stylesheets.css') ?>" rel="stylesheet" type="text/css">
+  <link href="<?= asset('assets/application/stylesheets.css') ?>" rel="stylesheet" type="text/css">
 ```
 
-### Do I have to use javascripts.js though?
+### Do I have to use `application/javascripts.js` though?
 
 Basically any folder inside your assets directory can be routed too. (if you're curious about this then take a look at `vendor/codesleeve/asset-pipeline/src/routes.php`)
 
-So say you don't want `/assets/javascripts.js` then you could create a directory `/assets/application` and place `file1.css` and `file1.js` inside that folder. 
+So say you don't want `/assets/application/javascripts.js` then you could create a directory `/assets/foobar` and place `file1.css` and `file1.js` inside that folder. 
 
 Then point your browser to:
 
-    http://<your laravel project>/assets/application.js
+    http://<your laravel project>/assets/foobar.js
 
-or
+or for stylesheets
 
-    http://<your laravel project>/assets/application.js
+    http://<your laravel project>/assets/foobar.css
 
 
 Nifty huh? This allows for you to control which assets are released if you choose to do so. But there's nothing wrong with
-putting them all in `app/assets/javascripts/` and `app/assets/stylesheets` either (in fact, that is a good standard practice).
+putting them all in `app/assets/application/javascripts/` and `app/assets/application/stylesheets` either.
 
-### Images? Fonts?
+### Images? Fonts? Other files?
 
 One thing you might be wondering is, how do I get my font-awesome fonts or my images? Assuming you do relative paths 
-in your css (which any good designer should) then place your fonts and images inside of the laravel `public/` folder.
+in your css (which any good designer should) then place your fonts and images inside of the `app/assets/font` and `app/assets/img` folders.
 
-Font awesome just looks for '../font/<files>' so this works out nicely. **todo note we might need to use a uri re-write filter (i'll have to look into it)**
+Font awesome just looks for '../font/<files>' so this works out nicely (the same applies for twitter bootstrap). Also a default structure is all laid out for you when you run `php artisan generate:assets`
+
+You can access any file in your `app/assets` folder by going directly to the url, e.g.
+
+    http://<your laravel project>/assets/font/FontAwesome.otf
+
+This also means we can use route filters to protect our assets. (See filtering section below).
+
 
 
 ## Conventions
@@ -111,14 +118,41 @@ This will create a config file in your `app/config/packages/` directory. You can
 
 Next open the config found in `app/config/packages/codesleeve/asset-pipeline/config.php` and you will see the following values.
 
+### Routing 
 
 If you want to point your application somewhere besides `http://<laravel project dir>/assets/javascripts.js` you can change this
 
 ```php
-	'routing' => [
+	'routing' => array(
 		'prefix' => '/assets'
-	],
+	),
 ```
+
+#### Filtering
+
+You can place any kind of assets (fonts, images, mp3s) inside of the `app/assets` directory. This opens up the oppertunity for using Laravel route filters for your assets.
+
+For example, say you don't want guest users looking at your assets, then you can add this to the config file.
+
+```php
+	'routing' => array(
+		'prefix' => '/assets',
+		'before' => 'auth',
+	),
+```
+
+The auth filter comes in Laravel 4 by default in the `filters.php` file but I'll put it here just in case you wanted to see it.
+
+```php
+	Route::filter('auth', function()
+	{
+		if (Auth::guest()) return Redirect::guest('login');
+	});
+```
+
+Simple huh?
+
+### Path
 
 This path is relative to your laravel root base directory `base_path()`
 
@@ -126,11 +160,15 @@ This path is relative to your laravel root base directory `base_path()`
   'path' => 'app/assets',
 ```
 
+### Minify
+
 If you want to turn off minification (for debugging perhaps?) you can do that easily here.
 
 ```php
   'minify' => true,
 ```
+
+### Compressed
 
 We won't compress files that are already compressed.
 
@@ -149,6 +187,8 @@ to go ahead and compress handlebars.js yourself using `http://refresh-sf.com/yui
 	],
 ```
 
+### Ignores
+
 Next up is the `ignores` config. This allows us to ignore certain files or directories if we choose. By default we ignore the most common name for test folders.
 
 ```php
@@ -158,3 +198,32 @@ Next up is the `ignores` config. This allows us to ignore certain files or direc
 	],
 ```
 
+### Directory Scan
+
+In the asset pipeline we scan the assets directory to see if any files have changed and if so, we rebuild our Cache. Since we may not want to be constantly scanning our directory (file operations are expensive) we can wait a number of minutes before we look at the assets folder for any changes.
+
+```php
+	'ignores' => [
+		'/test/',
+		'/tests/'
+	],
+```
+
+
+### Forget
+
+This is the ability to forget a cache on demand. Perhaps you just updated production and you don't want to wait on the directory scan to rebuild your cache then you can manually point your browser to any assets you may have with the forget parameter, e.g.
+
+    http://<your laravel project>/assets/application/javascripts.js?forget=Ch4nG3m3!
+
+This is assuming that you have the default configuration
+
+```php
+	'forget' => 'Ch4nG3m3!,
+```
+
+
+
+## Support
+
+Please file an issue if you see a problem. And enjoy!
