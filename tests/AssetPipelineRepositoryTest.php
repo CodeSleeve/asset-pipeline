@@ -159,4 +159,13 @@ class AssetPipelineRepositoryTest extends PHPUnit_Framework_TestCase
         $pipeline = $this->new_pipeline();
     }
 
+    /**
+     * [testCanHandleTemplates description]
+     * @return [type] [description]
+     */
+    public function testCanHandleHtml()
+    {
+        $outcome = $this->pipeline->html();
+        $this->assertContains('<div class="test">', $outcome);
+    }
 }

@@ -6,6 +6,7 @@ use Codesleeve\AssetPipeline\AsseticCustomFilters\IgnoreFilesFilter;
 use Codesleeve\AssetPipeline\AsseticCustomFilters\CoffeeScriptPhpFilter;
 use Codesleeve\AssetPipeline\AsseticCustomFilters\JSMinPlusFilter;
 use Codesleeve\AssetPipeline\AsseticCustomFilters\CssMinPlusFilter;
+use Codesleeve\AssetPipeline\AsseticCustomFilters\HtmlMinPlusFilter;
 
 use Assetic\Asset\AssetCollection;
 use Assetic\Asset\FileAsset;
@@ -58,6 +59,17 @@ class AssetPipelineRepository implements AssetPipelineInterface {
 		$styles = $this->process_styles($path);
 
 		return $styles->dump();
+	}
+
+	public function html($path = 'templates')
+	{
+		$path = $this->getPath($path);
+
+		$this->checkDirectory($path);
+
+		$html = $this->process_html($path);
+
+		return $html->dump();
 	}
 
 	/**
@@ -157,6 +169,25 @@ class AssetPipelineRepository implements AssetPipelineInterface {
 		]);
 
 		return $stylesheets;
+	}
+
+	/**
+	 * [process_templates description]
+	 * @param  [type] $folder [description]
+	 * @return [type]         [description]
+	 */
+	protected function process_html($folder)
+	{
+		$htmlFilters = array( new HtmlMinPlusFilter($folder, $this->config->get('asset-pipeline::compressed')) );
+
+		$html = new AssetCollection([
+		    new GlobAsset("$folder/*/*/*.html", $htmlFilters),
+		    new GlobAsset("$folder/*/*.html", $htmlFilters),
+		    new GlobAsset("$folder/*.html", $htmlFilters),
+		    new GlobAsset("$folder.html", $htmlFilters),
+		]);
+
+		return $html;
 	}
 
 	/**
