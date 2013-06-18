@@ -35,19 +35,14 @@ class IgnoreFilesFilter implements FilterInterface
     {   
         $filePath = $asset->getSourceDirectory() . '/' . $asset->getSourcePath();
         $shortFilePath = $this->str_replace_once($this->basePath, "", $filePath);
-        $ignore = false;
 
         foreach($this->patterns as $pattern)
         {
             if (strpos($shortFilePath, $pattern) !== false)
             {
-                $ignore = true;
-                break;
+                $asset->setContent('');
+                return;
             }
-        }
-
-        if ($ignore) {
-            $asset->setContent('');
         }
     }
 

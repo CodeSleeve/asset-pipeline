@@ -12,7 +12,6 @@
         "illuminate/support": "4.0.x",
         "kriswallsmith/assetic": "1.2.*@dev",
         "leafo/lessphp": "0.3.*@dev",
-        "natxet/CssMin": "dev-master",
         "coffeescript/coffeescript": "dev-master",
         "nitra/php-min": "dev-master"
     },

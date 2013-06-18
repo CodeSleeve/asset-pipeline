@@ -35,7 +35,6 @@ class JSMinPlusFilter implements FilterInterface
     {
         $filePath = $asset->getSourceDirectory() . '/' . $asset->getSourcePath();
         $shortFilePath = $this->str_replace_once($this->basePath, "", $filePath);
-        $compressed = false;
 
         foreach($this->patterns as $pattern)
         {

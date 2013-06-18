@@ -5,13 +5,12 @@ namespace Codesleeve\AssetPipeline;
 use Codesleeve\AssetPipeline\AsseticCustomFilters\IgnoreFilesFilter;
 use Codesleeve\AssetPipeline\AsseticCustomFilters\CoffeeScriptPhpFilter;
 use Codesleeve\AssetPipeline\AsseticCustomFilters\JSMinPlusFilter;
+use Codesleeve\AssetPipeline\AsseticCustomFilters\CssMinPlusFilter;
 
 use Assetic\Asset\AssetCollection;
 use Assetic\Asset\FileAsset;
 use Assetic\Asset\GlobAsset;
 use Assetic\Filter\LessphpFilter;
-use Assetic\Filter\CssMinFilter;
-use Assetic\Filter\CssRewriteFilter;
 
 class AssetPipelineRepository implements AssetPipelineInterface {
 
@@ -139,8 +138,8 @@ class AssetPipelineRepository implements AssetPipelineInterface {
 
 		if ($this->config->get('asset-pipeline::minify'))
 		{
-			$cssFilters[] = new CssMinFilter;
-			$lessFilters[] = new CssMinFilter;
+			$cssFilters[] = new CssMinPlusFilter($folder, $this->config->get('asset-pipeline::compressed'));
+			$lessFilters[] = new CssMinPlusFilter($folder, $this->config->get('asset-pipeline::compressed'));
 		}
 
 		$stylesheets = new AssetCollection([
