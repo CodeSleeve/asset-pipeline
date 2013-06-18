@@ -39,7 +39,8 @@ class IgnoreFilesFilter implements FilterInterface
 
         foreach($this->patterns as $pattern)
         {
-            if (strpos($shortFilePath, $pattern) !== false) {
+            if (strpos($shortFilePath, $pattern) !== false)
+            {
                 $ignore = true;
                 break;
             }
@@ -52,7 +53,8 @@ class IgnoreFilesFilter implements FilterInterface
 
     private function str_replace_once($str_pattern, $str_replacement, $string)
     {
-        if (strpos($string, $str_pattern) !== false){
+        if (strpos($string, $str_pattern) !== false)
+        {
             $occurrence = strpos($string, $str_pattern);
             return substr_replace($string, $str_replacement, strpos($string, $str_pattern), strlen($str_pattern));
         }

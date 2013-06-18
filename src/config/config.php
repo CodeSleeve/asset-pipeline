@@ -1,6 +1,6 @@
 <?php
 
-return [
+return array(
 
 	/*
 	|--------------------------------------------------------------------------
@@ -11,9 +11,9 @@ return [
 	| routes for our package
 	|
 	*/
-	'routing' => [
+	'routing' => array(
 		'prefix' => '/assets'
-	],
+	),
 
 	/*
 	|--------------------------------------------------------------------------
@@ -47,10 +47,10 @@ return [
 	| you can rename the file to handlebars.min.js and it will be ignored.
 	|
 	*/
-	'compressed' => [
+	'compressed' => array(
 		'.min.', 
 		'-min.'
-	],
+	),
 
 	/*
 	|--------------------------------------------------------------------------
@@ -62,14 +62,14 @@ return [
 	| need to put a fully qualified path in there like /cool-foobars/foobar.js
 	|
 	*/
-	'ignores' => [
+	'ignores' => array(
 		'/test/',
 		'/tests/'
-	],
+	),
 
 	/*
 	|--------------------------------------------------------------------------
-	| scanDirectory
+	| directoryScan
 	|--------------------------------------------------------------------------
 	|
 	| ** on production environment only **
@@ -105,4 +105,4 @@ return [
 	|
 	*/
 	'forget' => 'Ch4nG3M3!'
-];
+);

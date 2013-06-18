@@ -100,8 +100,8 @@ class AssetPipelineRepository implements AssetPipelineInterface {
 	 */
 	protected function process_scripts($folder)
 	{
-		$jsFilters = [ new IgnoreFilesFilter($folder, $this->config('assetPipeline::ignores')) ];
-		$coffeeFilters = [ new IgnoreFilesFilter($folder, $this->config('assetPipeline::ignores')), new CoffeeScriptPhpFilter ];
+		$jsFilters = array( new IgnoreFilesFilter($folder, $this->config('assetPipeline::ignores')) );
+		$coffeeFilters = array( new IgnoreFilesFilter($folder, $this->config('assetPipeline::ignores')), new CoffeeScriptPhpFilter );
 
 		if ($this->config('assetPipeline::minify'))
 		{
@@ -133,8 +133,8 @@ class AssetPipelineRepository implements AssetPipelineInterface {
 	 */
 	protected function process_styles($folder)
 	{
-		$cssFilters = [ new IgnoreFilesFilter($folder, $this->config('assetPipeline::ignores')) ];
-		$lessFilters = [ new IgnoreFilesFilter($folder, $this->config('assetPipeline::ignores')), new LessphpFilter ];
+		$cssFilters = array( new IgnoreFilesFilter($folder, $this->config('assetPipeline::ignores')) );
+		$lessFilters = array( new IgnoreFilesFilter($folder, $this->config('assetPipeline::ignores')), new LessphpFilter );
 
 		if ($this->config('assetPipeline::minify'))
 		{
