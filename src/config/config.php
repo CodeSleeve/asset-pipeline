@@ -64,7 +64,8 @@ return array(
 	*/
 	'ignores' => array(
 		'/test/',
-		'/tests/'
+		'/tests/',
+		'.ignoreme'
 	),
 
 	/*
