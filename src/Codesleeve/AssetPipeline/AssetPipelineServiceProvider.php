@@ -23,7 +23,7 @@ class AssetPipelineServiceProvider extends ServiceProvider {
 		include __DIR__.'/../../routes.php';
 		
 		$this->app['assetPipeline'] = $this->app->share(function($app) {
-            return new AssetPipelineRepository(base_path(), function($path) { return \Config::get($path); });
+            return new AssetPipelineRepository(base_path(), $app['config']);
         });
 
 		$this->app['generate.assets'] = $this->app->share(function($app)

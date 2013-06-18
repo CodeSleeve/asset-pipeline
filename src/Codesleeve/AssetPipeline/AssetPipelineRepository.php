@@ -21,10 +21,10 @@ class AssetPipelineRepository implements AssetPipelineInterface {
 	 * 
 	 * @param [type] $package_dir [description]
 	 */
-	public function __construct($basePath, $config_closure)
+	public function __construct($basePath, $config)
 	{
 		$this->basePath = $basePath;
-		$this->config_closure = $config_closure;
+		$this->config = $config;
 
 		$this->checkDirectory($this->basePath);
 	}
@@ -68,7 +68,7 @@ class AssetPipelineRepository implements AssetPipelineInterface {
 	 */
 	public function lastUpdatedAt($path)
 	{
-		$path = $this->basePath . '/' . $this->config('assetPipeline::path') . '/' . $this->protect($path);
+		$path = $this->basePath . '/' . $this->config->get('assetPipeline::path') . '/' . $this->protect($path);
 
 		$lastUpdatedAt = 0;
 		foreach ($iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($path, \RecursiveDirectoryIterator::SKIP_DOTS), \RecursiveIteratorIterator::SELF_FIRST) as $item)
@@ -90,7 +90,7 @@ class AssetPipelineRepository implements AssetPipelineInterface {
 	 */
 	public function getPath($path)
 	{
-		return $this->basePath . '/' . $this->config('assetPipeline::path') . '/' . $this->protect($path);
+		return $this->basePath . '/' . $this->config->get('assetPipeline::path') . '/' . $this->protect($path);
 	}
 
 	/**
@@ -100,13 +100,13 @@ class AssetPipelineRepository implements AssetPipelineInterface {
 	 */
 	protected function process_scripts($folder)
 	{
-		$jsFilters = array( new IgnoreFilesFilter($folder, $this->config('assetPipeline::ignores')) );
-		$coffeeFilters = array( new IgnoreFilesFilter($folder, $this->config('assetPipeline::ignores')), new CoffeeScriptPhpFilter );
+		$jsFilters = array( new IgnoreFilesFilter($folder, $this->config->get('assetPipeline::ignores')) );
+		$coffeeFilters = array( new IgnoreFilesFilter($folder, $this->config->get('assetPipeline::ignores')), new CoffeeScriptPhpFilter );
 
-		if ($this->config('assetPipeline::minify'))
+		if ($this->config->get('assetPipeline::minify'))
 		{
-			$jsFilters[] = new JSMinPlusFilter($folder, $this->config('assetPipeline::compressed'));
-			$coffeeFilters[] = new JSMinPlusFilter($folder, $this->config('assetPipeline::compressed'));
+			$jsFilters[] = new JSMinPlusFilter($folder, $this->config->get('assetPipeline::compressed'));
+			$coffeeFilters[] = new JSMinPlusFilter($folder, $this->config->get('assetPipeline::compressed'));
 		}
 
 		$javascripts = new AssetCollection([
@@ -133,10 +133,10 @@ class AssetPipelineRepository implements AssetPipelineInterface {
 	 */
 	protected function process_styles($folder)
 	{
-		$cssFilters = array( new IgnoreFilesFilter($folder, $this->config('assetPipeline::ignores')) );
-		$lessFilters = array( new IgnoreFilesFilter($folder, $this->config('assetPipeline::ignores')), new LessphpFilter );
+		$cssFilters = array( new IgnoreFilesFilter($folder, $this->config->get('assetPipeline::ignores')) );
+		$lessFilters = array( new IgnoreFilesFilter($folder, $this->config->get('assetPipeline::ignores')), new LessphpFilter );
 
-		if ($this->config('assetPipeline::minify'))
+		if ($this->config->get('assetPipeline::minify'))
 		{
 			$cssFilters[] = new CssMinFilter;
 			$lessFilters[] = new CssMinFilter;
@@ -179,11 +179,5 @@ class AssetPipelineRepository implements AssetPipelineInterface {
 		if (!is_dir($folder)) {
 			throw new \InvalidArgumentException("Folder $folder is not a valid directory!");
 		}		
-	}
-
-	protected function config($path)
-	{
-		$config_closure = $this->config_closure;
-		return $config_closure($path);
 	}
 }

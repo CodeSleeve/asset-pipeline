@@ -20,13 +20,24 @@ class AssetPipelineRepositoryTest extends PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->projectPath = __DIR__ . '/root/project';
-
-        $this->config = [
+        $config_data = array(
             'assetPipeline::path' => 'app/assets',
             'assetPipeline::minify' => true,
             'assetPipeline::compressed' => ['.min.', '-min.'],
             'assetPipeline::ignores' => ['/test/', '/tests/'],
-        ];
+        );
+
+        $this->config = $this->getMock('Config', array('get'));       
+        $this->config->expects($this->any())
+               ->method('get')
+               ->with($this->anything())
+               ->will($this->returnCallback(function($path) use ($config_data) {
+                    if (array_key_exists($path, $config_data)) {
+                        return $config_data[$path];
+                    }
+
+                    return $path;
+               }));
 
         $this->pipeline = $this->new_pipeline();
     }
@@ -46,13 +57,7 @@ class AssetPipelineRepositoryTest extends PHPUnit_Framework_TestCase
      */
     public function new_pipeline()
     {
-        $config = $this->config;
-        return new AssetPipelineRepository($this->projectPath, function($path) use ($config) {
-            if (array_key_exists($path, $config)) {
-                return $config[$path];
-            }
-            return $path; 
-        });
+        return new AssetPipelineRepository($this->projectPath, $this->config);
     }
 
     /**
