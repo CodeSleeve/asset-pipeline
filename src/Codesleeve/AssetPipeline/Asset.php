@@ -10,6 +10,6 @@ class Asset extends Facade
      *
      * @return string
      */
-    protected static function getFacadeAccessor() { return 'assetPipeline'; }
+    protected static function getFacadeAccessor() { return 'asset-pipeline'; }
 
 }

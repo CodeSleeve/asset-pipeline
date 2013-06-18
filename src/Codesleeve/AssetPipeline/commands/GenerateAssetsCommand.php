@@ -28,7 +28,7 @@ class GenerateAssetsCommand extends Command {
     public function fire()
     {
         $structure = __DIR__ . '/../../../../structure';
-        $basePath = base_path() . '/' . \Config::get('assetPipeline::path');
+        $basePath = base_path() . '/' . \Config::get('asset-pipeline::path');
 
         if (!is_dir("$basePath") && mkdir("$basePath", 0755, true))
         {

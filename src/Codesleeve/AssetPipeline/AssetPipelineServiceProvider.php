@@ -18,11 +18,11 @@ class AssetPipelineServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
-		$this->package('codesleeve/assetPipeline');
+		$this->package('codesleeve/asset-pipeline');
 
 		include __DIR__.'/../../routes.php';
 		
-		$this->app['assetPipeline'] = $this->app->share(function($app) {
+		$this->app['asset-pipeline'] = $this->app->share(function($app) {
             return new AssetPipelineRepository(base_path(), $app['config']);
         });
 

@@ -106,7 +106,7 @@ class AssetPipelineController extends Controller {
 		// user passed a forget parameter
 		if (Input::get('forget'))
 		{
-			if (Input::get('forget') == Config::get('assetPipeline::forget'))
+			if (Input::get('forget') == Config::get('asset-pipeline::forget'))
 			{
 				Cache::forget($key);
 				return;
@@ -123,7 +123,7 @@ class AssetPipelineController extends Controller {
 
 		// we are scanning the directory below so let's mark shouldCheck as good
 		if (App::environment() == "production") {
-			Cache::put($shouldCheck, 'checked files', Config::get('assetPipeline::directoryScan'));
+			Cache::put($shouldCheck, 'checked files', Config::get('asset-pipeline::directoryScan'));
 		}
 
 

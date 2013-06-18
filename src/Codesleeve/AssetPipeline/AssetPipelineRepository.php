@@ -68,8 +68,9 @@ class AssetPipelineRepository implements AssetPipelineInterface {
 	 */
 	public function lastUpdatedAt($path)
 	{
-		$path = $this->basePath . '/' . $this->config->get('assetPipeline::path') . '/' . $this->protect($path);
-
+		$path = $this->getPath($path);
+		$this->checkDirectory($path);
+		
 		$lastUpdatedAt = 0;
 		foreach ($iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($path, \RecursiveDirectoryIterator::SKIP_DOTS), \RecursiveIteratorIterator::SELF_FIRST) as $item)
 		{
@@ -90,7 +91,7 @@ class AssetPipelineRepository implements AssetPipelineInterface {
 	 */
 	public function getPath($path)
 	{
-		return $this->basePath . '/' . $this->config->get('assetPipeline::path') . '/' . $this->protect($path);
+		return $this->basePath . '/' . $this->config->get('asset-pipeline::path') . '/' . $this->protect($path);
 	}
 
 	/**
@@ -100,13 +101,13 @@ class AssetPipelineRepository implements AssetPipelineInterface {
 	 */
 	protected function process_scripts($folder)
 	{
-		$jsFilters = array( new IgnoreFilesFilter($folder, $this->config->get('assetPipeline::ignores')) );
-		$coffeeFilters = array( new IgnoreFilesFilter($folder, $this->config->get('assetPipeline::ignores')), new CoffeeScriptPhpFilter );
+		$jsFilters = array( new IgnoreFilesFilter($folder, $this->config->get('asset-pipeline::ignores')) );
+		$coffeeFilters = array( new IgnoreFilesFilter($folder, $this->config->get('asset-pipeline::ignores')), new CoffeeScriptPhpFilter );
 
-		if ($this->config->get('assetPipeline::minify'))
+		if ($this->config->get('asset-pipeline::minify'))
 		{
-			$jsFilters[] = new JSMinPlusFilter($folder, $this->config->get('assetPipeline::compressed'));
-			$coffeeFilters[] = new JSMinPlusFilter($folder, $this->config->get('assetPipeline::compressed'));
+			$jsFilters[] = new JSMinPlusFilter($folder, $this->config->get('asset-pipeline::compressed'));
+			$coffeeFilters[] = new JSMinPlusFilter($folder, $this->config->get('asset-pipeline::compressed'));
 		}
 
 		$javascripts = new AssetCollection([
@@ -133,10 +134,10 @@ class AssetPipelineRepository implements AssetPipelineInterface {
 	 */
 	protected function process_styles($folder)
 	{
-		$cssFilters = array( new IgnoreFilesFilter($folder, $this->config->get('assetPipeline::ignores')) );
-		$lessFilters = array( new IgnoreFilesFilter($folder, $this->config->get('assetPipeline::ignores')), new LessphpFilter );
+		$cssFilters = array( new IgnoreFilesFilter($folder, $this->config->get('asset-pipeline::ignores')) );
+		$lessFilters = array( new IgnoreFilesFilter($folder, $this->config->get('asset-pipeline::ignores')), new LessphpFilter );
 
-		if ($this->config->get('assetPipeline::minify'))
+		if ($this->config->get('asset-pipeline::minify'))
 		{
 			$cssFilters[] = new CssMinFilter;
 			$lessFilters[] = new CssMinFilter;

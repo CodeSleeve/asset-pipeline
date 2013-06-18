@@ -21,10 +21,10 @@ class AssetPipelineRepositoryTest extends PHPUnit_Framework_TestCase
     {
         $this->projectPath = __DIR__ . '/root/project';
         $config_data = array(
-            'assetPipeline::path' => 'app/assets',
-            'assetPipeline::minify' => true,
-            'assetPipeline::compressed' => ['.min.', '-min.'],
-            'assetPipeline::ignores' => ['/test/', '/tests/'],
+            'asset-pipeline::path' => 'app/assets',
+            'asset-pipeline::minify' => true,
+            'asset-pipeline::compressed' => ['.min.', '-min.'],
+            'asset-pipeline::ignores' => ['/test/', '/tests/'],
         );
 
         $this->config = $this->getMock('Config', array('get'));       

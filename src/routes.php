@@ -3,7 +3,7 @@
 /**
  * This allows us to route to the correct assets
  */
-Route::group(Config::get('assetPipeline::routing'), function() {
+Route::group(Config::get('asset-pipeline::routing'), function() {
 
 	Route::get('/{path1}.js', '\Codesleeve\AssetPipeline\AssetPipelineController@javascript');
 	Route::get('/{path1}.css', '\Codesleeve\AssetPipeline\AssetPipelineController@css');
