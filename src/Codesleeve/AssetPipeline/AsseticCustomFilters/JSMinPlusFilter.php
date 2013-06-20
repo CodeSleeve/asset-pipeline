@@ -43,7 +43,7 @@ class JSMinPlusFilter implements FilterInterface
             }
         }
 
-		$asset->setContent(\JSMinPlus::minify($asset->getContent()));
+		$asset->setContent(\JSMinPlus::minify($asset->getContent()) . ';');
     }
 
     private function str_replace_once($str_pattern, $str_replacement, $string)
