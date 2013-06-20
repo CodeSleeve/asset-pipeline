@@ -207,10 +207,7 @@ Next up is the `ignores` config. This allows us to ignore certain files or direc
 In the asset pipeline we scan the assets directory to see if any files have changed and if so, we rebuild our Cache. Since we may not want to be constantly scanning our directory (file operations are expensive) we can wait a number of minutes before we look at the assets folder for any changes.
 
 ```php
-	'ignores' => [
-		'/test/',
-		'/tests/'
-	],
+	'directoryScan' => 10,	// minutes
 ```
 
 
