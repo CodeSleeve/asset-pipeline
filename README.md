@@ -23,6 +23,13 @@ Once this operation completes, the final step is to add the service provider. Op
     'Codesleeve\AssetPipeline\AssetPipelineServiceProvider'
 ```
 
+Optionally you can put in the `Asset` facade under the `aliases` array in `app/config/app.php`. This is helpful if you want to use `Asset::htmls`, `Asset::javascripts`, or `Asset::stylesheets`
+
+```php
+
+     'Asset' => 'Codesleeve\AssetPipeline\Asset',
+```
+
 We need to make sure your environment is setup correctly because the Asset Pipeline caches assets differently on a production environment than the development environment. 
 
 If you're unsure what to put here for your machine name then do a `dd(gethostname());` to find out.
@@ -85,6 +92,25 @@ or for stylesheets
 
 Nifty huh? This allows for you to control which assets are released if you choose to do so. But there's nothing wrong with
 putting them all in `app/assets/application/javascripts/` and `app/assets/application/stylesheets` either.
+
+### Html templating?
+
+You could stick all your handlebar templates insde of the Laravel view but that adds up quickly so an alternative is to do,
+
+    <?= Asset::htmls('application/templates') ?>
+
+This brings in all the *.html found within the folder `app/assets/application/templates/`. This means your application can share all the templates with a single line of code. 
+
+It is also possible to do something like 
+
+    <?= Asset::htmls('application/templates/single-page-app-1') ?>
+    <?= Asset::htmls('application/templates/single-page-app-2') ?>
+
+If you want to have subdirectories for specific sections of your site. The `Asset::htmls` helper is recursive just like `Assets::javascripts` and `Assts::stylesheets` and will _*search 4 directories deep*_.
+
+If you just want to link to a specific html page then be sure include the html extension, 
+
+    <?= Asset::htmls('application/templates/somepage.html') ?>
 
 ### Images? Fonts? Other files?
 
@@ -223,7 +249,61 @@ This is assuming that you have the default configuration
 	'forget' => 'Ch4nG3m3!,
 ```
 
+## FAQ
 
+### What about conditional includes?
+
+You can go about conditional includes in several ways. I'll start with how I do them
+
+##### Conditionals #1
+
+I put this html tag inside of my layout(s) which in turn, tells me what laravel action I am looking at.
+
+    <html lang="en" class="<?= explode('@', Route::currentRouteAction())[0] ?> <?= explode('@', Route::currentRouteAction())[1] ?>">
+
+And then inside of `application/stylesheets/home.index.less`
+
+```css
+	html.HomeController.index {
+		body {
+			background-color: #abcdef;
+		}
+	}
+```
+
+And if you ran `php artisan generate:assets` then you will find a file `app/assets/application/javascripts/!vendors/jquery.bootstrap.js` that allows you to run
+
+```php
+	$.bootstrap('html.HomeController.index', function(element) {
+	   console.log('this code runs only when this element exists');
+	});
+```
+
+##### Conditionals #2
+
+Another alternative is to put your code inside of the specific Laravel view file. Assuming you included the `Asset` facade then inside of `app/views/home/index.php` you would have,
+
+    <script><?= Asset::javascripts('partials/home.index.js') ?></script>
+    <style type="text/css"><?= Asset::stylesheets('partials/home.index.less') ?><style>
+
+This would spit out the file `app/assets/partials/home.index.js` right there into your script tags. It would also spit out the file `app/assets/partials/home.index.less`.
+
+##### Conditionals #3
+
+Another alternative is to just link directly to the partial asset. Inside of `app/views/home/index.php`
+
+    <script src="<?= asset('assets/partials/home.index.js') ?>"></script>
+    <link  href="<?= asset('assets/partials/home.index.css') ?>" rel="stylesheet" type="text/css">
+    
+Like I said before, I favor the first option. However, I don't know that any way better or worse than the other. One thing to keep in mind is that you won't be able to do less or coffeescript files if you link directly to the download (option #3).
+
+Something else that is cool about option #1 is that you have 2 files (1 .js and 1 .css) that never change based on what page you are on, so it makes it super easy to cache all your assets with external 3rd-party software.
+
+A downside to using option #1 is that all your assets are in 1 file so it might be difficult to troubleshoot bugs and errors - even when minify is turned off.
+
+### How does caching work?
+
+All script and stylesheet files are cached and only updated when a file in the directory changes. On production we only check to see if files have been updated every 10 minutes or whatever you set for the directoryScan configuration option.
 
 ## Support
 
