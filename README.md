@@ -75,15 +75,18 @@ Or for styles:
 
 Modify your layout view (or any view) to have something similar to this in it
 
-```php
-  <script src="<?= asset('assets/application/javascripts.js') ?>"></script>
-```
+    <script src="<?= asset('assets/application/javascripts.js') ?>"></script>
+or
 
-And a similar line of code for styles
+    <?= HTML::script('assets/application/javascripts.js') ?>
 
-```php
-  <link href="<?= asset('assets/application/stylesheets.css') ?>" rel="stylesheet" type="text/css">
-```
+A similar line of code for styles
+
+    <link href="<?= asset('assets/application/stylesheets.css') ?>" rel="stylesheet" type="text/css">
+or
+
+    <?= HTML::style('assets/application/stylesheets.css') ?>
+
 
 ### Do I have to use `application/javascripts.js` though?
 
