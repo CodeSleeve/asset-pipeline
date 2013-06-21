@@ -165,7 +165,60 @@ class AssetPipelineRepositoryTest extends PHPUnit_Framework_TestCase
      */
     public function testCanHandleHtml()
     {
-        $outcome = $this->pipeline->html();
+        $outcome = $this->pipeline->htmls();
         $this->assertContains('<div class="test">', $outcome);
+        $this->assertContains('<script type="text/x-handlebars-template">', $outcome);
+    }
+
+    /**
+     * [testCanHandleSpecificJsFile description]
+     * @return [type] [description]
+     */
+    public function testCanHandleSpecificJsFile()
+    {
+        $outcome = $this->pipeline->javascripts('application/scripts/file1.js');
+        $this->assertEquals("alert('file1.js');", $outcome);
+    }
+
+    /**
+     * [testCanHandleSpecificCoffeeFile description]
+     * @return [type] [description]
+     */
+    public function testCanHandleSpecificCoffeeFile()
+    {
+        $outcome = $this->pipeline->javascripts('javascripts/coffeescripts/awesome.coffee');
+        $this->assertContains("function(x){return x*x}", $outcome);
+    }
+
+    /**
+     * [testCanHandleSpecificCssFile description]
+     * @return [type] [description]
+     */
+    public function testCanHandleSpecificCssFile()
+    {
+        $outcome = $this->pipeline->stylesheets('stylesheets/styles1.css');
+        $this->assertContains('.styles1{color:red}', $outcome);
+        $this->assertNotContains('.styles2{color:white}', $outcome);
+    }
+
+    /**
+     * [testCanHandleSpecificLessFile description]
+     * @return [type] [description]
+     */
+    public function testCanHandleSpecificLessFile()
+    {
+        $outcome = $this->pipeline->stylesheets('stylesheets/admin/testing.less');
+        $this->assertContains('.box{color:#123456}', $outcome);
+    }
+
+    /**
+     * [testCanHandleSpecificLessFile description]
+     * @return [type] [description]
+     */
+    public function testCanHandleSpecificHtmlFile()
+    {
+        $outcome = $this->pipeline->htmls('templates/test.html');
+        $this->assertContains('<div class="test">', $outcome);
+        $this->assertNotContains('<script type="text/x-handlebars-template">', $outcome);
     }
 }

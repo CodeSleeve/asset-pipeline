@@ -38,11 +38,25 @@ class AssetPipelineRepository implements AssetPipelineInterface {
 	{
 		$path = $this->getPath($path);
 
+		if (is_file($path)) {
+			return $this->process_script($path)->dump();
+		}
+
 		$this->checkDirectory($path);
 
 		$scripts = $this->process_scripts($path);
 
 		return $scripts->dump();
+	}
+
+	/**
+	 * [javascript description]
+	 * @param  string $path [description]
+	 * @return [type]       [description]
+	 */
+	public function javascript($path = 'javascripts')
+	{
+		return $this->javascripts($path);
 	}
 
 	/**
@@ -54,6 +68,10 @@ class AssetPipelineRepository implements AssetPipelineInterface {
 	{
 		$path = $this->getPath($path);
 
+		if (is_file($path)) {
+			return $this->process_style($path)->dump();
+		}
+
 		$this->checkDirectory($path);
 
 		$styles = $this->process_styles($path);
@@ -61,15 +79,44 @@ class AssetPipelineRepository implements AssetPipelineInterface {
 		return $styles->dump();
 	}
 
-	public function html($path = 'templates')
+	/**
+	 * [stylesheet description]
+	 * @param  string $path [description]
+	 * @return [type]       [description]
+	 */
+	public function stylesheet($path = 'stylesheet')
+	{
+		return $this->stylesheets($path);
+	}
+
+	/**
+	 * [htmls description]
+	 * @param  string $path [description]
+	 * @return [type]       [description]
+	 */
+	public function htmls($path = 'templates')
 	{
 		$path = $this->getPath($path);
 
+		if (is_file($path)) {
+			return $this->process_html($path)->dump();
+		}
+
 		$this->checkDirectory($path);
 
-		$html = $this->process_html($path);
+		$html = $this->process_htmls($path);
 
 		return $html->dump();
+	}
+
+	/**
+	 * [html description]
+	 * @param  string $path [description]
+	 * @return [type]       [description]
+	 */
+	public function html($path = 'templates')
+	{
+		return $this->htmls($path);
 	}
 
 	/**
@@ -120,8 +167,8 @@ class AssetPipelineRepository implements AssetPipelineInterface {
 			$jsFilters[] = new JSMinPlusFilter($folder, $this->config->get('asset-pipeline::compressed'));
 			$coffeeFilters[] = new JSMinPlusFilter($folder, $this->config->get('asset-pipeline::compressed'));
 		}
-
-		$javascripts = new AssetCollection([
+	
+		$javascripts = new AssetCollection(array(
 		    new GlobAsset("$folder/*/*/*/*.js", $jsFilters),
 		    new GlobAsset("$folder/*/*/*/*.coffee", $coffeeFilters),
 
@@ -133,7 +180,38 @@ class AssetPipelineRepository implements AssetPipelineInterface {
 
 		    new GlobAsset("$folder/*.js", $jsFilters),
 		    new GlobAsset("$folder/*.coffee",  $coffeeFilters),
-		]);
+		));
+
+		return $javascripts;
+	}
+
+	/**
+	 * [process_script description]
+	 * @param  [type] $file [description]
+	 * @return [type]       [description]
+	 */
+	protected function process_script($file)
+	{
+		$folder = pathinfo($file)['dirname'];
+		$extension = pathinfo($file)['extension'];
+
+		$filters = array();
+		$assetFile = array();
+		$filters[] = new IgnoreFilesFilter($folder, $this->config->get('asset-pipeline::ignores'));
+
+		if ($extension == 'coffee') {
+			$filters[] = new CoffeeScriptPhpFilter;
+		}
+
+		if ($this->config->get('asset-pipeline::minify')) {
+			$filters[] = new JSMinPlusFilter($folder, $this->config->get('asset-pipeline::compressed'));
+		}
+
+		if ($extension == 'js' || $extension == 'coffee') {
+			$assetFile[] = new FileAsset($file, $filters);
+		}
+
+		$javascripts = new AssetCollection($assetFile);
 
 		return $javascripts;
 	}
@@ -148,13 +226,12 @@ class AssetPipelineRepository implements AssetPipelineInterface {
 		$cssFilters = array( new IgnoreFilesFilter($folder, $this->config->get('asset-pipeline::ignores')) );
 		$lessFilters = array( new IgnoreFilesFilter($folder, $this->config->get('asset-pipeline::ignores')), new LessphpFilter );
 
-		if ($this->config->get('asset-pipeline::minify'))
-		{
+		if ($this->config->get('asset-pipeline::minify')) {
 			$cssFilters[] = new CssMinPlusFilter($folder, $this->config->get('asset-pipeline::compressed'));
 			$lessFilters[] = new CssMinPlusFilter($folder, $this->config->get('asset-pipeline::compressed'));
 		}
 
-		$stylesheets = new AssetCollection([
+		$stylesheets = new AssetCollection(array(
 		    new GlobAsset("$folder/*/*/*.css", $cssFilters),
 		    new GlobAsset("$folder/*/*/*.less", $lessFilters),
 
@@ -166,7 +243,38 @@ class AssetPipelineRepository implements AssetPipelineInterface {
 
 		    new GlobAsset("$folder.css", $cssFilters),
 		    new GlobAsset("$folder.less", $lessFilters),
-		]);
+		));
+
+		return $stylesheets;
+	}
+
+	/**
+	 * [process_style description]
+	 * @param  [type] $file [description]
+	 * @return [type]       [description]
+	 */
+	protected function process_style($file)
+	{
+		$folder = pathinfo($file)['dirname'];
+		$extension = pathinfo($file)['extension'];
+
+		$assetFile = array();
+		$filters = array();
+ 		$filters[] = new IgnoreFilesFilter($folder, $this->config->get('asset-pipeline::ignores'));
+
+ 		if ($extension == 'less') {
+ 			$filters[] = new LessphpFilter;
+ 		}
+
+		if ($this->config->get('asset-pipeline::minify')) {
+			$filters[] = new CssMinPlusFilter($folder, $this->config->get('asset-pipeline::compressed'));
+		}
+
+		if ($extension == 'css' || $extension == 'less') {
+			$assetFile[] = new FileAsset($file, $filters);
+		}
+
+		$stylesheets = new AssetCollection($assetFile);
 
 		return $stylesheets;
 	}
@@ -176,16 +284,42 @@ class AssetPipelineRepository implements AssetPipelineInterface {
 	 * @param  [type] $folder [description]
 	 * @return [type]         [description]
 	 */
-	protected function process_html($folder)
+	protected function process_htmls($folder)
 	{
-		$htmlFilters = array( new HtmlMinPlusFilter($folder, $this->config->get('asset-pipeline::compressed')) );
+		$htmlFilters = array();
+		$htmlFilters[] = new IgnoreFilesFilter($folder, $this->config->get('asset-pipeline::ignores'));
+		$htmlFilters[] = new HtmlMinPlusFilter($folder, $this->config->get('asset-pipeline::compressed'));
 
-		$html = new AssetCollection([
+		$html = new AssetCollection(array(
 		    new GlobAsset("$folder/*/*/*.html", $htmlFilters),
 		    new GlobAsset("$folder/*/*.html", $htmlFilters),
 		    new GlobAsset("$folder/*.html", $htmlFilters),
 		    new GlobAsset("$folder.html", $htmlFilters),
-		]);
+		));
+
+		return $html;
+	}
+
+	/**
+	 * [process_html description]
+	 * @param  [type] $file [description]
+	 * @return [type]       [description]
+	 */
+	protected function process_html($file)
+	{
+		$folder = pathinfo($file)['dirname'];
+		$extension = pathinfo($file)['extension'];
+
+		$assetFile = array();
+		$filters = array();
+		$filters[] = new IgnoreFilesFilter($folder, $this->config->get('asset-pipeline::ignores'));
+		$filters[] = new HtmlMinPlusFilter($folder, $this->config->get('asset-pipeline::compressed'));
+
+		if ($extension == 'html') {
+			$assetFile[] = new FileAsset($file, $filters);
+		}
+
+		$html = new AssetCollection($assetFile);
 
 		return $html;
 	}
@@ -208,7 +342,8 @@ class AssetPipelineRepository implements AssetPipelineInterface {
 	protected function checkDirectory($folder) 
 	{
 		if (!is_dir($folder)) {
-			throw new \InvalidArgumentException("Folder $folder is not a valid directory!");
+			throw new \InvalidArgumentException("$folder is not a valid directory or file!");
 		}		
 	}
+
 }
