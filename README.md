@@ -1,8 +1,8 @@
-## About
+## What the heck is Asset Pipeline?
 
 *_A video is coming soon._*
 
-If you're looking to do the following, then spend 10 minutes reading over this.
+If you're looking to do the following in your Laravel 4 project, then spend 10 minutes reading over this.
 
  - Update your layouts to use the asset pipeline.
  - Place your less/css/javascript/coffeescript files into a folder.
