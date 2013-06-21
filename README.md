@@ -23,7 +23,7 @@ Once this operation completes, the final step is to add the service provider. Op
     'Codesleeve\AssetPipeline\AssetPipelineServiceProvider'
 ```
 
-Optionally you can put in the `Asset` facade under the `aliases` array in `app/config/app.php`. This is helpful if you want to use `Asset::html`, `Asset::javascripts`, or `Asset::stylesheets`
+Optionally you can put in the `Asset` facade under the `aliases` array in `app/config/app.php`. This is helpful if you want to use `Asset::htmls`, `Asset::javascripts`, or `Asset::stylesheets` (or their singular counterparts for just 1 file)
 
 ```php
 
@@ -97,16 +97,20 @@ putting them all in `app/assets/application/javascripts/` and `app/assets/applic
 
 You could stick all your handlebar templates insde of the Laravel view but that adds up quickly so an alternative is to do,
 
-    <?= Asset::html('application/templates') ?>
+    <?= Asset::htmls('application/templates') ?>
 
 This brings in all the *.html found within the folder `app/assets/application/templates/`. This means your application can share all the templates with a single line of code. 
 
 It is also possible to do something like 
 
-    <?= Asset::html('application/templates/single-page-app-1') ?>
-    <?= Asset::html('application/templates/single-page-app-2') ?>
+    <?= Asset::htmls('application/templates/single-page-app-1') ?>
+    <?= Asset::htmls('application/templates/single-page-app-2') ?>
 
-If you want to have subdirectories for specific sections of your site. The `Asset::html` helper is recursive just like javascripts and stylesheets and will _*search 4 directories deep*_.
+If you want to have subdirectories for specific sections of your site. The `Asset::htmls` helper is recursive just like `Assets::javascripts` and `Assts::stylesheets` and will _*search 4 directories deep*_.
+
+If you just want to link to a specific html page then you will need to use the singular version, 
+
+    <?= Asset::html('application/templates/somepage.html') ?>
 
 ### Images? Fonts? Other files?
 
@@ -279,8 +283,8 @@ And if you ran `php artisan generate:assets` then you will find a file `app/asse
 
 Another alternative is to put your code inside of the specific Laravel view file. Assuming you included the `Asset` facade then inside of `app/views/home/index.php` you would have,
 
-    <script><?= Asset::javascripts('partials/home.index') ?></script>
-    <style type="text/css"><?= Asset::stylesheets('partials/home.index') ?><style>
+    <script><?= Asset::javascript('partials/home.index.js') ?></script>
+    <style type="text/css"><?= Asset::stylesheet('partials/home.index.css') ?><style>
 
 This would spit out the file `app/assets/partials/home.index.js` right there into your script tags. It would also spit out the file `app/assets/partials/home.index.less` (or .css).
 
@@ -297,6 +301,9 @@ Something else that is cool about option #1 is that you have 2 files (1 .js and 
 
 A downside to using option #1 is that all your assets are in 1 file so it might be difficult to troubleshoot bugs and errors - even when minify is turned off.
 
+### How does caching work?
+
+All script and stylesheet files are cached and only updated when a file in the directory changes. On production we only check to see if files have been updated every 10 minutes or whatever you set for the directoryScan configuration option.
 
 ## Support
 
