@@ -23,7 +23,7 @@ Once this operation completes, the final step is to add the service provider. Op
     'Codesleeve\AssetPipeline\AssetPipelineServiceProvider'
 ```
 
-Optionally you can put in the `Asset` facade under the `aliases` array in `app/config/app.php`. This is helpful if you want to use `Asset::htmls`, `Asset::javascripts`, or `Asset::stylesheets` (or their singular counterparts for just 1 file)
+Optionally you can put in the `Asset` facade under the `aliases` array in `app/config/app.php`. This is helpful if you want to use `Asset::htmls`, `Asset::javascripts`, or `Asset::stylesheets`
 
 ```php
 
@@ -108,9 +108,9 @@ It is also possible to do something like
 
 If you want to have subdirectories for specific sections of your site. The `Asset::htmls` helper is recursive just like `Assets::javascripts` and `Assts::stylesheets` and will _*search 4 directories deep*_.
 
-If you just want to link to a specific html page then you will need to use the singular version, 
+If you just want to link to a specific html page then be sure include the html extension, 
 
-    <?= Asset::html('application/templates/somepage.html') ?>
+    <?= Asset::htmls('application/templates/somepage.html') ?>
 
 ### Images? Fonts? Other files?
 
@@ -283,10 +283,10 @@ And if you ran `php artisan generate:assets` then you will find a file `app/asse
 
 Another alternative is to put your code inside of the specific Laravel view file. Assuming you included the `Asset` facade then inside of `app/views/home/index.php` you would have,
 
-    <script><?= Asset::javascript('partials/home.index.js') ?></script>
-    <style type="text/css"><?= Asset::stylesheet('partials/home.index.css') ?><style>
+    <script><?= Asset::javascripts('partials/home.index.js') ?></script>
+    <style type="text/css"><?= Asset::stylesheets('partials/home.index.less') ?><style>
 
-This would spit out the file `app/assets/partials/home.index.js` right there into your script tags. It would also spit out the file `app/assets/partials/home.index.less` (or .css).
+This would spit out the file `app/assets/partials/home.index.js` right there into your script tags. It would also spit out the file `app/assets/partials/home.index.less`.
 
 ##### Conditionals #3
 
