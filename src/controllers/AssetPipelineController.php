@@ -24,6 +24,11 @@ class AssetPipelineController extends Controller {
 		$path1 = ($path3) ? $path1 . "/$path3" : $path1;
 		$path1 = ($path4) ? $path1 . "/$path4" : $path1;
 
+		$file = Asset::getPath($path1);
+		if (file_exists($file) && is_file($file)) {
+			return $this->file($path1, $path2, $path3, $path4);
+		}
+
 		$key = 'asset-pipeline-javascripts-' . $path1;
 		$this->forgetCache($path1, $key);
 
@@ -50,6 +55,12 @@ class AssetPipelineController extends Controller {
 		$path1 = ($path2) ? $path1 . "/$path2" : $path1;
 		$path1 = ($path3) ? $path1 . "/$path3" : $path1;
 		$path1 = ($path4) ? $path1 . "/$path4" : $path1;
+
+		// check to see if this is a specific javascript file first
+		$file = Asset::getPath($path1);
+		if (file_exists($file) && is_file($file)) {
+			return $this->file($path1, $path2, $path3, $path4);
+		}
 
 		$key = 'asset-pipeline-stylesheets-' . $path1 ;
 
