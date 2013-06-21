@@ -1,3 +1,13 @@
+## About
+
+*_A video is coming soon._*
+
+If you're looking to do the following, then spend 10 minutes reading over this.
+
+ - Update your layouts to use the asset pipeline.
+ - Place your less/css/javascript/coffeescript files into a folder.
+ - Smile and let asset-pipeline automatically handle the compilation, concatenation, minification and caching.
+
 ## Installation
 
 Begin by installing this package through Composer. Edit your project's `composer.json` file to require `codesleeve/asset-pipeline`.
