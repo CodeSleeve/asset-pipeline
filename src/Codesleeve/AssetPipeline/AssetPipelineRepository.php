@@ -232,6 +232,9 @@ class AssetPipelineRepository implements AssetPipelineInterface {
 		}
 
 		$stylesheets = new AssetCollection(array(
+		    new GlobAsset("$folder/*/*/*/*.css", $cssFilters),
+		    new GlobAsset("$folder/*/*/*/*.less", $lessFilters),
+
 		    new GlobAsset("$folder/*/*/*.css", $cssFilters),
 		    new GlobAsset("$folder/*/*/*.less", $lessFilters),
 
@@ -240,9 +243,6 @@ class AssetPipelineRepository implements AssetPipelineInterface {
 
 		    new GlobAsset("$folder/*.css", $cssFilters),
 		    new GlobAsset("$folder/*.less", $lessFilters),
-
-		    new GlobAsset("$folder.css", $cssFilters),
-		    new GlobAsset("$folder.less", $lessFilters),
 		));
 
 		return $stylesheets;
@@ -291,10 +291,10 @@ class AssetPipelineRepository implements AssetPipelineInterface {
 		$htmlFilters[] = new HtmlMinPlusFilter($folder, $this->config->get('asset-pipeline::compressed'));
 
 		$html = new AssetCollection(array(
+		    new GlobAsset("$folder/*/*/*/*.html", $htmlFilters),
 		    new GlobAsset("$folder/*/*/*.html", $htmlFilters),
 		    new GlobAsset("$folder/*/*.html", $htmlFilters),
 		    new GlobAsset("$folder/*.html", $htmlFilters),
-		    new GlobAsset("$folder.html", $htmlFilters),
 		));
 
 		return $html;
