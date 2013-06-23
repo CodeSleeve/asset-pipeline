@@ -1,3 +1,13 @@
+## What the heck is Asset Pipeline?
+
+*_A video is coming soon._*
+
+If you're looking to do the following in your Laravel 4 project, then spend 10 minutes reading over this.
+
+ - Update your layouts to use the asset pipeline.
+ - Place your less/css/javascript/coffeescript files into a folder.
+ - Smile and let asset-pipeline automatically handle the compilation, concatenation, minification and caching.
+
 ## Installation
 
 Begin by installing this package through Composer. Edit your project's `composer.json` file to require `codesleeve/asset-pipeline`.
@@ -65,15 +75,18 @@ Or for styles:
 
 Modify your layout view (or any view) to have something similar to this in it
 
-```php
-  <script src="<?= asset('assets/application/javascripts.js') ?>"></script>
-```
+    <script src="<?= asset('assets/application/javascripts.js') ?>"></script>
+or
 
-And a similar line of code for styles
+    <?= HTML::script('assets/application/javascripts.js') ?>
 
-```php
-  <link href="<?= asset('assets/application/stylesheets.css') ?>" rel="stylesheet" type="text/css">
-```
+A similar line of code for styles
+
+    <link href="<?= asset('assets/application/stylesheets.css') ?>" rel="stylesheet" type="text/css">
+or
+
+    <?= HTML::style('assets/application/stylesheets.css') ?>
+
 
 ### Do I have to use `application/javascripts.js` though?
 
