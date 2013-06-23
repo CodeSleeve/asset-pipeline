@@ -34,7 +34,7 @@ class JSMinPlusFilter implements FilterInterface
     public function filterDump(AssetInterface $asset)
     {
         $filePath = $asset->getSourceDirectory() . '/' . $asset->getSourcePath();
-        $shortFilePath = $this->str_replace_once($this->basePath, "", $filePath);
+        $shortFilePath = str_replace('\\', '/', $this->str_replace_once($this->basePath, "", $filePath));
 
         foreach($this->patterns as $pattern)
         {

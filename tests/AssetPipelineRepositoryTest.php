@@ -14,6 +14,25 @@ use Codesleeve\AssetPipeline\AssetPipelineRepository;
  */
 class AssetPipelineRepositoryTest extends PHPUnit_Framework_TestCase
 {
+
+    /**
+     * Allows us to test protected functions inside of the assetpipelinerepository
+     * I don't really want to publicly expose these since they aren't really part
+     * of the Asset facade but I do want to test them
+     * 
+     * @param  [type] $name [description]
+     * @param  array  $args [description]
+     * @return [type]       [description]
+     */
+    protected function callMethod($name, $args = array())
+    {
+        $class = new ReflectionClass($this->pipeline);
+        $method = $class->getMethod($name);
+        $method->setAccessible(true);
+
+        return $method->invokeArgs($this->pipeline, $args);
+    }
+
     /**
      * Setup a project path, config and pipeline to use
      */
@@ -228,10 +247,14 @@ class AssetPipelineRepositoryTest extends PHPUnit_Framework_TestCase
      */
     public function testPrecendenceForJs()
     {
-        $pipeline1 = $this->new_pipeline(array('asset-pipeline::precedence' => 'top down'));
-        $pipeline2 = $this->new_pipeline(array('asset-pipeline::precedence' => 'bottom up'));
+        $outcome = $this->pipeline->javascripts();
+        $this->assertContains("alert('backbone.js')", $outcome);
+        $this->assertContains("alert('app1.js')", $outcome);
 
-        $this->assertNotEquals($pipeline1->javascripts(), $pipeline2->javascripts());
+        $jquery = strpos($outcome, "alert('jquery.js')");
+        $app1 = strpos($outcome, "alert('app1.js')");
+
+        $this->assertLessThan($app1, $jquery);
     }
 
     /**
@@ -240,10 +263,14 @@ class AssetPipelineRepositoryTest extends PHPUnit_Framework_TestCase
      */
     public function testPrecendenceForCss()
     {
-        $pipeline1 = $this->new_pipeline(array('asset-pipeline::precedence' => 'top down'));
-        $pipeline2 = $this->new_pipeline(array('asset-pipeline::precedence' => 'bottom up'));
+        $outcome = $this->pipeline->stylesheets();
+        $this->assertContains(".box", $outcome);
+        $this->assertContains(".styles1", $outcome);
 
-        $this->assertNotEquals($pipeline1->stylesheets(), $pipeline2->stylesheets());
+        $box = strpos($outcome, ".box");
+        $styles1 = strpos($outcome, ".styles1");
+
+        $this->assertLessThan($styles1, $box);
     }
 
     /**
@@ -252,11 +279,34 @@ class AssetPipelineRepositoryTest extends PHPUnit_Framework_TestCase
      */
     public function testPrecendenceForHtml()
     {
-        $pipeline1 = $this->new_pipeline(array('asset-pipeline::precedence' => 'top down'));
-        $pipeline2 = $this->new_pipeline(array('asset-pipeline::precedence' => 'bottom up'));
+        $outcome = $this->pipeline->htmls();
 
-        $this->assertNotEquals($pipeline1->htmls(), $pipeline2->htmls());
+        $this->assertContains("atemplate", $outcome);
+        $this->assertContains("{{something}}", $outcome);
+        $this->assertContains("{{hmm}}", $outcome);
+
+        $atemplate = strpos($outcome, "atemplate");
+        $something = strpos($outcome, "{{something}}");
+        $hmm = strpos($outcome, "{{hmm}}");
+
+        $this->assertLessThan($something, $atemplate);
+        $this->assertLessThan($hmm, $something);
     }
+
+
+    // public function testHmm()
+    // {
+    //     $files = $this->callMethod('gather_assets', array(
+    //         __DIR__ . '/root/project/app/assets/precedence',
+    //         array('js', 'coffee')
+    //     ));
+
+    //     //$files = array_reverse($files);
+
+    //     foreach($files as $file) {
+    //         print str_replace('C:\Users\kelt\Dropbox\htdocs\codesleeve4\workbench\codesleeve\asset-pipeline\tests/root/project/app/assets/precedence', '', $file) . PHP_EOL;
+    //     }
+    // }
 
 
 }
