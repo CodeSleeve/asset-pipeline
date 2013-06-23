@@ -193,6 +193,30 @@ Now the loading order would be
 
 We could also pick another name for the `app` folder like `modules` or something. The important thing is to know that folders and files are loaded alphabetically and `app` takes precedence alphabetically before `app.coffee`
 
+One last thing, if you had a directory structure like the following
+
+```php
+  - javascripts
+    - !!vendors
+      - marionettee
+        - backbone.babysitter.js
+        - marionette.js
+      - jquery.js
+    - !app.coffee
+    - app
+      - main.coffee
+```
+
+Then the loading order would be
+
+	- jquery.js
+	- backbone.babysitter.js
+	- marionette.js
+	- app.coffee
+	- main.coffee
+
+The `marionette` subfolder in `!!vendors` is loaded before the other folders. This is just another thing to keep in mind. 
+
 ## Configuration
 
 If you would like to configure the asset pipeline there are a few things you can change.
