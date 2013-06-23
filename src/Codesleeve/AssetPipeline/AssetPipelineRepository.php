@@ -168,21 +168,40 @@ class AssetPipelineRepository implements AssetPipelineInterface {
 			$coffeeFilters[] = new JSMinPlusFilter($folder, $this->config->get('asset-pipeline::compressed'));
 		}
 	
-		$javascripts = new AssetCollection(array(
-		    new GlobAsset("$folder/*/*/*/*.js", $jsFilters),
-		    new GlobAsset("$folder/*/*/*/*.coffee", $coffeeFilters),
-
-		    new GlobAsset("$folder/*/*/*.js", $jsFilters),
-		    new GlobAsset("$folder/*/*/*.coffee", $coffeeFilters),
-
-		    new GlobAsset("$folder/*/*.js", $jsFilters),
-		    new GlobAsset("$folder/*/*.coffee",  $coffeeFilters),
-
-		    new GlobAsset("$folder/*.js", $jsFilters),
-		    new GlobAsset("$folder/*.coffee",  $coffeeFilters),
-		));
+		$javascripts = new AssetCollection($this->script_assets($folder, $jsFilters, $coffeeFilters));
 
 		return $javascripts;
+	}
+
+	/**
+	 * [get_script_assets description]
+	 * @return [type] [description]
+	 */
+	protected function script_assets($folder, $jsFilters, $coffeeFilters)
+	{
+		if ($this->config->get('asset-pipeline::precedence') == 'top down') {
+			return array(
+			    new GlobAsset("$folder/*.js", $jsFilters),
+			    new GlobAsset("$folder/*.coffee",  $coffeeFilters),
+			    new GlobAsset("$folder/*/*.js", $jsFilters),
+			    new GlobAsset("$folder/*/*.coffee",  $coffeeFilters),
+			    new GlobAsset("$folder/*/*/*.js", $jsFilters),
+			    new GlobAsset("$folder/*/*/*.coffee", $coffeeFilters),
+			    new GlobAsset("$folder/*/*/*/*.js", $jsFilters),
+			    new GlobAsset("$folder/*/*/*/*.coffee", $coffeeFilters),
+			);
+		}
+
+		return array(
+		    new GlobAsset("$folder/*/*/*/*.js", $jsFilters),
+		    new GlobAsset("$folder/*/*/*/*.coffee", $coffeeFilters),
+		    new GlobAsset("$folder/*/*/*.js", $jsFilters),
+		    new GlobAsset("$folder/*/*/*.coffee", $coffeeFilters),
+		    new GlobAsset("$folder/*/*.js", $jsFilters),
+		    new GlobAsset("$folder/*/*.coffee",  $coffeeFilters),
+		    new GlobAsset("$folder/*.js", $jsFilters),
+		    new GlobAsset("$folder/*.coffee",  $coffeeFilters),
+		);
 	}
 
 	/**
@@ -231,21 +250,44 @@ class AssetPipelineRepository implements AssetPipelineInterface {
 			$lessFilters[] = new CssMinPlusFilter($folder, $this->config->get('asset-pipeline::compressed'));
 		}
 
-		$stylesheets = new AssetCollection(array(
-		    new GlobAsset("$folder/*/*/*/*.css", $cssFilters),
-		    new GlobAsset("$folder/*/*/*/*.less", $lessFilters),
-
-		    new GlobAsset("$folder/*/*/*.css", $cssFilters),
-		    new GlobAsset("$folder/*/*/*.less", $lessFilters),
-
-		    new GlobAsset("$folder/*/*.css", $cssFilters),
-		    new GlobAsset("$folder/*/*.less", $lessFilters),
-
-		    new GlobAsset("$folder/*.css", $cssFilters),
-		    new GlobAsset("$folder/*.less", $lessFilters),
-		));
+		$stylesheets = new AssetCollection($this->style_assets($folder, $cssFilters, $lessFilters));
 
 		return $stylesheets;
+	}
+
+	/**
+	 * [style_assets description]
+	 * @param  [type] $folder      [description]
+	 * @param  [type] $cssFilters  [description]
+	 * @param  [type] $lessFilters [description]
+	 * @return [type]              [description]
+	 */
+	protected function style_assets($folder, $cssFilters, $lessFilters)
+	{
+		if ($this->config->get('asset-pipeline::precedence') == 'top down')
+		{
+			return array(
+			    new GlobAsset("$folder/*.css", $cssFilters),
+			    new GlobAsset("$folder/*.less", $lessFilters),
+			    new GlobAsset("$folder/*/*.css", $cssFilters),
+			    new GlobAsset("$folder/*/*.less", $lessFilters),
+			    new GlobAsset("$folder/*/*/*.css", $cssFilters),
+			    new GlobAsset("$folder/*/*/*.less", $lessFilters),
+			    new GlobAsset("$folder/*/*/*/*.css", $cssFilters),
+			    new GlobAsset("$folder/*/*/*/*.less", $lessFilters),
+			);			
+		}
+
+		return array(
+		    new GlobAsset("$folder/*/*/*/*.css", $cssFilters),
+		    new GlobAsset("$folder/*/*/*/*.less", $lessFilters),
+		    new GlobAsset("$folder/*/*/*.css", $cssFilters),
+		    new GlobAsset("$folder/*/*/*.less", $lessFilters),
+		    new GlobAsset("$folder/*/*.css", $cssFilters),
+		    new GlobAsset("$folder/*/*.less", $lessFilters),
+		    new GlobAsset("$folder/*.css", $cssFilters),
+		    new GlobAsset("$folder/*.less", $lessFilters),
+		);
 	}
 
 	/**
@@ -290,14 +332,35 @@ class AssetPipelineRepository implements AssetPipelineInterface {
 		$htmlFilters[] = new IgnoreFilesFilter($folder, $this->config->get('asset-pipeline::ignores'));
 		$htmlFilters[] = new HtmlMinPlusFilter($folder, $this->config->get('asset-pipeline::compressed'));
 
-		$html = new AssetCollection(array(
+		$html = new AssetCollection($this->html_assets($folder, $htmlFilters));
+
+		return $html;
+	}
+
+	/**
+	 * [html_assets description]
+	 * @param  [type] $folder      [description]
+	 * @param  [type] $htmlFilters [description]
+	 * @return [type]              [description]
+	 */
+	protected function html_assets($folder, $htmlFilters)
+	{
+		if ($this->config->get('asset-pipeline::precedence') == 'top down')
+		{
+			return array(
+			    new GlobAsset("$folder/*.html", $htmlFilters),
+			    new GlobAsset("$folder/*/*.html", $htmlFilters),
+			    new GlobAsset("$folder/*/*/*.html", $htmlFilters),
+			    new GlobAsset("$folder/*/*/*/*.html", $htmlFilters),
+			);
+		}
+
+		return array(
 		    new GlobAsset("$folder/*/*/*/*.html", $htmlFilters),
 		    new GlobAsset("$folder/*/*/*.html", $htmlFilters),
 		    new GlobAsset("$folder/*/*.html", $htmlFilters),
 		    new GlobAsset("$folder/*.html", $htmlFilters),
-		));
-
-		return $html;
+		);
 	}
 
 	/**

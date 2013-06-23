@@ -26,6 +26,19 @@ return array(
 	*/
 	'path' => 'app/assets',
 
+
+	/*
+	|--------------------------------------------------------------------------
+	| precedence
+	|--------------------------------------------------------------------------
+	|
+	| This can be either 'bottom up' or 'top down' depending on how you want the
+	| order of your assets to be loaded. Top down brings in top level assets first
+	| while the bottom up brings in the top level assets last.
+	|
+	*/
+	'precedence' => 'bottom up',
+
 	/*
 	|--------------------------------------------------------------------------
 	| minify

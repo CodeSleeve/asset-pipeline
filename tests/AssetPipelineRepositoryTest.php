@@ -20,25 +20,6 @@ class AssetPipelineRepositoryTest extends PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->projectPath = __DIR__ . '/root/project';
-        $config_data = array(
-            'asset-pipeline::path' => 'app/assets',
-            'asset-pipeline::minify' => true,
-            'asset-pipeline::compressed' => ['.min.', '-min.'],
-            'asset-pipeline::ignores' => ['/test/', '/tests/'],
-        );
-
-        $this->config = $this->getMock('Config', array('get'));       
-        $this->config->expects($this->any())
-               ->method('get')
-               ->with($this->anything())
-               ->will($this->returnCallback(function($path) use ($config_data) {
-                    if (array_key_exists($path, $config_data)) {
-                        return $config_data[$path];
-                    }
-
-                    return $path;
-               }));
-
         $this->pipeline = $this->new_pipeline();
     }
 
@@ -55,9 +36,28 @@ class AssetPipelineRepositoryTest extends PHPUnit_Framework_TestCase
      * [new_pipeline description]
      * @return [type] [description]
      */
-    public function new_pipeline()
+    public function new_pipeline($config_data_overrides = array())
     {
-        return new AssetPipelineRepository($this->projectPath, $this->config);
+        $config_data = array_merge(array(
+            'asset-pipeline::path' => 'app/assets',
+            'asset-pipeline::minify' => true,
+            'asset-pipeline::compressed' => array('.min.', '-min.'),
+            'asset-pipeline::ignores' => array('/test/', '/tests/'),
+        ), $config_data_overrides);
+
+        $config = $this->getMock('Config', array('get'));       
+        $config->expects($this->any())
+             ->method('get')
+             ->with($this->anything())
+             ->will($this->returnCallback(function($path) use ($config_data) {
+                if (array_key_exists($path, $config_data)) {
+                    return $config_data[$path];
+                }
+
+                return $path;
+             }));
+
+        return new AssetPipelineRepository($this->projectPath, $config);
     }
 
     /**
@@ -221,4 +221,42 @@ class AssetPipelineRepositoryTest extends PHPUnit_Framework_TestCase
         $this->assertContains('<div class="test">', $outcome);
         $this->assertNotContains('<script type="text/x-handlebars-template">', $outcome);
     }
+
+    /**
+     * [testPrecendenceTopDownForJs description]
+     * @return [type] [description]
+     */
+    public function testPrecendenceForJs()
+    {
+        $pipeline1 = $this->new_pipeline(array('asset-pipeline::precedence' => 'top down'));
+        $pipeline2 = $this->new_pipeline(array('asset-pipeline::precedence' => 'bottom up'));
+
+        $this->assertNotEquals($pipeline1->javascripts(), $pipeline2->javascripts());
+    }
+
+    /**
+     * [testPrecendenceTopDownForJs description]
+     * @return [type] [description]
+     */
+    public function testPrecendenceForCss()
+    {
+        $pipeline1 = $this->new_pipeline(array('asset-pipeline::precedence' => 'top down'));
+        $pipeline2 = $this->new_pipeline(array('asset-pipeline::precedence' => 'bottom up'));
+
+        $this->assertNotEquals($pipeline1->stylesheets(), $pipeline2->stylesheets());
+    }
+
+    /**
+     * [testPrecendenceTopDownForJs description]
+     * @return [type] [description]
+     */
+    public function testPrecendenceForHtml()
+    {
+        $pipeline1 = $this->new_pipeline(array('asset-pipeline::precedence' => 'top down'));
+        $pipeline2 = $this->new_pipeline(array('asset-pipeline::precedence' => 'bottom up'));
+
+        $this->assertNotEquals($pipeline1->htmls(), $pipeline2->htmls());
+    }
+
+
 }
