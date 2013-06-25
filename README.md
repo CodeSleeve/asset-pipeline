@@ -40,9 +40,7 @@ Optionally you can put in the `Asset` facade under the `aliases` array in `app/c
      'Asset' => 'Codesleeve\AssetPipeline\Asset',
 ```
 
-We need to make sure your environment is setup correctly because the Asset Pipeline caches assets differently on a production environment than the development environment. 
-
-If you're unsure what to put here for your machine name then do a `dd(gethostname());` to find out.
+We need to make sure your environment is setup correctly because the Asset Pipeline caches assets differently on a production environment than the development environment.
 
 Inside `bootstrap/start.php`
 
