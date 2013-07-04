@@ -182,7 +182,7 @@ class AssetPipelineRepository implements AssetPipelineInterface {
 		{
 			$fullpath = $this->normalizePath("$folder/$path");
 
-			if (is_file($fullpath))
+			if (is_file($fullpath) && $this->hasExtension($fullpath, $extensions))
 			{
 				$files[] = $fullpath;
 			} 
@@ -328,7 +328,7 @@ class AssetPipelineRepository implements AssetPipelineInterface {
 		            
 		        } else if (is_dir($fullEntry)) {
 		        	$directory_files = array_merge($directory_files, $this->getFilesRecursively($fullEntry, $extensions));
-		        } else if (is_file($fullEntry)) {
+		        } else if (is_file($fullEntry) && $this->hasExtension($fullEntry, $extensions)) {
 		        	$files[] = $fullEntry;
 		        }
 		    }
