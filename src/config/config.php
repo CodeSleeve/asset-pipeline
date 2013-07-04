@@ -51,7 +51,7 @@ return array(
 			'*'
 		),
 		'stylesheets' => array(
-			'bootstrap/*',
+			'vendor/*',
 			'*'
 		),
 		'htmls' => array(
