@@ -45,7 +45,7 @@ return array(
 	| loaded in alphabetical order from the top directory down
 	|
 	*/	
-	'manifest' = array(
+	'manifest' => array(
 		'javascripts' => array(
 			'vendor/*',
 			'*'
