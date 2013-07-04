@@ -47,13 +47,15 @@ return array(
 	*/	
 	'manifest' = array(
 		'javascripts' => array(
-			'vendors/*',
-			'*',
+			'vendor/*',
+			'*'
 		),
 		'stylesheets' => array(
+			'bootstrap/*',
 			'*'
 		),
 		'htmls' => array(
+			'vendor/*',
 			'*'
 		)
 	),
