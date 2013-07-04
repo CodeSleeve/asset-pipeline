@@ -140,80 +140,17 @@ This also means we can use route filters to protect our assets. If that tickles 
 
 ## Conventions
 
-You might be wondering how files are loaded? This doesn't follow the same convention as MeteorJS but I find this to be simplier to work with.
+You might be wondering how files are loaded? You might want to check out the `manifest` configuration inside of the package config.
 
-  - Files and folders are loaded in alphabetical order
-  	- A folder `foo` would be loaded after a file named `bar.js` (assuming they are in the same directory)
-  	- Folders are traversed completely before returning to the parent. 
+The general rule is...
+
+  - Loading order uses the `manifest` configuration
+  	- default is, `vendors/*` then `*` but can be changed in the config file
+  - Folders and files are loaded in alphabetical order
+  - Folders are loaded before files in the same level.
+  - Folders are traversed completely before returning to the parent.
   - Files need to have extensions .js, .coffee, .less, .css, or .html to be included
 
-If we had the following directory structure, then `app.js` would be loaded before `jquery.js`, which is *_probably not_* what you want.
-
-```php
-  - javascripts
-    - vendors
-    	- jquery.js
-    - app.js
-``` 
-
-To pick which assets I want loaded first, I usually prefix with a ! so that it is loaded alphabetically before other files or folders.
-
-```php
-  - javascripts
-    - !vendors
-      - jquery.js
-    - app
-      - module1.coffee
-    - app.coffee
-
-```
-
-The way I have structured the directory above reflects the loading order of the assets. 
-	- jquery.js
-	- module1.coffee
-	- app.coffee
-	- 
-Let's assume that module.coffee depends on app.coffee though. So in this case we could restructure this by simply renaming
-
-```php
-  - javascripts
-    - !!vendors
-      - jquery.js
-    - !app.coffee
-    - app
-      - main.coffee
-```
-
-Now the loading order would be
-	- jquery.js
-	- app.coffee
-	- main.coffee
-
-We could also pick another name for the `app` folder like `modules` or something. The important thing is to know that folders and files are loaded alphabetically and `app` takes precedence alphabetically before `app.coffee`
-
-One last thing, if you had a directory structure like the following
-
-```php
-  - javascripts
-    - !!vendors
-      - marionettee
-        - backbone.babysitter.js
-        - marionette.js
-      - jquery.js
-    - !app.coffee
-    - app
-      - main.coffee
-```
-
-Then the loading order would be
-
-	- jquery.js
-	- backbone.babysitter.js
-	- marionette.js
-	- app.coffee
-	- main.coffee
-
-The `marionette` subfolder in `!!vendors` is loaded before the other folders. This is just another thing to keep in mind. 
 
 ## Configuration
 
@@ -269,6 +206,28 @@ This path is relative to your laravel root base directory `base_path()`
 
 ```php
   'path' => 'app/assets',
+```
+
+### Manifest
+
+This allows you to change the loading order of folders and files, you can modify this to fit your needs.
+
+```php
+  'manifest' = array(
+     'javascripts' => array(
+	'important/asset/jquery.js'
+	'vendor/*',
+	'*'
+     ),
+     'stylesheets' => array(
+  	'vendor/*',
+	'*'
+     ),
+     'htmls' => array(
+  	'vendor/*',
+	'*'
+     )
+),
 ```
 
 ### Minify
