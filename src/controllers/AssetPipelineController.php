@@ -137,6 +137,12 @@ class AssetPipelineController extends Controller {
 			Cache::forget($key);
 		}
 
+		// keep track of all the cached keys we have, so we can reference them later if needed
+		$allKeys = Cache::get('asset-pipeline::allKeys', array());
+		$allKeys[] = $key;
+
+		Cache::forget('asset-pipeline::allKeys');
+		Cache::forever('asset-pipeline::allKeys', array_unique($allKeys));
 	}
 
 }

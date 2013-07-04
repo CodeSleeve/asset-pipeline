@@ -62,18 +62,21 @@ class AssetPipelineRepositoryTest extends PHPUnit_Framework_TestCase
             'asset-pipeline::minify' => true,
             'asset-pipeline::compressed' => array('.min.', '-min.'),
             'asset-pipeline::ignores' => array('/test/', '/tests/'),
+            'asset-pipeline::manifest' => array(
+                'javascripts' => array('vendors/*', '*'),
+                'stylesheets' => array('*')
+            )
         ), $config_data_overrides);
 
         $config = $this->getMock('Config', array('get'));       
         $config->expects($this->any())
              ->method('get')
              ->with($this->anything())
-             ->will($this->returnCallback(function($path) use ($config_data) {
+             ->will($this->returnCallback(function($path, $default = null) use ($config_data) {
                 if (array_key_exists($path, $config_data)) {
                     return $config_data[$path];
                 }
-
-                return $path;
+                return $default;
              }));
 
         return new AssetPipelineRepository($this->projectPath, $config);
@@ -289,24 +292,98 @@ class AssetPipelineRepositoryTest extends PHPUnit_Framework_TestCase
         $something = strpos($outcome, "{{something}}");
         $hmm = strpos($outcome, "{{hmm}}");
 
-        $this->assertLessThan($something, $atemplate);
+        $this->assertLessThan($atemplate, $something);
         $this->assertLessThan($hmm, $something);
     }
 
+    /**
+     * [testJavascriptLoadingOrder description]
+     * @return [type] [description]
+     */
+    public function testJavascriptCustomLoadingOrder()
+    {
+        $pipeline = $this->pipeline;
 
-    // public function testHmm()
-    // {
-    //     $files = $this->callMethod('gather_assets', array(
-    //         __DIR__ . '/root/project/app/assets/precedence',
-    //         array('js', 'coffee')
-    //     ));
+        $manifest = array(
+            'vendor/jquery/jquery.js',
+            'file4.js',
+            'vendor/*',
+            '*'
+        );
 
-    //     //$files = array_reverse($files);
+        $outcome = $pipeline->getFiles($pipeline->getPath('javascripts'), $manifest, array('js', 'coffee'));
+        $expected = array(
+            '/vendor/jquery/jquery.js',
+            '/file4.js',
+            '/vendor/backbone/underscore/underscore.js',
+            '/vendor/backbone/backbone.js',
+            '/vendor/file1.js',
+            '/vendor/file2.min.js',
+            '/vendor/file3-min.js',
+            '/coffeescripts/awesome.coffee',
+            '/test/test.js',
+            '/tests/tests.js',
+            '/app1.js'
+        );
 
-    //     foreach($files as $file) {
-    //         print str_replace('C:\Users\kelt\Dropbox\htdocs\codesleeve4\workbench\codesleeve\asset-pipeline\tests/root/project/app/assets/precedence', '', $file) . PHP_EOL;
-    //     }
-    // }
+        array_walk($outcome, function(&$file) {
+            $file = str_replace($this->pipeline->getPath('javascripts'), '', $file);
+        });
 
+        array_walk($expected, function(&$file) {
+            $file = $this->normalizePath($file);
+        });
+
+        $item = 0;
+        foreach($outcome as $result) {
+            $this->assertEquals($result, $expected[$item++]);
+        }
+    }
+
+    /**
+     * [testJavascriptLoadingOrder description]
+     * @return [type] [description]
+     */
+    public function testStylesheetLoadingOrder()
+    {
+        $pipeline = $this->pipeline;
+
+        $manifest = array(
+            'styles3.less',           
+            '*'
+        );
+
+        $outcome = $pipeline->getFiles($pipeline->getPath('stylesheets'), $manifest, array('css', 'less'));
+
+        $expected = array(
+            '\styles3.less',
+            '\admin\subdir\testing.less',
+            '\admin\testing.less',
+            '\styles1.css',
+            '\styles2.css'
+        );
+
+        array_walk($outcome, function(&$file) {
+            $file = str_replace($this->pipeline->getPath('stylesheets'), '', $file);
+        });
+
+        array_walk($expected, function(&$file) {
+            $file = $this->normalizePath($file);
+        });
+
+        $item = 0;
+        foreach($outcome as $result) {
+            $this->assertEquals($result, $expected[$item++]);
+        }
+    }
+
+    /**
+     * [normalizePath description]
+     * @param  [type] $path [description]
+     * @return [type]       [description]
+     */
+    private function normalizePath($path) {
+        return str_replace(array('\\', '/'), DIRECTORY_SEPARATOR, $path);
+    }
 
 }

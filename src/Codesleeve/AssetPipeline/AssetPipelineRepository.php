@@ -164,7 +164,7 @@ class AssetPipelineRepository implements AssetPipelineInterface {
 	 */
 	public function getPath($path)
 	{
-		return $this->basePath . '/' . $this->config->get('asset-pipeline::path') . '/' . $this->protect($path);
+		return $this->normalizePath($this->basePath . '/' . $this->config->get('asset-pipeline::path') . '/' . $this->protect($path));
 	}
 
 	/**
@@ -173,19 +173,39 @@ class AssetPipelineRepository implements AssetPipelineInterface {
 	 * @param  array  $extensions [description]
 	 * @return [type]             [description]
 	 */
-	public function getFiles($folder, $extensions = array())
+	public function getFiles($folder, $manifest, $extensions = array())
 	{
-        $files = array();
-        foreach ($iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($folder, \RecursiveDirectoryIterator::SKIP_DOTS), \RecursiveIteratorIterator::SELF_FIRST) as $item)
-        {
-            $file = $item->__toString();
-            $extension = pathinfo($file, PATHINFO_EXTENSION);
-            if (in_array($extension, $extensions)) {
-                $files[] = $file;            	
-            }
-        }
+		$files = array();
+		$last_files = array();
 
-        return $files;
+		foreach ($manifest as $path)
+		{
+			$fullpath = $this->normalizePath("$folder/$path");
+
+			if (is_file($fullpath))
+			{
+				$files[] = $fullpath;
+			} 
+			else
+			{
+				foreach (glob($fullpath) as $file)
+				{
+					if ($file == "." || $file == "..") {
+						// ignore these files
+					} else if (is_dir($file)) {
+						$files = array_merge($files, $this->getFilesRecursively($file, $extensions));
+					} else if (is_file($file) && $this->hasExtension($file, $extensions)) {
+						if ($path == "*") {
+							$last_files[] = $this->normalizePath($file);
+						} else {
+							$files[] = $this->normalizePath($file);
+						}
+					}
+				}
+			}
+		}
+
+		return array_unique(array_merge($files, $last_files));
 	}
 
 	/**
@@ -200,7 +220,9 @@ class AssetPipelineRepository implements AssetPipelineInterface {
 		}
 
 		$assets = array();
-		foreach ($this->getFiles($folder, $extensions) as $file) {
+		$manifest = $this->config->get('asset-pipeline::manifest.javascripts', array('*'));
+
+		foreach ($this->getFiles($folder, $manifest, $extensions) as $file) {
 			$asset = $this->getScriptAsset($file);
 			if ($asset) $assets[] = $asset;
 		}
@@ -237,7 +259,9 @@ class AssetPipelineRepository implements AssetPipelineInterface {
 		}
 
 		$assets = array();
-		foreach ($this->getFiles($folder, $extensions) as $file) {
+		$manifest = $this->config->get('asset-pipeline::manifest.stylesheets', array('*'));
+
+		foreach ($this->getFiles($folder, $manifest, $extensions) as $file) {
 			$asset = $this->getStyleAsset($file);
 			if ($asset) $assets[] = $asset;
 		}
@@ -274,12 +298,44 @@ class AssetPipelineRepository implements AssetPipelineInterface {
 		}
 
 		$assets = array();
-		foreach ($this->getFiles($folder, $extensions) as $file) {
+		$manifest = $this->config->get('asset-pipeline::manifest.htmls', array('*'));
+
+		foreach ($this->getFiles($folder, $manifest, $extensions) as $file) {
 			$asset = $this->getHtmlAsset($file);
 			if ($asset) $assets[] = $asset;
 		}
 
 		return $assets;
+	}
+
+	/**
+	 * [getFilesRecursively description]
+	 * @param  [type] $folder     [description]
+	 * @param  array  $extensions [description]
+	 * @return [type]             [description]
+	 */
+	protected function getFilesRecursively($folder, $extensions = array())
+	{
+		$directory_files = array();
+		$files = array();
+
+		if ($handle = opendir($folder))
+		{
+		    while (false !== ($entry = readdir($handle))) 
+		    {
+		    	$fullEntry = $folder . DIRECTORY_SEPARATOR . $entry;
+		        if ($entry == "." || $entry == "..") {
+		            
+		        } else if (is_dir($fullEntry)) {
+		        	$directory_files = array_merge($directory_files, $this->getFilesRecursively($fullEntry, $extensions));
+		        } else if (is_file($fullEntry)) {
+		        	$files[] = $fullEntry;
+		        }
+		    }
+		    closedir($handle);
+		}
+
+		return array_merge($directory_files, $files);
 	}
 
 	/**
@@ -300,6 +356,28 @@ class AssetPipelineRepository implements AssetPipelineInterface {
 	protected function protect($folder)
 	{
 		return str_replace('../', '', $folder);
+	}
+
+	/**
+	 * [normalizePath description]
+	 * @param  [type] $path [description]
+	 * @return [type]       [description]
+	 */
+	protected function normalizePath($path)
+	{
+		return str_replace(array('\\', '/'), DIRECTORY_SEPARATOR, $path);
+	}
+
+	/**
+	 * [hasExtension description]
+	 * @param  [type]  $file      [description]
+	 * @param  [type]  $extension [description]
+	 * @return boolean            [description]
+	 */
+	protected function hasExtension($file, $extensions)
+	{
+        $extension = pathinfo($file, PATHINFO_EXTENSION);
+        return in_array($extension, $extensions);
 	}
 
 	/**

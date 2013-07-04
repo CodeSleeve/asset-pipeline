@@ -38,6 +38,28 @@ return array(
 
 	/*
 	|--------------------------------------------------------------------------
+	| manifest
+	|--------------------------------------------------------------------------
+	|
+	| This allows us to specify the loading order of files. By default files are
+	| loaded in alphabetical order from the top directory down
+	|
+	*/	
+	'manifest' = array(
+		'javascripts' => array(
+			'vendors/*',
+			'*',
+		),
+		'stylesheets' => array(
+			'*'
+		),
+		'htmls' => array(
+			'*'
+		)
+	),
+
+	/*
+	|--------------------------------------------------------------------------
 	| compressed
 	|--------------------------------------------------------------------------
 	|
