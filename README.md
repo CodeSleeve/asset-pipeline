@@ -270,6 +270,7 @@ Next up is the `ignores` config. This allows us to ignore certain files or direc
 
 ### Directory Scan
 
+**Note ** this setting really only applies to your production environment. On develepment it is ignored (we scan your assets directory every time you request them to see if any changes have been made to any of the asset files). If the thought of directory scans on production make you cringe, you can set this to a really large number and use the *forget* option below to re-cache anytime you need to on production.
 In the asset pipeline we scan the assets directory to see if any files have changed and if so, we rebuild our Cache. Since we may not want to be constantly scanning our directory (file operations are expensive) we can wait a number of minutes before we look at the assets folder for any changes.
 
 ```php
