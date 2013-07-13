@@ -215,17 +215,17 @@ This allows you to change the loading order of folders and files, you can modify
 ```php
   'manifest' = array(
      'javascripts' => array(
-	'important/asset/jquery.js'
-	'vendor/*',
-	'*'
+     	'important/asset/jquery.js'
+     	'vendor/*',
+     	'*'
      ),
      'stylesheets' => array(
-  	'vendor/*',
-	'*'
+     	'vendor/*',
+     	'*'
      ),
      'htmls' => array(
-  	'vendor/*',
-	'*'
+     	'vendor/*',
+     	'*'
      )
 ),
 ```
@@ -286,7 +286,7 @@ This is the ability to forget a cache on demand. Perhaps you just updated produc
 This is assuming that you have the default configuration
 
 ```php
-	'forget' => 'Ch4nG3m3!,
+	'forget' => 'Ch4nG3m3!',
 ```
 
 ## FAQ
