@@ -10,7 +10,7 @@ class HtmlMinPlusFilter implements FilterInterface
     private $basePath;
     private $patterns;
 
-    public function __construct($basePath, $patterns = [])
+    public function __construct($basePath, $patterns = array())
     {
         $this->basePath = $basePath;
         $this->patterns = $patterns;
