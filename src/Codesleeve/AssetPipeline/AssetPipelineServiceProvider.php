@@ -26,6 +26,10 @@ class AssetPipelineServiceProvider extends ServiceProvider {
             return new AssetPipelineRepository(base_path(), $app['config']);
         });
 
+		$this->app['asset-cache'] = $this->app->share(function($app) {
+			return new AssetCacheRepository($app['env'], $app['cache'], $app['config'], $app['asset-pipeline']);
+		});
+
 		$this->app['generate.assets'] = $this->app->share(function($app)
 		{
 			return new Commands\GenerateAssetsCommand;
