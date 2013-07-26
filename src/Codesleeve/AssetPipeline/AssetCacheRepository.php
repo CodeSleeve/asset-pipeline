@@ -3,11 +3,6 @@ namespace Codesleeve\AssetPipeline;
 
 class AssetCacheRepository
 {
-	private $env;
-	private $cache;
-	private $config;
-	private $asset;
-
 	/**
 	 * [__construct description]
 	 * @param  {[type]} $env
@@ -103,4 +98,8 @@ class AssetCacheRepository
 		return $this->cache->get('asset_pipeline_manager');
 	}
 
+	private $env;
+	private $cache;
+	private $config;
+	private $asset;
 }
