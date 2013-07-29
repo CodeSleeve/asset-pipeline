@@ -1,3 +1,10 @@
+# Note...
+
+I will be totally refactoring how this works (it's going to be an exact rip-off of Rail's asset pipeline). Still all native php though, and I will be putting this master branch into a 'the_old_way' branch or something...
+
+Details will be here: https://github.com/CodeSleeve/asset-pipeline/issues/2
+
+
 ## What the heck is Asset Pipeline?
 
 *_A video is coming soon._*
