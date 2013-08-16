@@ -1,6 +1,7 @@
 ## What the heck is Asset Pipeline?
 
 *_A video is coming soon._*
+
 For those of you familar with Rails asset pipeline and sprockets, you will hopefully feel right at home using this package.
 
 In a nutshell, this is what you will get from this package.
