@@ -9,6 +9,7 @@ class App {
         $app['env'] = 'local';
         $app["path.base"] = $dir . '/root/sprockets';
         $app['config'] = new Config;
+        $app['cache'] = new Cache;
 
 		return $app;
 	}

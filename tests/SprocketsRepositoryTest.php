@@ -30,14 +30,14 @@ class SprocketsRepositoryTest extends PHPUnit_Framework_TestCase
 
     public function testStylesheets()
     {
-    	//$outcome = $this->object()->stylesheets('application');
-		//$this->assertContains('*= require foobar2', $outcome);
+    	$outcome = $this->object()->stylesheets('application');
+		$this->assertContains('*= require foobar2', $outcome);
     }
 
     public function testStylesheetsProd()
     {
     	$this->app['env'] = 'production';
     	$outcome = $this->object()->stylesheets('application');
-        print $outcome;
+        $this->assertEquals('.foobar2{color:black}', $outcome);
     }
-}    
+}

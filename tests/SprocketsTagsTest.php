@@ -30,13 +30,13 @@ class SprocketsTagsTest extends PHPUnit_Framework_TestCase
     public function testStylesheetTag()
     {
         $outcome = $this->object()->stylesheetLinkTag();
-        //print $outcome;
+        $this->assertEquals('<link rel="stylesheet" type="text/css" href="/assets/foobar2.css">' . PHP_EOL, $outcome);
     }
 
     public function testImageTag()
     {
         $outcome = $this->object()->imageTag('awesome/durka.png');
-        print $outcome;
+        $this->assertEquals('<img src="/assets/awesome/durka.png">', $outcome);
     }
 
 }    
