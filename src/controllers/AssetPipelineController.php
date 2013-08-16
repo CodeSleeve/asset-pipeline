@@ -15,11 +15,11 @@ class AssetPipelineController extends Controller {
 	 */
 	public function file($path)
 	{
-		$file = Asset::getPath($path);
+		$file = Asset::getFullPath($path);
 
-		if (pathinfo($file, PATHINFO_EXTENSION) == 'js') {
+		if (pathinfo($file, PATHINFO_EXTENSION) == 'js' || pathinfo($file, PATHINFO_EXTENSION) == 'coffee') {
 			return $this->javascript($path);
-		} else if (pathinfo($file, PATHINFO_EXTENSION) == 'css') {
+		} else if (pathinfo($file, PATHINFO_EXTENSION) == 'css' || pathinfo($file, PATHINFO_EXTENSION) == 'less') {
 			return $this->stylesheet($path);
 		} else if (file_exists($file)) {
 			return Response::download($file);

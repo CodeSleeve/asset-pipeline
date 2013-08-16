@@ -22,12 +22,14 @@ class AssetPipelineServiceProvider extends ServiceProvider {
 
 		include __DIR__.'/../../routes.php';
 		
-		$this->app['asset-pipeline'] = $this->app->share(function($app) {
-            return new AssetPipelineRepository(base_path(), $app['config']);
-        });
+		include_once __DIR__.'/SprocketsGlobalHelpers.php';
+
+		$this->app['asset'] = $this->app->share(function($app) {
+			return new SprocketsRepository($app);
+		});
 
 		$this->app['asset-cache'] = $this->app->share(function($app) {
-			return new AssetCacheRepository($app['env'], $app['cache'], $app['config'], $app['asset-pipeline']);
+			return new AssetCacheRepository($app);
 		});
 
 		$this->app['generate.assets'] = $this->app->share(function($app)

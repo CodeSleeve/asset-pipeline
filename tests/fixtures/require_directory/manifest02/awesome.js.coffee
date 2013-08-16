@@ -1,0 +1,1 @@
+alert 'awesome.js.coffee'

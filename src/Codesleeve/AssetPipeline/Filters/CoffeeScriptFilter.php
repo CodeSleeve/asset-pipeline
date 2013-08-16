@@ -1,12 +1,12 @@
 <?php
  
-namespace Codesleeve\AssetPipeline\AsseticCustomFilters;
+namespace Codesleeve\AssetPipeline\Filters;
 
 use Assetic\Asset\AssetInterface;
 use Assetic\Filter\FilterInterface;
 use CoffeeScript\Compiler;
 
-class CoffeeScriptPhpFilter implements FilterInterface
+class CoffeeScriptFilter implements FilterInterface
 {
 	/**
 	 * [filterLoad description]

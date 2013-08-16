@@ -11,12 +11,12 @@ class AssetCacheRepository
 	 * @param  {[type]} $input
 	 * @return {[type]}
 	 */
-	public function __construct($env, $cache, $config, $asset)
+	public function __construct($app)
 	{
-		$this->env = $env;
-		$this->cache = $cache;
-		$this->config = $config;
-		$this->asset = $asset;
+		$this->env = $app['env'];
+		$this->cache = $app['cache'];
+		$this->config = $app['config'];
+		$this->asset = $app['asset'];
 	}
 
 	/**
@@ -26,9 +26,11 @@ class AssetCacheRepository
 	 */
 	public function javascripts($path)
 	{
-		if ($this->env == "production" && $this->cache->get('asset_pipeline_recently_scanned_javascripts')) {
-			return $this->fetch($path, 'javascripts');
-		}
+		return $this->asset->javascripts($path);
+
+		// if ($this->env == "production" && $this->cache->get('asset_pipeline_recently_scanned_javascripts')) {
+		// 	return $this->fetch($path, 'javascripts');
+		// }
 
 		// scan the asset directories
 		//$lastUpdatedAt = $this->asset->lastUpdatedAt($path);
@@ -39,7 +41,7 @@ class AssetCacheRepository
 		// 	$manager[$path] = 
 		// }
 
-		return $this->fetch($path, 'javascripts');
+		// return $this->fetch($path, 'javascripts');
 	}
 
 	/**
@@ -49,11 +51,12 @@ class AssetCacheRepository
 	 */
 	public function stylesheets($path)
 	{
-		if ($this->env == "production" && $this->cache->get('asset_pipeline_recently_scanned_stylesheets')) {
-			return $this->fetch($path, 'stylesheets');
-		}
+		return $this->asset->stylesheets($path);
+		// if ($this->env == "production" && $this->cache->get('asset_pipeline_recently_scanned_stylesheets')) {
+		// 	return $this->fetch($path, 'stylesheets');
+		// }
 
-		return $this->fetch($path, 'stylesheets');
+		// return $this->fetch($path, 'stylesheets');
 	}
 
 	/**

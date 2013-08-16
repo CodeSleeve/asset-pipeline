@@ -4,7 +4,7 @@ return array(
 
 	/*
 	|--------------------------------------------------------------------------
-	| Routing array
+	| routing array
 	|--------------------------------------------------------------------------
 	|
 	| This is passed to the Route::group and allows us to group and filter the
@@ -17,63 +17,51 @@ return array(
 
 	/*
 	|--------------------------------------------------------------------------
-	| path
+	| paths
 	|--------------------------------------------------------------------------
 	|
-	| Set to <laravel_project>/app/assets folder by default. This is the
-	| directory we search for.
+	| These are the directories we search for files in. 
+	|
+	| NOTE that the '.' in require_tree . is relative to where the manifest file 
+	| (i.e. app/assets/javascripts/application.js) is located
 	|
 	*/
-	'path' => 'app/assets',
-
-	/*
-	|--------------------------------------------------------------------------
-	| minify
-	|--------------------------------------------------------------------------
-	|
-	| Controls the minification filter. This is useful to turn off when debugging
-	|
-	*/
-	'minify' => true,
-
-	/*
-	|--------------------------------------------------------------------------
-	| manifest
-	|--------------------------------------------------------------------------
-	|
-	| This allows us to specify the loading order of files. By default files are
-	| loaded in alphabetical order from the top directory down
-	|
-	*/	
-	'manifest' => array(
-		'javascripts' => array(
-			'vendor/*',
-			'*'
-		),
-		'stylesheets' => array(
-			'vendor/*',
-			'*'
-		),
-		'htmls' => array(
-			'vendor/*',
-			'*'
-		)
+	'paths' => array(
+		'app/assets/javascripts',
+		'app/assets/stylesheets',
+		'lib/assets/javascripts',
+		'lib/assets/stylesheets',
+		'vendor/assets/javascripts',
+		'vendor/assets/stylesheets'
 	),
 
 	/*
 	|--------------------------------------------------------------------------
-	| compressed
+	| filters
 	|--------------------------------------------------------------------------
 	|
-	| Before we minify a file we make sure the filename doesn't contain the 
-	| patterns seen below. No regex allowed here. If you need to ignore a
-	| specific file (say handlebars.js) then just put the name in there. Or 
-	| you can rename the file to handlebars.min.js and it will be ignored.
+	| In order for a file to be included with sprockets, it needs to be listed 
+	| here and we can also do any preprocessing on files with the extension if
+	| we choose to. 
+	|
+	| NOTE that the minification filter will be ran automatically
+	| for us, we don't have to specify it here (it kicks in when the environment
+	| is set to production.
 	|
 	*/
-	'compressed' => array(
-		'.min.', 
-		'-min.'
+	'filters' => array(
+		'.js' => array(
+
+		),
+		'.css' => array(
+
+		),
+		'.js.coffee' => array(
+			new Codesleeve\AssetPipeline\Filters\CoffeeScriptFilter
+		),
+		'.css.less' => array(
+			new Assetic\Filter\LessphpFilter
+		)
 	),
 
 	/*
@@ -114,20 +102,4 @@ return array(
 	*/
 	'directoryScan' => 10,
 
-	/*
-	|--------------------------------------------------------------------------
-	| forget
-	|--------------------------------------------------------------------------
-	|
-	| This allows us to pass in a forget parameter at anytime and forget
-	| our cached resources. So if we go to:
-
-	| 	http://<sitename>/assets/application/javascripts.js?forget=Ch4nG3M3!
-
-	| it will rebuild the javascript cache on the server. This is useful if
-	| for some reason you want to manually trigger the cache rebuild on your
-	| production environment and can't wait for the 'directoryScan' to kick in.
-	|
-	*/
-	'forget' => 'Ch4nG3M3!'
 );
