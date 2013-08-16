@@ -27,10 +27,6 @@ class AssetsCleanCommand extends Command {
      */
     public function fire()
     {
-        \Cache::forget('asset_pipeline_recently_scanned_javascripts');
-        \Cache::forget('asset_pipeline_recently_scanned_stylesheets');
-        \Cache::forget('asset_pipeline_javascripts_last_updated_at');
-        \Cache::forget('asset_pipeline_stylesheets_last_updated_at');
         \Cache::forget('asset_pipeline_manager');
 
         $this->line('');

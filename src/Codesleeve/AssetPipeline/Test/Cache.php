@@ -5,8 +5,6 @@ namespace Codesleeve\AssetPipeline\Test;
 class Cache {
 
     public $data = array();
-    public $timeout = array();
-
     public function get($key, $default = null)
     {
         return $this->has($key)? $this->data[$key] : $default;
@@ -15,7 +13,6 @@ class Cache {
     public function put($key, $value, $minutes = null)
     {
         $this->data[$key] = $value;
-        $this->timeout[$key] = $minutes;
     }
 
     public function has($key)

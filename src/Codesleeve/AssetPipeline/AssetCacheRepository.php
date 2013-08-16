@@ -4,10 +4,6 @@ namespace Codesleeve\AssetPipeline;
 /**
  * We are using the following cache keys in Laravel
  *
- *   asset_pipeline_recently_scanned_javascripts
- *   asset_pipeline_recently_scanned_stylesheets
- *   asset_pipeline_javascripts_last_updated_at
- *   asset_pipeline_stylesheets_last_updated_at
  *   asset_pipeline_manager
  *
  * So if we ever to clear the cache, we just need to remove
@@ -52,21 +48,6 @@ class AssetCacheRepository
 			return $this->asset->javascripts($path);			
 		}
 
-		if ($this->cache->get('asset_pipeline_recently_scanned_javascripts')) {
-			return $this->fetch($path, 'javascripts');
-		}
-
-		$this->cache->put('asset_pipeline_recently_scanned_javascripts', true, $this->config->get('asset-pipeline::cache'));
-
-		$fullpath = $this->asset->getFullPath($path);
-		$lastUpdatedAt = $this->lastUpdatedAt($fullpath);
-
-		// if a file has been changed then lets override our cache
-		if ($this->cache->get('asset_pipeline_javascripts_last_updated_at') != $lastUpdatedAt) {
-			$this->cache->forever('asset_pipeline_javascripts_last_updated_at', $lastUpdatedAt);
-			return $this->fetch($path, 'javascripts', true);
-		}
-
 		return $this->fetch($path, 'javascripts');
 	}
 
@@ -87,22 +68,6 @@ class AssetCacheRepository
 	{
 		if ($this->env != "production") {
 			return $this->asset->stylesheets($path);
-		}
-
-		if ($this->cache->get('asset_pipeline_recently_scanned_stylesheets')) {
-			return $this->fetch($path, 'stylesheets');
-		}
-
-		$this->cache->put('asset_pipeline_recently_scanned_stylesheets', true, $this->config->get('asset-pipeline::cache'));
-
-		$fullpath = $this->asset->getFullPath($path);
-
-		$lastUpdatedAt = $this->lastUpdatedAt($fullpath);
-
-		// if a file has been changed then lets override our cache
-		if ($this->cache->get('asset_pipeline_stylesheets_last_updated_at') != $lastUpdatedAt) {
-			$this->cache->forever('asset_pipeline_stylesheets_last_updated_at', $lastUpdatedAt);
-			return $this->fetch($path, 'stylesheets', true);
 		}
 
 		return $this->fetch($path, 'stylesheets');

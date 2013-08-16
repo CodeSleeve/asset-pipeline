@@ -21,33 +21,23 @@ class AssetCacheRepositoryTest extends PHPUnit_Framework_TestCase
     public function testJavascripts()
     {
         $outcome = $this->object()->javascripts('application');
+
         $cache = $this->app['cache'];
 
     	$this->assertEquals('jquery.js;', $outcome);
 
-        $this->assertEquals($cache->data['asset_pipeline_recently_scanned_javascripts'], true);
-
-        $this->assertTrue(array_key_exists('asset_pipeline_javascripts_last_updated_at', $cache->data));
-
-        $this->assertEquals($cache->data['asset_pipeline_manager'], array('application' => 'jquery.js;'));
-
-        $this->assertTrue(array_key_exists('asset_pipeline_recently_scanned_javascripts', $cache->timeout));
+        $this->assertEquals($cache->data['asset_pipeline_manager'], array('application' => $outcome));
     }
 
     public function testStylesheets()
     {
         $outcome = $this->object()->stylesheets('application');
+
         $cache = $this->app['cache'];
 
         $this->assertEquals('.foobar2{color:black}', $outcome);
 
-        $this->assertEquals($cache->data['asset_pipeline_recently_scanned_stylesheets'], true);
-
-        $this->assertTrue(array_key_exists('asset_pipeline_stylesheets_last_updated_at', $cache->data));
-
         $this->assertEquals($cache->data['asset_pipeline_manager'], array('application' => $outcome));
-
-        $this->assertTrue(array_key_exists('asset_pipeline_recently_scanned_stylesheets', $cache->timeout));
     }
 
 }
