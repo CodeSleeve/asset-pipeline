@@ -82,42 +82,6 @@ return array(
 	| setting, regardless of what the environment is set to.
 	|
 	*/
-	'minify' => null,
-
-	/*
-	|--------------------------------------------------------------------------
-	| cache (coming soon)
-	|--------------------------------------------------------------------------
-	|
-	| ** ON PRODUCTION ENVIRONMENT ONLY **
-	|
-	| This controls how often we scan for changes in all of the asset directories.
-	|
-	| If upon a scan a file is found to have been changed then we will rebuild
-	| our cache of those assets. We certainly do not want to scan a directory
-	| of assets for changes everytime we hit the server so this only happens 
-	| every <you pick below> minutes.
-	|
-	| ** HOW DO I REFRESH MY PRODUCTION CACHE THOUGH? **
-	|
-	| 	php artisan assets:clean
-	|
-	| NOTE THOUGH that this is slightly different from rails because n the next 
-	| page served the assets will be re-cached for you automatically. So for those 
-	| of you familar with rails, you don't have to do like a `assets:precompile`.
-	|
-	*/
-	'cache' => 1440,
-
-	/*
-	|--------------------------------------------------------------------------
-	| secure
-	|--------------------------------------------------------------------------
-	|
-	| Makes the tag generators (i.e., script_include_tag, stylesheet_link_tag, 
-	| image_tag, etc) start with https:// instead of http:// if enabled
-	|
-	*/
-	'secure' => null
+	'minify' => null
 
 );
