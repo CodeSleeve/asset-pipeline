@@ -57,8 +57,6 @@ After running `php artisan assets:generate` you should notice two new directorie
 
 Be sure to check out the `app/assets/javascripts/application.js` and `app/assets/stylesheets/application.css` files, where you can adjust the files you want included into your manifest.
 
-You will need to point your browser to the correct location in order to get these assets.
-
 Let's verify you have everything working by going to:
 
     http://<your laravel project>/assets/application.js
@@ -72,7 +70,7 @@ Now to bring everything in, (this is exactly how rails does it too) you should a
     <?= stylesheet_link_tag() ?>
     <?= javascript_include_tag() ?>
 
-### Javascript Templating?
+### Javascript Templates?
 
 You could stick all your handlebar templates insde of the Laravel view but that adds up quickly. Any .html files you place within `app/assets/javascripts` will be accessible in a global javascript variable called JST. Just open up your javascript console and examine the `JST` object.
 
@@ -276,6 +274,10 @@ However, I rarely find myself doing this since I can start the code in the larav
 
 All script and stylesheet files are cached only in production mode. The cache will be built on the first time it is requested from the server. It says alive forever, until the server admin runs a `php artisan assets:clean` to clear the cache. It is using Laravels' Cache facade, which uses the `file` driver out of the box, but you
 can make it use `memory` or `redis` or whatever you fancy.
+
+### This asset pipeline is totally different?
+
+Yes, you might want to change your composer.json to use the alpha version via `"codesleeve/asset-pipeline": "dev-alpha"'` if you are using the old asset pipeline which is not based off of sprockets and is probably pretty buggy.
 
 ## Support
 
