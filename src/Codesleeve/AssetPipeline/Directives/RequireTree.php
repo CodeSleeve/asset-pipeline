@@ -14,7 +14,7 @@ class RequireTree extends BaseDirective {
 			throw new \InvalidArgumentException('Directory cannot have relative paths like .. in it');
 		}
 
-		return $this->getFilesInFolder($directory, $recursive = true);
+		return $this->getFilesInFolder($directory, $recursive = true, $this->getIncludePaths());
 	}
 
 }

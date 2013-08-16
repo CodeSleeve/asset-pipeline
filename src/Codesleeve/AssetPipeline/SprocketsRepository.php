@@ -29,7 +29,7 @@ class SprocketsRepository extends SprocketsTags {
 	public function javascripts($path)
 	{
 		$filters = array();
-		$files = array($this->getFullPath($path));
+		$files = array($this->getFullPath($path, 'javascripts'));
 
 		$minify = $this->config->get('asset-pipeline::minify');
 
@@ -38,7 +38,7 @@ class SprocketsRepository extends SprocketsTags {
 		}
 
 		if ($this->env == 'production') {
-			$files = $this->directives->getFilesFrom($this->getFullPath($path));
+			$files = $this->directives->getFilesFrom($this->getFullPath($path, 'javascripts'));
 			if (is_null($minify)) {
 				$filters[] = new JSMinPlusFilter;
 			}
@@ -61,7 +61,7 @@ class SprocketsRepository extends SprocketsTags {
 	public function stylesheets($path)
 	{
 		$filters = array();
-		$files = array($this->getFullPath($path));
+		$files = array($this->getFullPath($path, 'stylesheets'));
 
 		$minify = $this->config->get('asset-pipeline::minify');
 
@@ -70,14 +70,13 @@ class SprocketsRepository extends SprocketsTags {
 		}
 
 		if ($this->env == 'production') {
-			$files = $this->directives->getFilesFrom($this->getFullPath($path));
+			$files = $this->directives->getFilesFrom($this->getFullPath($path, 'stylesheets'));
 			if (is_null($minify)) {
 				$filters[] = new CssMinPlusFilter;
 			}
 		}
 
 		$styles = new AssetCollection($this->getStyleAssets($files), $filters);
-
 		return $styles->dump();
 	}
 
@@ -91,12 +90,11 @@ class SprocketsRepository extends SprocketsTags {
 
 		foreach ($files as $file) {
 			$extension = pathinfo($file, PATHINFO_EXTENSION);
-
-			if ($file == '_jst_.js') {
-				// $assets = array_merge($assets, $this->getTemplateAssets());
-			} else if ($extension == 'js' || $extension == 'coffee' || $extension == 'html') {
+			
+			if ($file != '_jst_.js' && ($extension == 'js' || $extension == 'coffee' || $extension == 'html')) {
 				$filters = $this->getFiltersFor($file);
-				$assets[] = new FileAsset($file, $filters);
+				$base = $this->basePath($file);
+				$assets[] = new FileAsset($this->getFullPath($base, 'javascripts'), $filters);
 			}
 		}
 
@@ -115,7 +113,8 @@ class SprocketsRepository extends SprocketsTags {
 			$extension = pathinfo($file, PATHINFO_EXTENSION);
 			if ($extension == 'css' || $extension == 'less') {
 				$filters = $this->getFiltersFor($file);
-				$assets[] = new FileAsset($file, $filters);
+				$base = $this->basePath($file);				
+				$assets[] = new FileAsset($this->getFullPath($base, 'stylesheets'), $filters);
 			}
 		}
 
@@ -138,7 +137,7 @@ class SprocketsRepository extends SprocketsTags {
 			$extension = pathinfo($file, PATHINFO_EXTENSION);
 			if ($extension == 'html') {
 				$base = $this->basePath($file);
-				$assets[] = new FileAsset($this->getFullPath($base), $filters);
+				$assets[] = new FileAsset($this->getFullPath($base, 'javascripts'), $filters);
 			}
 		}
 

@@ -85,24 +85,27 @@ return array(
 
 	/*
 	|--------------------------------------------------------------------------
-	| directoryScan
+	| cache (coming soon)
 	|--------------------------------------------------------------------------
 	|
-	| ** on production environment only **
-	| This controls how often we scan the directory relative to where our assets 
-	| are. If we scan the assets directory and a file is found to have been changed 
-	| based on greatest filemtime then we will rebuild our cache of those assets. 
-	| We may not want to scan a directory of assets for changes everytime we hit 
-	| the server so this only happens every <you pick below> minutes.
-	| 
-	| ** on development environment **
-	| This value doesn't do anything because we just scan the directory 
-	| everytime and rebuild the assets cache anytime a file has been added 
-	| or changed.
+	| ** ON PRODUCTION ENVIRONMENT ONLY **
 	|
-	| ** this is in minutes **
+	| This controls how often we scan for changes in all of the asset directories.
+	|
+	| If upon a scan a file is found to have been changed then we will rebuild
+	| our cache of those assets. We certainly do not want to scan a directory
+	| of assets for changes everytime we hit the server so this only happens 
+	| every <you pick below> minutes.
+	|
+	| ** HOW DO I REFRESH MY PRODUCTION CACHE THOUGH? **
+	|
+	| 	php artisan assets:clean
+	|
+	| NOTE THOUGH that this is slightly different from rails because n the next 
+	| page served the assets will be re-cached for you automatically. So for those 
+	| of you familar with rails, you don't have to do like a `assets:precompile`.
 	|
 	*/
-	'directoryScan' => 10,
+	'cache' => 1440,
 
 );

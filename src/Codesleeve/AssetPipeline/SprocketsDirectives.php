@@ -64,7 +64,7 @@ class SprocketsDirectives extends SprocketsBase {
 		foreach ($tokens as $token) {
 			if (strpos($line, $token) === 0) {
 				$directive = trim(substr($line, strlen($token)));
-				return $this->processJavascriptDirective($directive);
+				return $this->processDirective($directive);
 			}
 		}
 
@@ -76,7 +76,7 @@ class SprocketsDirectives extends SprocketsBase {
 	 * @param  {[type]} $directive
 	 * @return {[type]}
 	 */
-	private function processJavascriptDirective($line)
+	private function processDirective($line)
 	{
 		$directives = [
 			'require ' => new RequireFile($this->app, $this->manifestFile),

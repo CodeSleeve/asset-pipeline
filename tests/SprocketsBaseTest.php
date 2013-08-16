@@ -15,27 +15,34 @@ class SprocketsBaseTest extends PHPUnit_Framework_TestCase
         $this->app = App::make(__DIR__);
     }
 
-    public function testFullPath()
+    public function testUrlPath()
     {
-    // 	$outcome = $this->object()->getFullPath('application.js');
-    //     $outcome = str_replace($this->app['path.base'] . '/', '', $outcome);
-    //     $this->assertEquals($outcome, 'app/assets/javascripts/application.js');
+        $outcome = $this->object()->getUrlPath('application.css');
+        $this->assertEquals('/assets/application.css', $outcome);
     }
 
-    // public function testFullPathWithInvalidPathInIt()
-    // {
-    //     $this->setExpectedException('Codesleeve\AssetPipeline\Exceptions\InvalidPath');
-    //     $outcome = $this->object()->getFullPath('foobar/doesnt/exist/application.js');
-    // }
+    public function testFullPath()
+    {
+        $outcome = $this->object()->getFullPath('application');
+        $this->assertContains('/root/sprockets/app/assets/javascripts/application.js', $outcome);
+    }
 
-    // public function testFullPathWithRelativePathInIt()
-    // {
-    //     $this->setExpectedException('Codesleeve\AssetPipeline\Exceptions\InvalidPath');
-    //     $outcome = $this->object()->getFullPath('../application.js');
-    // }
+    public function testFullPathWithIncludes()
+    {
+        $outcome = $this->object()->getFullPath('application', 'stylesheets');
+        $this->assertContains('/root/sprockets/app/assets/stylesheets/application.css', $outcome);
+    }
 
-    // public function tesUrlPath()
-    // {
-    //     $outcome = $this->object()->getUrlPath('application.js');
-    // }
+    public function testRelativePath()
+    {
+        $outcome = $this->object()->getRelativePath('application');
+        $this->assertEquals('app/assets/javascripts/application.js', $outcome);
+    }
+
+    public function testRelativePathWithIncludes()
+    {
+        $outcome = $this->object()->getRelativePath('application', 'stylesheets');
+        $this->assertEquals('app/assets/stylesheets/application.css', $outcome);
+    }
+
 }

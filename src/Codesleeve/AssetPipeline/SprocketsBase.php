@@ -22,7 +22,7 @@ class SprocketsBase {
 		$this->config = $app['config'];
 		$this->env = $app['env'];
 		$this->paths = $this->config->get('asset-pipeline::paths');	
-		$this->routingPrefix = $this->config->get('asset-pipeline::routing.prefix') . '/';
+		$this->routingPrefix = $this->config->get('asset-pipeline::routing.prefix', '/assets') . '/';
 		$this->filters = $this->config->get('asset-pipeline::filters');
 		$this->extensions = array_keys($this->filters);
 		$this->jstFile = '_jst_.js';
@@ -35,9 +35,9 @@ class SprocketsBase {
 	 * @param  array  $extensions [description]
 	 * @return [type]             [description]
 	 */
-	public function getUrlPath($filepath, $extensions = array(''))
+	public function getUrlPath($filepath, $includes = 'all')
 	{
-		foreach($this->paths as $path)
+		foreach($this->getPaths($includes) as $path)
 		{
 			if (substr($filepath, 0, strlen($path)) == $path) {
 				$filepath = substr($filepath, strlen($path));
@@ -54,12 +54,11 @@ class SprocketsBase {
 	 * @param  [type] $path [description]
 	 * @return [type]       [description]
 	 */
-	public function getFullPath($filepath, $extensions = array(''))
+	public function getFullPath($filepath, $includes = 'all')
 	{
 		$this->protect($filepath);
-		$extensions = array_merge($extensions, $this->extensions);
 
-		$file = $this->getFullFile($filepath, $extensions);
+		$file = $this->getFullFile($filepath, $includes);
 
 		if ($file) {
 			return $file;
@@ -82,12 +81,12 @@ class SprocketsBase {
 	 * Get the relative file or relative directory path
 	 * 
 	 * @param  [type] $filepath   [description]
-	 * @param  array  $extensions [description]
+	 * @param  array  $includes [description]
 	 * @return [type]             [description]
 	 */
-	public function getRelativePath($filepath, $extensions = array(''))
+	public function getRelativePath($filepath, $includes = 'all')
 	{
-		return str_replace($this->app['path.base'] . '/', '', $this->getFullPath($filepath, $extensions));
+		return str_replace($this->app['path.base'] . '/', '', $this->getFullPath($filepath, $includes));
 	}
 
 	/**
@@ -96,11 +95,11 @@ class SprocketsBase {
 	 * @param  [type] $dirpath [description]
 	 * @return [type]          [description]
 	 */
-	public function getFilesInFolder($dirpath, $recursive = false)
+	public function getFilesInFolder($dirpath, $recursive = false, $includes = 'all')
 	{
 		$parent = $dirpath;
-		$folder = $this->getFullDirectory($dirpath);
-		$relativeFolder = $this->getRelativeDirectory($dirpath);
+		$folder = $this->getFullDirectory($dirpath, $includes);
+		$relativeFolder = $this->getRelativeDirectory($dirpath, $includes);
 
 		$paths = array();
 		$files = array();
@@ -125,7 +124,7 @@ class SprocketsBase {
 		sort($directories);
 
 		foreach($directories as $directory) {
-			$paths = array_merge($paths, $this->getFilesInFolder($directory, $recursive));
+			$paths = array_merge($paths, $this->getFilesInFolder($directory, $recursive, $includes));
 		}
 
 		$paths = array_merge($paths, $files);
@@ -141,11 +140,12 @@ class SprocketsBase {
 	 * @param  array  $extensions [description]
 	 * @return [type]             [description]
 	 */
-	protected function getFullFile($filepath, $extensions = array(''))
+	protected function getFullFile($filepath, $includes = 'all')
 	{
-		$dirpath = $this->replaceRelativeDot($filepath);
+		$filepath = $this->replaceRelativeDot($filepath);
+		$extensions = array_merge(array(''), $this->extensions);
 
-		foreach ($this->paths as $path) {
+		foreach ($this->getPaths($includes) as $path) {
 			foreach ($extensions as $extension) {
 				$file = $this->app['path.base'] . "/$path/$filepath$extension";
 				if (is_file($file)) {
@@ -165,11 +165,11 @@ class SprocketsBase {
 	 * @param  array  $extensions [description]
 	 * @return [type]             [description]
 	 */
-	protected function getFullDirectory($dirpath)
+	protected function getFullDirectory($dirpath, $includes = 'all')
 	{
 		$dirpath = $this->replaceRelativeDot($dirpath);
 
-		foreach ($this->paths as $path) {
+		foreach ($this->getPaths($includes) as $path) {
 			$dir = $this->app['path.base'] . "/$path/$dirpath";
 			if (is_dir($dir)) {
 				return rtrim($dir, DIRECTORY_SEPARATOR);
@@ -182,22 +182,11 @@ class SprocketsBase {
 	/**
 	 * [getFullDirectory description]
 	 * @param  [type] $filepath   [description]
-	 * @param  array  $extensions [description]
 	 * @return [type]             [description]
 	 */
-	protected function getRelativeDirectory($dirpath)
+	protected function getRelativeDirectory($dirpath, $includes = 'all')
 	{
-		return str_replace($this->app['path.base'] . "/", '', $this->getFullDirectory($dirpath));
-	}
-
-	/**
-	 * [getRelativeFile description]
-	 * @param  [type] $filepath [description]
-	 * @return [type]           [description]
-	 */
-	protected function getRelativeFile($filepath, $extensions)
-	{
-		return str_replace($this->app['path.base'] . '/', '', $this->getFullPath($filepath, $extensions));
+		return str_replace($this->app['path.base'] . DIRECTORY_SEPARATOR, '', $this->getFullDirectory($dirpath, $includes));
 	}
 
 	/**
@@ -207,9 +196,11 @@ class SprocketsBase {
 	 * @param  [type] $filepath [description]
 	 * @return [type]           [description]
 	 */
-	protected function basePath($filepath)
+	protected function basePath($filepath, $includes = 'all')
 	{
-		foreach ($this->paths as $path)
+		$filepath = str_replace($this->app['path.base'] . DIRECTORY_SEPARATOR, '', $filepath);
+
+		foreach ($this->getPaths($includes) as $path)
 		{
 			if (stripos($filepath, $path) === 0) {
 				return ltrim(substr($filepath, strlen($path)), DIRECTORY_SEPARATOR);
@@ -280,5 +271,56 @@ class SprocketsBase {
 		if (str_replace('..', '', $folder) !== $folder) {
 			throw new Exceptions\InvalidPath('Cannot have .. in the path!');
 		}
+	}
+
+	/**
+	 * Returns the paths from our config file that we should filter out
+	 * just doing 'all' will return all of $this->paths
+	 * 
+	 * @param  [type] $includes [description]
+	 * @return [type]           [description]
+	 */
+	protected function getPaths($includes)
+	{
+		if ($includes == 'all') {
+			return $this->paths;
+		}
+
+		$paths = array();
+
+		foreach ($this->paths as $key => $path)
+		{
+			if (strpos($key, $includes) !== false || strpos($path, $includes) !== false) {
+				$paths[] = $path;
+			}
+		}
+
+		return $paths;
+	}
+
+	/**
+	 * By looking at the file name we determine if this is a javascript
+	 * or stylesheet resource, else we just treat it as a generic 'all'
+	 * 
+	 * @param  [type] $file [description]
+	 * @return [type]       [description]
+	 */
+	protected function getIncludePathType($file)
+	{
+		$filename = pathinfo($file)['filename'];
+
+		if (pathinfo($file, PATHINFO_EXTENSION) == 'js' || 
+			strpos('.js', $filename) !== false ||
+			pathinfo($file, PATHINFO_EXTENSION) == 'html') {
+			return 'javascripts';
+		}
+
+		else if (pathinfo($file, PATHINFO_EXTENSION) == 'css' ||
+				 strpos('.js', $filename) !== false ||
+				 pathinfo($file, PATHINFO_EXTENSION) == 'less') {
+			return 'stylesheets';
+		}
+
+		return 'all';		
 	}
 }

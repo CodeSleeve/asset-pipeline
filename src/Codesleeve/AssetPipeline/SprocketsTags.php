@@ -30,10 +30,10 @@ class SprocketsTags extends SprocketsBase {
 	public function javascriptIncludeTag($manifestFile = 'application', $attributes = array())
 	{
 		if ($this->env == 'production') {
-			return $this->create_javascript_include($manifestFile, $attributes);
+			return $this->create_javascript_include($manifestFile . '.js', $attributes);
 		}
 
-		$files = $this->directives->getFilesFrom($this->getFullPath($manifestFile));
+		$files = $this->directives->getFilesFrom($this->getFullPath($manifestFile, 'javascripts'));
 
 		$tags = "";
 		foreach ($files as $file) {
@@ -53,10 +53,10 @@ class SprocketsTags extends SprocketsBase {
 	public function stylesheetLinkTag($manifestFile = 'application', $attributes = array())
 	{
 		if ($this->env == 'production') {
-			return $this->create_stylesheet_link($manifestFile, $attributes);
+			return $this->create_stylesheet_link($manifestFile . '.css', $attributes);
 		}
 
-		$files = $this->directives->getFilesFrom($this->getFullPath($manifestFile));
+		$files = $this->directives->getFilesFrom($this->getFullPath($manifestFile, 'stylesheets'));
 
 		$tags = "";
 		foreach ($files as $file) {
@@ -101,7 +101,7 @@ class SprocketsTags extends SprocketsBase {
 	 */
 	protected function create_javascript_include($filepath, $attributes)
 	{
-		$tag = '<script src="' . $this->getUrlPath($filepath) .'"';
+		$tag = '<script src="' . $this->getUrlPath($filepath, 'javascripts') .'"';
 		foreach ($attributes as $attribute_key => $attribute_value) {
 			$tag .= " $attribute_key=\"$attribute_value\"";
 		}
@@ -119,7 +119,7 @@ class SprocketsTags extends SprocketsBase {
 	 */
 	protected function create_stylesheet_link($filepath, $attributes)
 	{
-		$tag = '<link href="' . $this->getUrlPath($filepath) . '"';
+		$tag = '<link rel="stylesheet" type="text/css" href="' . $this->getUrlPath($filepath, 'stylesheets') . '"';
 		foreach ($attributes as $attribute_key => $attribute_value) {
 			$tag .= " $attribute_key=\"$attribute_value\"";
 		}
