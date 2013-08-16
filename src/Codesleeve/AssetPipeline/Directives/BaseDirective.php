@@ -8,7 +8,6 @@ class BaseDirective extends \Codesleeve\AssetPipeline\SprocketsBase {
 	{
 		parent::__construct($app);
 		$this->manifestFile = $manifestFile;
-		$this->paths = $app['config']->get('asset-pipeline::paths');
 	}
 
 	/**

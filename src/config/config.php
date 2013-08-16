@@ -29,6 +29,7 @@ return array(
 	'paths' => array(
 		'app/assets/javascripts',
 		'app/assets/stylesheets',
+		'app/assets/images',
 		'lib/assets/javascripts',
 		'lib/assets/stylesheets',
 		'vendor/assets/javascripts',
