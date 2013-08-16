@@ -31,9 +31,17 @@ class SprocketsRepository extends SprocketsTags {
 		$filters = array();
 		$files = array($this->getFullPath($path));
 
+		$minify = $this->config->get('asset-pipeline::minify');
+
+		if ($minify === true) {
+			$filters[] = new JSMinPlusFilter;			
+		}
+
 		if ($this->env == 'production') {
-			$filters[] = new JSMinPlusFilter;
 			$files = $this->directives->getFilesFrom($this->getFullPath($path));
+			if (is_null($minify)) {
+				$filters[] = new JSMinPlusFilter;
+			}
 		}
 
 		$scripts = new AssetCollection($this->getScriptAssets($files), $filters);
@@ -55,9 +63,17 @@ class SprocketsRepository extends SprocketsTags {
 		$filters = array();
 		$files = array($this->getFullPath($path));
 
+		$minify = $this->config->get('asset-pipeline::minify');
+
+		if ($minify === true) {
+			$filters[] = new CssMinPlusFilter;
+		}
+
 		if ($this->env == 'production') {
-			$filters = new CssMinPlusFilter;
 			$files = $this->directives->getFilesFrom($this->getFullPath($path));
+			if (is_null($minify)) {
+				$filters[] = new CssMinPlusFilter;
+			}
 		}
 
 		$styles = new AssetCollection($this->getStyleAssets($files), $filters);

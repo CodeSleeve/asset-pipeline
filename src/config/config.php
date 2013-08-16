@@ -69,19 +69,19 @@ return array(
 
 	/*
 	|--------------------------------------------------------------------------
-	| ignores
+	| minify
 	|--------------------------------------------------------------------------
 	|
-	| This allows us to specify any files that we don't want included in the
-	| asset pipeline ever. If you have multiple files named foobar.js then you will
-	| need to put a fully qualified path in there like /cool-foobars/foobar.js
+	| This allows us to turn on/off minify if we choose to do so. This might be
+	| used for debugging.
+	|
+	| When minify is set to null, we simply ignore it and use the laravel environment
+	| to determine if we should minify. The pipeline will minify when the environment
+	| is set to "production". However, if minify is true or false then it overrides the
+	| setting, regardless of what the environment is set to.
 	|
 	*/
-	'ignores' => array(
-		'/test/',
-		'/tests/',
-		'.ignoreme'
-	),
+	'minify' => null,
 
 	/*
 	|--------------------------------------------------------------------------
