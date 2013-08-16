@@ -109,4 +109,15 @@ return array(
 	*/
 	'cache' => 1440,
 
+	/*
+	|--------------------------------------------------------------------------
+	| secure
+	|--------------------------------------------------------------------------
+	|
+	| Makes the tag generators (i.e., script_include_tag, stylesheet_link_tag, 
+	| image_tag, etc) start with https:// instead of http:// if enabled
+	|
+	*/
+	'secure' => null
+
 );

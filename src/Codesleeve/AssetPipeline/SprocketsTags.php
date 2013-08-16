@@ -67,6 +67,24 @@ class SprocketsTags extends SprocketsBase {
 	}
 
 	/**
+	 * Returns the url to the image
+	 * 
+	 * @param  [type] $file       [description]
+	 * @param  [type] $attributes [description]
+	 * @return [type]             [description]
+	 */
+	public function imageTag($file, $attributes = array())
+	{
+		$tag = '<img src="' . $this->getUrlPath($file) . '"';
+		foreach ($attributes as $attribute_key => $attribute_value) {
+			$tag .= " $attribute_key=\"$attribute_value\"";
+		}
+		$tag .= '>';
+
+		return $tag;		
+	}
+
+	/**
 	 * Offering a snake case way to call this method
 	 * (since rails does it this way)
 	 * 
@@ -90,6 +108,18 @@ class SprocketsTags extends SprocketsBase {
 	public function stylesheet_link_tag($manifestFile = 'application', $attributes = array())
 	{
 		return $this->stylesheetLinkTag($manifestFile, $attributes);
+	}
+
+	/**
+	 * Offering a snake case way to call this method
+	 * 
+	 * @param  [type] $file       [description]
+	 * @param  array  $attributes [description]
+	 * @return [type]             [description]
+	 */
+	public function image_tag($file, $attributes = array())
+	{
+		return $this->imageTag($file, $attributes);
 	}
 
 	/**

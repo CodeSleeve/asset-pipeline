@@ -45,7 +45,7 @@ class SprocketsBase {
 			}
 		}
 
-		return $this->routingPrefix . ltrim($filepath, DIRECTORY_SEPARATOR);
+		return $this->getAppUrlPath($this->routingPrefix . ltrim($filepath, DIRECTORY_SEPARATOR));
 	}
 
 	/**
@@ -323,4 +323,24 @@ class SprocketsBase {
 
 		return 'all';		
 	}
+
+	/**
+	 * Lets us tap into laravel's helper function and get the asset wrapper
+	 * for this path... in case someone is hosting at like 
+	 * http://sitename/subpath/assets/ or something...
+	 * 
+	 * @param  [type] $path [description]
+	 * @return [type]       [description]
+	 */
+	protected function getAppUrlPath($path)
+	{
+		if (isset($this->app['url']))
+		{
+			return app('url')->asset($path, $this->config->get('secure'));
+		}
+		
+		return $path;
+	}
+
+
 }
