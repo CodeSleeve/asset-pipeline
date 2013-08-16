@@ -75,7 +75,10 @@ class SprocketsRepository extends SprocketsTags {
 
 		foreach ($files as $file) {
 			$extension = pathinfo($file, PATHINFO_EXTENSION);
-			if ($extension == 'js' || $extension == 'coffee') {
+
+			if ($file == '_jst_.js') {
+				// $assets = array_merge($assets, $this->getTemplateAssets());
+			} else if ($extension == 'js' || $extension == 'coffee' || $extension == 'html') {
 				$filters = $this->getFiltersFor($file);
 				$assets[] = new FileAsset($file, $filters);
 			}
@@ -85,8 +88,8 @@ class SprocketsRepository extends SprocketsTags {
 	}
 
 	/**
-	 * Wraps script assets in a FileAsset objects for Assetic
-	 * to do a AssetCollection with
+	 * Wraps stylesheet assets in a FileAsset objects for
+	 * Assetic to do a AssetCollection with
 	 */
 	protected function getStyleAssets($files)
 	{
@@ -103,4 +106,26 @@ class SprocketsRepository extends SprocketsTags {
 		return $assets;
 	}
 
+	/**
+	 * Creates a file asset that is basically just
+	 * a jst created from an html file
+	 * 
+	 * @return [type] [description]
+	 */
+	protected function getTemplateAssets()
+	{
+		$assets = array();
+		$files = $this->getFilesInFolder('.', true);
+		$filters = $this->getFiltersFor('.html');
+
+		foreach ($files as $file) {
+			$extension = pathinfo($file, PATHINFO_EXTENSION);
+			if ($extension == 'html') {
+				$base = $this->basePath($file);
+				$assets[] = new FileAsset($this->getFullPath($base), $filters);
+			}
+		}
+
+		return $assets;
+	}
 }

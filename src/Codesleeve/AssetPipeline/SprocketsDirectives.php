@@ -27,6 +27,10 @@ class SprocketsDirectives extends SprocketsBase {
 	 */
 	public function getFilesFrom($manifestFile)
 	{
+		if ($manifestFile === $this->jstFile) {
+			return array($jstFile);
+		}
+
 		$this->manifestFile = $manifestFile;
 
 		$filelist = [];

@@ -24,7 +24,7 @@ class SprocketsTagsTest extends PHPUnit_Framework_TestCase
     {
     	$outcome = $this->object()->javascriptIncludeTag();
 
-    	print_r($outcome);
+    	$this->assertEquals('<script src="/jquery.js"></script>' . PHP_EOL, $outcome);
     }
 
 }    

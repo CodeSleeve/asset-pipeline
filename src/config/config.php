@@ -61,6 +61,9 @@ return array(
 		),
 		'.css.less' => array(
 			new Assetic\Filter\LessphpFilter
+		),
+		'.html' => array(
+			new Codesleeve\AssetPipeline\Filters\JSTFilter
 		)
 	),
 

@@ -15,35 +15,22 @@ class SprocketsRepositoryTest extends PHPUnit_Framework_TestCase
      	$this->app = App::make(__DIR__);
     }
 
-    public function testBlank() {}
-//     public function testErrorsIfManifestFileDoesntExist()
-//     {
-//         $this->setExpectedException('InvalidArgumentException');
-//     	$outcome = $this->object()->javascriptIncludeTag('manifest_does_not_exist');
-//     }
+    public function testJavascripts()
+    {
+    	$outcome = $this->object()->javascripts('application.js');
+    	$this->assertContains('//= require jquery', $outcome);
+    }
 
-//     public function testDefaultJavascriptIncludeTagsProd()
-//     {
-//         $this->app['env'] = 'production';
-//         $outcome = $this->object()->javascriptIncludeTag();
+    public function testStylesheets()
+    {
+    	$outcome = $this->object()->stylesheets('application.css');
+		$this->assertContains('*= require foobar', $outcome);
+    }
 
-//         $this->assertEquals($outcome, '<script src="application.js"></script>');
-//     }
-
-//     public function testJavascriptIncludeTagsProdWithManifestAndAttributes()
-//     {
-//         $this->app['env'] = 'production';
-//         $outcome = $this->object()->javascriptIncludeTag('application', array('defer' => 'defer', 'class' => 'something'));
-//         $this->assertEquals($outcome, '<script src="application.js" defer="defer" class="something"></script>');
-//     }
-
-//     public function testDefaultJavascriptIncludeTagsDev()
-//     {
-//         $outcome = $this->object()->javascriptIncludeTag();
-//         print_r($outcome);
-// //        $this->assertEquals($outcome, '<script src="application.js"></script>');
-//     }
-
-
+    public function testTemplates()
+    {
+    	$outcome = $this->object()->javascripts('_jst_.js');
+    	print $outcome;
+    }
 
 }    

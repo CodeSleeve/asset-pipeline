@@ -101,7 +101,6 @@ class SprocketsTags extends SprocketsBase {
 	 */
 	protected function create_javascript_include($filepath, $attributes)
 	{
-		$filepath = "$filepath.js";
 		$tag = '<script src="' . $this->getUrlPath($filepath) .'"';
 		foreach ($attributes as $attribute_key => $attribute_value) {
 			$tag .= " $attribute_key=\"$attribute_value\"";
@@ -120,7 +119,6 @@ class SprocketsTags extends SprocketsBase {
 	 */
 	protected function create_stylesheet_link($filepath, $attributes)
 	{
-		$filepath = "$filepath.css";
 		$tag = '<link href="' . $this->getUrlPath($filepath) . '"';
 		foreach ($attributes as $attribute_key => $attribute_value) {
 			$tag .= " $attribute_key=\"$attribute_value\"";

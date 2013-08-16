@@ -25,6 +25,7 @@ class SprocketsBase {
 		$this->routingPrefix = $this->config->get('asset-pipeline::routing.prefix') . '/';
 		$this->filters = $this->config->get('asset-pipeline::filters');
 		$this->extensions = array_keys($this->filters);
+		$this->jstFile = '_jst_.js';
 	}
 
 	/**
@@ -68,6 +69,10 @@ class SprocketsBase {
 	
 		if ($directory) {
 			return $directory;
+		}
+
+		if ($filepath == $this->jstFile) {
+			return $filepath;
 		}
 
 		throw new Exceptions\InvalidPath('Cannot find given path in paths: ' . $filepath);
@@ -193,6 +198,25 @@ class SprocketsBase {
 	protected function getRelativeFile($filepath, $extensions)
 	{
 		return str_replace($this->app['path.base'] . '/', '', $this->getFullPath($filepath, $extensions));
+	}
+
+	/**
+	 * Strips off the paths from the beginning of string 
+	 * if we find a path that is...
+	 * 
+	 * @param  [type] $filepath [description]
+	 * @return [type]           [description]
+	 */
+	protected function basePath($filepath)
+	{
+		foreach ($this->paths as $path)
+		{
+			if (stripos($filepath, $path) === 0) {
+				return ltrim(substr($filepath, strlen($path)), DIRECTORY_SEPARATOR);
+			}
+		}
+
+		return $filepath;
 	}
 
 	/**
