@@ -277,7 +277,7 @@ can make it use `memory` or `redis` or whatever you fancy.
 
 ### This asset pipeline is totally different?
 
-Yes, you might want to change your composer.json to use the alpha version via `"codesleeve/asset-pipeline": "dev-alpha"'` if you are using the old asset pipeline which is not based off of sprockets and is probably pretty buggy.
+Yes, you might want to change your composer.json to use the alpha version via `"codesleeve/asset-pipeline": "alpha"'` if you are using the old asset pipeline which is not based off of sprockets and is probably pretty buggy.
 
 ## Support
 
