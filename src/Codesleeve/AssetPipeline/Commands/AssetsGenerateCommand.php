@@ -4,14 +4,14 @@ use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 
-class GenerateAssetsCommand extends Command {
+class AssetsGenerateCommand extends Command {
 
     /**
      * The console command name.
      *
      * @var string
      */
-    protected $name = 'generate:assets';
+    protected $name = 'assets:generate';
 
     /**
      * The console command description.
@@ -28,27 +28,30 @@ class GenerateAssetsCommand extends Command {
     public function fire()
     {
         $structure = __DIR__ . '/../../../../structure';
-        $basePath = base_path() . '/' . \Config::get('asset-pipeline::path');
+        $base = base_path();
 
-        if (!is_dir("$basePath") && mkdir("$basePath", 0755, true))
-        {
-            $this->line("Creating $basePath");
-            $this->xcopy(realpath($structure), realpath($basePath));
-            $this->line("Copied some cool assets in there for you. Remove what you don't want.");
-        } else {
-            $this->line("The assets folder $basePath alerady exists, so I'm not doing anything.");
-        }
+        $this->line('');
+        $this->line('Creating initial directory structure and copying some general purpose assets over.');
+        $this->line('');
 
-        $this->line("Finished. Have a nice day!");
+        $this->xcopy(realpath($structure), realpath($base));
+
+        $this->line('');
+        $this->line('Finished. Have a nice day! :)');
+        $this->line('                                                                 - Codesleeve Team');
     }
 
     private function xcopy($source, $dest)
     {
+        $base = base_path();
         foreach ($iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($source, \RecursiveDirectoryIterator::SKIP_DOTS), \RecursiveIteratorIterator::SELF_FIRST) as $item) {
             if ($item->isDir()) {
-                mkdir($dest . DIRECTORY_SEPARATOR . $iterator->getSubPathName());
+                if (!is_dir($dest . DIRECTORY_SEPARATOR . $iterator->getSubPathName())) {
+                    mkdir($dest . DIRECTORY_SEPARATOR . $iterator->getSubPathName());
+                }
             } else {
                 copy($item, $dest . DIRECTORY_SEPARATOR . $iterator->getSubPathName());
+                $this->line('   Copying -> ' . str_replace($base, '', $dest . DIRECTORY_SEPARATOR . $iterator->getSubPathName()));
             }
         }
     }

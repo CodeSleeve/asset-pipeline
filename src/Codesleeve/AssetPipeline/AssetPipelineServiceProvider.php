@@ -32,12 +32,18 @@ class AssetPipelineServiceProvider extends ServiceProvider {
 			return new AssetCacheRepository($app);
 		});
 
-		$this->app['generate.assets'] = $this->app->share(function($app)
+		$this->app['assets.generate'] = $this->app->share(function($app)
 		{
-			return new Commands\GenerateAssetsCommand;
+			return new Commands\AssetsGenerateCommand;
 		});
 
-		$this->commands('generate.assets');
+		$this->app['assets.clean'] = $this->app->share(function($app)
+		{
+			return new Commands\AssetsCleanCommand;
+		});
+
+		$this->commands('assets.generate');
+		$this->commands('assets.clean');
 	}
 
 
