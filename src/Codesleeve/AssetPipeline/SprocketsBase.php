@@ -22,9 +22,9 @@ class SprocketsBase {
 		$this->config = $app['config'];
 		$this->env = $app['env'];
 		$this->routingPrefix = $this->config->get('asset-pipeline::routing.prefix', '/assets') . '/';
-		$this->filters = $this->config->get('asset-pipeline::filters');
-		$this->extensions = array_keys($this->filters);
 		$this->jstFile = '_jst_.js';
+
+		$this->filters = new AssetFilters($app);
 		$this->paths = new AssetPaths($app);
 	}
 
@@ -113,7 +113,7 @@ class SprocketsBase {
 
 		        if ($recursive && is_dir($fullpath) && $path != '.' && $path != '..') {
 		        	$directories[] = $parent . '/' . $path;
-		        } else if (is_file($fullpath) && $this->hasValidExtension($fullpath)) {
+		        } else if (is_file($fullpath) && $this->filters->hasValidExtension($fullpath)) {
 		        	$files[] = $relativeFolder . '/' . $this->normalizePath($path);
 		        }
 		    }
@@ -143,7 +143,7 @@ class SprocketsBase {
 	protected function getFullFile($filepath, $includes = 'all')
 	{
 		$filepath = $this->replaceRelativeDot($filepath);
-		$extensions = array_merge(array(''), $this->extensions);
+		$extensions = array_merge(array(''), $this->filters->extensions());
 
 		foreach ($this->paths->get($includes) as $path) {
 			foreach ($extensions as $extension) {
@@ -224,43 +224,6 @@ class SprocketsBase {
 		$filepath = preg_replace('/^\.\//', '', $filepath);
 		$filepath = preg_replace('/^\./', '', $filepath);
 		return $filepath;
-	}
-
-	/**
-	 * [hasValidExtension description]
-	 * @param  [type]  $file       [description]
-	 * @param  [type]  $extensions [description]
-	 * @return boolean             [description]
-	 */
-	protected function hasValidExtension($filepath, $extensions = array())
-	{
-        $extensions = ($extensions) ? $extensions : array_keys($this->config->get('asset-pipeline::filters'));
-		foreach($extensions as $extension) {
-			if (stripos(strrev($filepath), strrev($extension)) === 0) {
-				return $extension;
-			}
-		}
-		return false;
-	}
-
-	/**
-	 * Gets the files filters that should be applied based
-	 * on our configuration file.
-	 * 
-	 * @param  [type] $filepath [description]
-	 * @return [type]           [description]
-	 */
-	protected function getFiltersFor($filepath)
-	{
-		$filters = array();
-		$extension = $this->hasValidExtension($filepath);
-		$allFilters = $this->config->get("asset-pipeline::filters");
-
-		if ($extension) {
-			$filters = $allFilters[$extension];
-		}
-
-		return $filters;
 	}
 
 	/**

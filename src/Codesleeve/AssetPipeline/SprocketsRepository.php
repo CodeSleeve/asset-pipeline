@@ -128,7 +128,7 @@ class SprocketsRepository extends SprocketsTags {
 			$extension = pathinfo($file, PATHINFO_EXTENSION);
 			
 			if ($file != '_jst_.js' && ($extension == 'js' || $extension == 'coffee' || $extension == 'html')) {
-				$filters = $this->getFiltersFor($file);
+				$filters = $this->filters->matching($file);
 				$base = $this->basePath($file);
 				$assets[] = new FileAsset($this->getFullPath($base, 'javascripts'), $filters);
 			}
@@ -148,7 +148,7 @@ class SprocketsRepository extends SprocketsTags {
 		foreach ($files as $file) {
 			$extension = pathinfo($file, PATHINFO_EXTENSION);
 			if ($extension == 'css' || $extension == 'less') {
-				$filters = $this->getFiltersFor($file);
+				$filters = $this->filters->matching($file);
 				$base = $this->basePath($file);				
 				$assets[] = new FileAsset($this->getFullPath($base, 'stylesheets'), $filters);
 			}

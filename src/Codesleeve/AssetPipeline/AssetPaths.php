@@ -22,7 +22,7 @@ class AssetPaths
 	 */
 	public function get($includes)
 	{
-		$this->registerPaths();
+		$this->registerAllPaths();
 
 		if ($includes == 'all') {
 			return $this->paths;
@@ -44,12 +44,9 @@ class AssetPaths
 	 * [registerPaths description]
 	 * @return [type]
 	 */
-	protected function registerPaths()
+	protected function registerAllPaths()
 	{
-		// need to do a register thing here...
-		// $this->event->fire(...)
-		// I need to understand how event fire works 
-		// really first though		
+		$this->event->fire('assets.register.paths', $this->paths);
 	}
 
 	/**
