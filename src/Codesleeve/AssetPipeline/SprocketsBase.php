@@ -21,11 +21,11 @@ class SprocketsBase {
 		$this->basePath = $this->normalizePath($app['path.base']);
 		$this->config = $app['config'];
 		$this->env = $app['env'];
-		$this->paths = $this->config->get('asset-pipeline::paths');	
 		$this->routingPrefix = $this->config->get('asset-pipeline::routing.prefix', '/assets') . '/';
 		$this->filters = $this->config->get('asset-pipeline::filters');
 		$this->extensions = array_keys($this->filters);
 		$this->jstFile = '_jst_.js';
+		$this->paths = new AssetPaths($app);
 	}
 
 	/**
@@ -37,7 +37,7 @@ class SprocketsBase {
 	 */
 	public function getUrlPath($filepath, $includes = 'all')
 	{
-		foreach($this->getPaths($includes) as $path)
+		foreach($this->paths->get($includes) as $path)
 		{
 			if (substr($filepath, 0, strlen($path)) == $path) {
 				$filepath = substr($filepath, strlen($path));
@@ -145,7 +145,7 @@ class SprocketsBase {
 		$filepath = $this->replaceRelativeDot($filepath);
 		$extensions = array_merge(array(''), $this->extensions);
 
-		foreach ($this->getPaths($includes) as $path) {
+		foreach ($this->paths->get($includes) as $path) {
 			foreach ($extensions as $extension) {
 				$file = $this->basePath . "/$path/$filepath$extension";
 				if (is_file($file)) {
@@ -169,7 +169,7 @@ class SprocketsBase {
 	{
 		$dirpath = $this->replaceRelativeDot($dirpath);
 
-		foreach ($this->getPaths($includes) as $path) {
+		foreach ($this->paths->get($includes) as $path) {
 			$dir = $this->basePath . "/$path/$dirpath";
 			if (is_dir($dir)) {
 				return $this->normalizePath(rtrim($dir, '/'));
@@ -201,7 +201,7 @@ class SprocketsBase {
 		$filepath = str_replace($this->basePath . '/', '', $filepath);
 		$filepath = $this->normalizePath($filepath);
 
-		foreach ($this->getPaths($includes) as $path)
+		foreach ($this->paths->get($includes) as $path)
 		{
 			if (stripos($filepath, $path) === 0) {
 				return ltrim(substr($filepath, strlen($path)), '/');
@@ -273,31 +273,6 @@ class SprocketsBase {
 		if (str_replace('..', '', $folder) !== $folder) {
 			throw new Exceptions\InvalidPath('Cannot have .. in the path!');
 		}
-	}
-
-	/**
-	 * Returns the paths from our config file that we should filter out
-	 * just doing 'all' will return all of $this->paths
-	 * 
-	 * @param  [type] $includes [description]
-	 * @return [type]           [description]
-	 */
-	protected function getPaths($includes)
-	{
-		if ($includes == 'all') {
-			return $this->paths;
-		}
-
-		$paths = array();
-
-		foreach ($this->paths as $key => $path)
-		{
-			if (strpos($key, $includes) !== false || strpos($path, $includes) !== false) {
-				$paths[] = $this->normalizePath($path);
-			}
-		}
-
-		return $paths;
 	}
 
 	/**

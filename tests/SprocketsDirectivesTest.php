@@ -101,7 +101,7 @@ class SprocketsDirectivesTest extends PHPUnit_Framework_TestCase
     public function testRequireDirectoryRelativeDir()
     {
     	$this->app["path.base"] = __DIR__ . '/fixtures/require_directory';
-    	$this->app['config']->set('paths', array('javascripts' => 'manifest02'));
+    	$this->app['config']->set('paths', array('manifest02' => 'javascripts'));
 
         $outcome = $this->object()->getFilesFrom(__DIR__ . '/fixtures/require_directory/manifest02/manifest02.js');
         $this->assertEquals(array(
