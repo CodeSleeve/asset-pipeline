@@ -22,5 +22,4 @@
 //= require handlebars
 //= require bootbox
 //= require smoke
-//= require app
 //= require_tree .
