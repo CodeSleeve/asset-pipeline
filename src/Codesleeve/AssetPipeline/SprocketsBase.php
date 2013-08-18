@@ -45,7 +45,6 @@ class SprocketsBase {
 			}
 		}
 
-		$filepath = $this->normalizePath($filepath);
 		return $this->getAppUrlPath($this->routingPrefix . ltrim($filepath, '/'));
 	}
 
@@ -187,7 +186,7 @@ class SprocketsBase {
 	 */
 	protected function getRelativeDirectory($dirpath, $includes = 'all')
 	{
-		return $this->normalizePath(str_replace($this->basePath . '/', '', $this->getFullDirectory($dirpath, $includes)));
+		return str_replace($this->basePath . '/', '', $this->getFullDirectory($dirpath, $includes));
 	}
 
 	/**
@@ -221,6 +220,7 @@ class SprocketsBase {
 	 */
 	protected function replaceRelativeDot($filepath)
 	{
+		$filepath = $this->normalizePath($filepath);
 		$filepath = preg_replace('/^\.\//', '', $filepath);
 		$filepath = preg_replace('/^\./', '', $filepath);
 		return $filepath;
@@ -301,32 +301,6 @@ class SprocketsBase {
 	}
 
 	/**
-	 * By looking at the file and it's path we can determine if this is a javascript
-	 * or stylesheet resource, else we just treat it as a generic 'all'
-	 * 
-	 * @param  [type] $file [description]
-	 * @return [type]       [description]
-	 */
-	protected function getIncludePathType($file)
-	{
-		$filename = pathinfo($file)['filename'];
-
-		if (pathinfo($file, PATHINFO_EXTENSION) == 'js' || 
-			strpos('.js', $filename) !== false ||
-			pathinfo($file, PATHINFO_EXTENSION) == 'html') {
-			return 'javascripts';
-		}
-
-		else if (pathinfo($file, PATHINFO_EXTENSION) == 'css' ||
-				 strpos('.js', $filename) !== false ||
-				 pathinfo($file, PATHINFO_EXTENSION) == 'less') {
-			return 'stylesheets';
-		}
-
-		return 'all';		
-	}
-
-	/**
 	 * Lets us tap into laravel's helper function and get the asset wrapper
 	 * for this path... in case someone is hosting at like 
 	 * http://sitename/subpath/assets/ or something...
@@ -336,6 +310,8 @@ class SprocketsBase {
 	 */
 	protected function getAppUrlPath($path)
 	{
+		$path = $this->normalizePath($path);
+
 		if (isset($this->app['url']))
 		{
 			return app('url')->asset($path, $this->config->get('secure'));

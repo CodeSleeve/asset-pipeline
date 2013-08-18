@@ -81,6 +81,42 @@ class SprocketsRepository extends SprocketsTags {
 	}
 
 	/**
+	 * Tests to see if this file in the $path exists or not 
+	 * as a javascript file
+	 * 
+	 * @param  [type]  $path
+	 * @return boolean
+	 */
+	public function isJavascript($path)
+	{
+		try {
+			$file = $this->getFullPath($path, 'javascripts');
+		} catch (\Exception $e) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Tests to see if this file in the $path exists or not
+	 * as a stylesheet file
+	 * 
+	 * @param  [type]  $path
+	 * @return boolean
+	 */
+	public function isStylesheet($path)
+	{
+		try {
+			$file = $this->getFullPath($path, 'stylesheets');
+		} catch (\Exception $e) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
 	 * Wraps script assets in a FileAsset objects for Assetic
 	 * to do a AssetCollection with
 	 */
