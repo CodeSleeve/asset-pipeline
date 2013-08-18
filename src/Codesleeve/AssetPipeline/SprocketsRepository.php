@@ -111,7 +111,7 @@ class SprocketsRepository extends SprocketsTags {
 
 		foreach ($files as $file) {
 			$extension = pathinfo($file, PATHINFO_EXTENSION);
-			if ($extension == 'css' || $extension == 'less') {
+			if ($extension == 'css' || $extension == 'less' || $extension == 'scss') {
 				$filters = $this->getFiltersFor($file);
 				$base = $this->basePath($file);				
 				$assets[] = new FileAsset($this->getFullPath($base, 'stylesheets'), $filters);
