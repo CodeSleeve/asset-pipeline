@@ -18,7 +18,7 @@ class SprocketsBase {
 	public function __construct($app)
 	{
 		$this->app = $app;
-		$this->basePath = $app['path.base'];
+		$this->basePath = $this->normalizePath($app['path.base']);
 		$this->config = $app['config'];
 		$this->env = $app['env'];
 		$this->paths = $this->config->get('asset-pipeline::paths');	
@@ -87,7 +87,7 @@ class SprocketsBase {
 	 */
 	public function getRelativePath($filepath, $includes = 'all')
 	{
-		return str_replace($this->app['path.base'] . '/', '', $this->getFullPath($filepath, $includes));
+		return str_replace($this->basePath . '/', '', $this->getFullPath($filepath, $includes));
 	}
 
 	/**
@@ -148,7 +148,7 @@ class SprocketsBase {
 
 		foreach ($this->getPaths($includes) as $path) {
 			foreach ($extensions as $extension) {
-				$file = $this->app['path.base'] . "/$path/$filepath$extension";
+				$file = $this->basePath . "/$path/$filepath$extension";
 				if (is_file($file)) {
 					return $this->normalizePath($file);
 				}
@@ -171,7 +171,7 @@ class SprocketsBase {
 		$dirpath = $this->replaceRelativeDot($dirpath);
 
 		foreach ($this->getPaths($includes) as $path) {
-			$dir = $this->app['path.base'] . "/$path/$dirpath";
+			$dir = $this->basePath . "/$path/$dirpath";
 			if (is_dir($dir)) {
 				return $this->normalizePath(rtrim($dir, '/'));
 			}
@@ -187,7 +187,7 @@ class SprocketsBase {
 	 */
 	protected function getRelativeDirectory($dirpath, $includes = 'all')
 	{
-		return $this->normalizePath(str_replace($this->app['path.base'] . '/', '', $this->getFullDirectory($dirpath, $includes)));
+		return $this->normalizePath(str_replace($this->basePath . '/', '', $this->getFullDirectory($dirpath, $includes)));
 	}
 
 	/**
@@ -199,7 +199,7 @@ class SprocketsBase {
 	 */
 	protected function basePath($filepath, $includes = 'all')
 	{
-		$filepath = str_replace($this->app['path.base'] . '/', '', $filepath);
+		$filepath = str_replace($this->basePath . '/', '', $filepath);
 		$filepath = $this->normalizePath($filepath);
 
 		foreach ($this->getPaths($includes) as $path)
@@ -301,7 +301,7 @@ class SprocketsBase {
 	}
 
 	/**
-	 * By looking at the file name we determine if this is a javascript
+	 * By looking at the file and it's path we can determine if this is a javascript
 	 * or stylesheet resource, else we just treat it as a generic 'all'
 	 * 
 	 * @param  [type] $file [description]
