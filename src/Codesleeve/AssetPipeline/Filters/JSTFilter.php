@@ -41,15 +41,16 @@ class JSTFilter implements FilterInterface
     {
     	$base = $asset->getSourceRoot();
     	$file = pathinfo($asset->getSourcePath())['filename'];
+        $file = str_replace('\\', '/', $file);
     	$path = '';
 
-    	$searchFor = 'assets' . DIRECTORY_SEPARATOR . 'javascripts';
+    	$searchFor = 'assets' . '/' . 'javascripts';
     	$pos = strpos($base, $searchFor);
 
     	if ($pos !== false) {
-    		$path = ltrim(substr($base, $pos + strlen($searchFor)), DIRECTORY_SEPARATOR);
+    		$path = ltrim(substr($base, $pos + strlen($searchFor)), '/');
     	}
 
-    	return str_replace('"', '', $path . DIRECTORY_SEPARATOR . $file);
+    	return str_replace('"', '', $path . '/' . $file);
     }
 }

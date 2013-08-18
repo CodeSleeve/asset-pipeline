@@ -46,12 +46,12 @@ class AssetsGenerateCommand extends Command {
         $base = base_path();
         foreach ($iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($source, \RecursiveDirectoryIterator::SKIP_DOTS), \RecursiveIteratorIterator::SELF_FIRST) as $item) {
             if ($item->isDir()) {
-                if (!is_dir($dest . DIRECTORY_SEPARATOR . $iterator->getSubPathName())) {
-                    mkdir($dest . DIRECTORY_SEPARATOR . $iterator->getSubPathName());
+                if (!is_dir($dest . '/' . $iterator->getSubPathName())) {
+                    mkdir($dest . '/' . $iterator->getSubPathName());
                 }
             } else {
-                copy($item, $dest . DIRECTORY_SEPARATOR . $iterator->getSubPathName());
-                $this->line('   Copying -> ' . str_replace($base, '', $dest . DIRECTORY_SEPARATOR . $iterator->getSubPathName()));
+                copy($item, $dest . '/' . $iterator->getSubPathName());
+                $this->line('   Copying -> ' . str_replace($base, '', $dest . '/' . $iterator->getSubPathName()));
             }
         }
     }

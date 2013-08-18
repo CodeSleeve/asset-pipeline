@@ -45,7 +45,8 @@ class SprocketsBase {
 			}
 		}
 
-		return $this->getAppUrlPath($this->routingPrefix . ltrim($filepath, DIRECTORY_SEPARATOR));
+		$filepath = $this->normalizePath($filepath);
+		return $this->getAppUrlPath($this->routingPrefix . ltrim($filepath, '/'));
 	}
 
 	/**
@@ -109,12 +110,12 @@ class SprocketsBase {
 		{
 		    while (false !== ($path = readdir($handle))) 
 		    {
-		    	$fullpath = $folder . DIRECTORY_SEPARATOR . $path;
+		    	$fullpath = $folder . '/' . $path;
 
 		        if ($recursive && is_dir($fullpath) && $path != '.' && $path != '..') {
-		        	$directories[] = $parent . DIRECTORY_SEPARATOR . $path;
+		        	$directories[] = $parent . '/' . $path;
 		        } else if (is_file($fullpath) && $this->hasValidExtension($fullpath)) {
-		        	$files[] = $relativeFolder . '/' . $path;
+		        	$files[] = $relativeFolder . '/' . $this->normalizePath($path);
 		        }
 		    }
 			closedir($handle);
@@ -149,7 +150,7 @@ class SprocketsBase {
 			foreach ($extensions as $extension) {
 				$file = $this->app['path.base'] . "/$path/$filepath$extension";
 				if (is_file($file)) {
-					return $file;
+					return $this->normalizePath($file);
 				}
 			}
 		}
@@ -172,7 +173,7 @@ class SprocketsBase {
 		foreach ($this->getPaths($includes) as $path) {
 			$dir = $this->app['path.base'] . "/$path/$dirpath";
 			if (is_dir($dir)) {
-				return rtrim($dir, DIRECTORY_SEPARATOR);
+				return $this->normalizePath(rtrim($dir, '/'));
 			}
 		}
 
@@ -186,7 +187,7 @@ class SprocketsBase {
 	 */
 	protected function getRelativeDirectory($dirpath, $includes = 'all')
 	{
-		return str_replace($this->app['path.base'] . DIRECTORY_SEPARATOR, '', $this->getFullDirectory($dirpath, $includes));
+		return $this->normalizePath(str_replace($this->app['path.base'] . '/', '', $this->getFullDirectory($dirpath, $includes)));
 	}
 
 	/**
@@ -198,12 +199,13 @@ class SprocketsBase {
 	 */
 	protected function basePath($filepath, $includes = 'all')
 	{
-		$filepath = str_replace($this->app['path.base'] . DIRECTORY_SEPARATOR, '', $filepath);
+		$filepath = str_replace($this->app['path.base'] . '/', '', $filepath);
+		$filepath = $this->normalizePath($filepath);
 
 		foreach ($this->getPaths($includes) as $path)
 		{
 			if (stripos($filepath, $path) === 0) {
-				return ltrim(substr($filepath, strlen($path)), DIRECTORY_SEPARATOR);
+				return ltrim(substr($filepath, strlen($path)), '/');
 			}
 		}
 
@@ -291,7 +293,7 @@ class SprocketsBase {
 		foreach ($this->paths as $key => $path)
 		{
 			if (strpos($key, $includes) !== false || strpos($path, $includes) !== false) {
-				$paths[] = $path;
+				$paths[] = $this->normalizePath($path);
 			}
 		}
 
@@ -342,5 +344,14 @@ class SprocketsBase {
 		return $path;
 	}
 
-
+	/**
+	 * This is used to convert any Windows slashes into unix style slashes
+	 *
+	 * @param [type] $path [description]
+	 * @return [type] 	   [description]
+	 */
+	protected function normalizePath($path)
+	{
+		return str_replace('\\', '/', $path);
+	}
 }
