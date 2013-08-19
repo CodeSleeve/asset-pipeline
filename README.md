@@ -91,13 +91,13 @@ Would process the directives inside of app/assets/frontend/application.js and (o
 
 A manifest file is where you put your sprocket's directives at. Here is a list of directives.
 
-  - require <filename>
+  - #### require <filename>
     This brings in a specific asset file within your path. You don't have to include the extension either, it will guess based on what extensions are in your `$filters` array inside of  `codesleeve/asset-pipeline/config.php`
 
-  - require_directory some/directory
+  - ##### require_directory some/directory
     This brings in assets only within some/directory (non-recurisve). You can also use '.' here which will resolve to the path that the manifest file is contained within.
 
-  - require_tree some/directory
+  - #### require_tree some/directory
     This is almost like require_directory except it is recursive.
 
 
@@ -345,17 +345,19 @@ And in my `app/controllers/BaseController.php` I might have something like
 And then inside of `app/assets/stylesheets/login.css.less`, assuming the route action was something like: `UsersController@login`
 
 ```css
-	html.users.login {
-		body {
-			background-color: #abcdef;
-		}
-	}
+   html.users.login {
+      body {
+         background-color: #abcdef;
+      }
+   }
 ```
 
-For javascripts you can check for the existence of that element $('html.users.login') in jquery or do custom loads for specfic laravel views. 
+For javascripts you can  do custom loads for specfic laravel views or check for the existence of that element
 
 ```js
-  
+   if ($('html.users.login').length) {
+      // ... load things specific to the users.login page ...
+   }
 
 ```
 
