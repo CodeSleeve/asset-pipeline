@@ -199,15 +199,17 @@ So you might finally find '/assets/foobar.js` inside of `vendor/assets/javascrip
 
 But what if you had a path that did not have the string 'javascripts' in it? It is treated as an `other` resource. To get around this, you can use the word `javascripts` to tell asset pipeline that the resources in this directory are javascripts. The same applies for stylesheets.
 
+```php
   'paths' => array(
-    ... code omitted ...,
+    	... code omitted ...,
     'app/some/other/directory' => 'javascripts',
     'app/directory/with/style' => 'stylesheets',
-    ... over even both ...,
+	... over even both ...,
     'app/some/mixed/directory' => 'javascripts,stylesheets',
   ),
+```
 
-You can also register your own paths (in say... your own packagist package) to bring in your own additional assets.
+You can also dynamically register your own paths (in say... your own Laravel package) to bring in your own additional assets.
 
 ```php
   Event::listen('assets.register.paths', function($paths) {
