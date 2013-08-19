@@ -55,7 +55,7 @@ One more thing. Run the `artisan` command from the Terminal for the `generate:as
 
 After running `php artisan assets:generate` you should notice two new directories with some files, `app/assets` and `vendor/assets`.
 
-Be sure to check out the `app/assets/javascripts/application.js` and `app/assets/stylesheets/application.css` files, where you can adjust the files you want included into your manifest.
+Be sure to check out the `app/assets/javascripts/application.js` and `app/assets/stylesheets/application.css` files. These are the default manifest files where you can adjust the files you want included into your manifest.
 
 Let's verify you have everything working by going to:
 
@@ -70,9 +70,40 @@ Now to bring everything in, (this is exactly how rails does it too) you should a
     <?= stylesheet_link_tag() ?>
     <?= javascript_include_tag() ?>
 
+If you want to use different manifest files, these helper `tag` functions also take two parameters. 
+
+    <?= stylesheet_link_tag($manifestFile = 'application', $attributes = array()) ?>
+    <?= javascript_include_tag($manifestFile = 'application', $attributes = array()) ?>
+
+So something like this...
+
+```php
+  <?= javascript_include_tag('frontend/application', ['data-requires' => 'foobar']); ?>
+```
+
+Would process the directives inside of app/assets/frontend/application.js and (on production environment) generate
+
+```js
+  <script src="assets/frontend/application.js" data-requires="foobar"></script>
+```
+
+### Available Directives?
+
+A manifest file is where you put your sprocket's directives at. Here is a list of directives.
+
+  - require <filename>
+    This brings in a specific asset file within your path. You don't have to include the extension either, it will guess based on what extensions are in your `$filters` array inside of  `codesleeve/asset-pipeline/config.php`
+
+  - require_directory some/directory
+    This brings in assets only within some/directory (non-recurisve). You can also use '.' here which will resolve to the path that the manifest file is contained within.
+
+  - require_tree some/directory
+    This is almost like require_directory except it is recursive.
+
+
 ### Javascript Templates?
 
-You could stick all your handlebar templates insde of the Laravel view but that adds up quickly. Any .html files you place within `app/assets/javascripts` will be accessible in a global javascript variable called JST. Just open up your javascript console and examine the `JST` object.
+You could stick all your handlebar/eco/underscore/etc templates insde of the Laravel view but that adds up quickly. Any .html files you place within `app/assets/javascripts` will be accessible in a global javascript variable called JST. Just open up your javascript console and examine the `JST` object. Read more about [filters](#filters) below if you want your own custom filter (besides just .html files).
 
 ### Images? Fonts? Other files?
 
@@ -135,11 +166,16 @@ These are the directories we search for files in relative to your laravel root b
 
 ```php
   'paths' => array(
-    'app/assets/javascripts',
-    'app/assets/stylesheets',
+    'app/assets/fonts',
     'app/assets/images',
+    'app/assets/javascripts',
+    'lib/assets/fonts',
+    'lib/assets/images',
+    'app/assets/stylesheets',
     'lib/assets/javascripts',
     'lib/assets/stylesheets',
+    'vendor/assets/fonts',
+    'vendor/assets/images',
     'vendor/assets/javascripts',
     'vendor/assets/stylesheets'
   ),
@@ -149,19 +185,32 @@ How is this used? Say you search for `/assets/foobar.js`, the asset pipeline wil
 
 So you might finally find '/assets/foobar.js` inside of `vendor/assets/javascripts/foobar.js`
 
-But what if you had a path that did not have the string 'javascripts' in it? You can use the word 'javascripts' to tell asset pipeline that
-the resources in this directory are javascripts. The same applies for stylesheets.
+But what if you had a path that did not have the string 'javascripts' in it? It is treated as an `other` resource. To get around this, you can use the word `javascripts` to tell asset pipeline that the resources in this directory are javascripts. The same applies for stylesheets.
 
   'paths' => array(
     ... code omitted ...,
     'app/some/other/directory' => 'javascripts',
-    'app/directory/with/style' => 'stylesheets'
+    'app/directory/with/style' => 'stylesheets',
+    ... over even both ...,
+    'app/some/mixed/directory' => 'javascripts,stylesheets',
   ),
+
+You can also register your own paths (in say... your own packagist package) to bring in your own additional assets.
+
+```php
+  Event::listen('assets.register.paths', function($paths) {
+    $paths->add('another/custom/library/js', 'javascripts');
+    $paths->add('another/custom/library/css', 'stylesheets');
+  });
+```
+
+**TODO** Create a video on how to do this
 
 
 ### Filters
 
 These filters are what determine 
+
   1) if we should consider the file in a manifest and 
   2) how to filter files of this extension type.
 
@@ -179,24 +228,67 @@ These filters are what determine
     '.css.less' => array(
       new Assetic\Filter\LessphpFilter
     ),
+    '.css.scss' => array(
+
+    )
     '.html' => array(
       new Codesleeve\AssetPipeline\Filters\JSTFilter
     )
   ),
 ```
 
-You can even add your own, if you want to write your own filter or even change existing filters out. For example, I've not found a decent sass compiler in php, but if I do found one, all I would have to do is add:
+You can even add your own, if you want to write your own filter or even change existing filters out.
 
 ```php
   'filters' => array(
 
     ... code omited ...
 
-    '.css.sass' => array(
-      new My\Awesome\SassFilter
+    '.jst.hbs' => array(
+      new HandlebarsFilter
     )
   ),
 ```
+
+Just like `paths` you can hook into asset pipeline's filters via Laravel's event system. This allows you to dynamically hook into filters (in say a seperate composer package or somewhere in your application).
+
+Let's say we wanted to start filtering file.jst.hbs in the asset pipeline. (I'm making a video and package for this as well).
+
+```php
+  Event::listen('assets.register.filters', function($filters) {
+    $filters->add('.jst.hbs', array(
+      new HandlebarsFilter
+    ));
+  });
+```
+
+So what does a `HandlebarsFilter` look like? Filters are all handled via [Assetic](https://github.com/kriswallsmith/assetic/) so check them out to learn more. Basically though, it is just a class that implements `Assetic\Filter\FilterInterface`. Check out many of the [Assetic filters available](https://github.com/kriswallsmith/assetic/tree/master/src/Assetic/Filter) but be warned that some require external executables.
+
+
+```php
+  use Assetic\Asset\AssetInterface;
+  use Assetic\Filter\FilterInterface;
+
+  class HandlebarsFilter implements FilterInterface
+  {
+    public function filterLoad(AssetInterface $asset)
+    {
+
+    }
+ 
+    public function filterDump(AssetInterface $asset)
+    {
+      $content = $asset->getContent();
+
+      // do something with $content... 
+
+      $asset->setContent($content);
+    }
+}
+```
+
+Check out [AssetInfterface](https://github.com/kriswallsmith/assetic/blob/master/src/Assetic/Asset/AssetInterface.php) for the list of functions you can do. I use `getSourcePath` and `getSourceDirectory` in some of my filters.
+
 
 ### Minify
 
@@ -260,24 +352,18 @@ And then inside of `app/assets/stylesheets/login.css.less`, assuming the route a
 	}
 ```
 
-If you ran `php artisan assets:generate` then you will find a file `vendor/assets/javascripts/jquery.bootstrap.js` that allows you to run
+For javascripts you can check for the existence of that element $('html.users.login') in jquery or do custom loads for specfic laravel views. 
 
-```php
-	$.bootstrap('html.users.login', function(element) {
-	   console.log('this code runs only when this element exists');
-	});
+```js
+  
+
 ```
-
-However, I rarely find myself doing this since I can start the code in the laravel view or use Marionette's App.start();
 
 ### How does caching work?
 
 All script and stylesheet files are cached only in production mode. The cache will be built on the first time it is requested from the server. It says alive forever, until the server admin runs a `php artisan assets:clean` to clear the cache. It is using Laravels' Cache facade, which uses the `file` driver out of the box, but you
 can make it use `memory` or `redis` or whatever you fancy.
 
-### You totally changed the asset pipeline from my old version?!?
-
-If you have a project using the old asset pipeline (pre-sprockets) then yes, you might want to change your composer.json to use the alpha version via `"codesleeve/asset-pipeline": "alpha"'`.
 
 ## License
 
