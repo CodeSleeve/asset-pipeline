@@ -323,6 +323,41 @@ To clear the cache you can run
   php artisan assets:clean
 ```
 
+## Creating Packages For Asset Pipeline
+
+It is possible to hook into asset pipeline to dynamically add your own asset paths and filters. 
+
+You might be wondering, what should I call this composer package? The convention I will follow is prefixing the package name with `l4-asset`. 
+
+This way, it will be easy to search and find asset pipeline add-ons on [packagist.org](http://packagist.org). For example, if I was creating a handlebars add-on (I actually am going to create this later, will update with link) then I would name the package
+
+   `codesleeve/l4-asset-handlebars`
+
+Then in my package I could do something similar to this:
+
+```php
+   Event::listen('assets.register.filters', function($filters) {
+      $filter->add('.jst.hbs', array(new Codesleeve\L4AssetHandlebars\Filters\HandlebarsFilter));
+   });
+```
+and 
+
+```php
+   Event::listen('assets.register.paths', function($paths) {
+      $paths->add(__DIR__ . '../../assets/javascripts', 'javascripts');
+   });
+```
+
+and then finally in my `app/assets/javascripts/application.js` manifest file I could do 
+
+```js
+   //= require handlebars`
+```
+
+and any files with `.jst.hbs` extension would start showing up in my `JST` array as a compiled Handlebars template.
+
+** TODO Make a video showing how to make your l4-asset-handlebars package including handlebars assets and .jst.hbs filter **
+
 ## FAQ
 
 ### What about conditional includes?
