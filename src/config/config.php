@@ -50,17 +50,13 @@ return array(
 	| here and we can also do any preprocessing on files with the extension if
 	| we choose to. 
 	|
-	| NOTE that the minification filter will be ran automatically
-	| for us, we don't have to specify it here (it kicks in when the environment
-	| is set to production.
-	|
 	*/
 	'filters' => array(
 		'.js' => array(
-
+			// if you remove this then .js will not be included
 		),
 		'.css' => array(
-
+			// if you remove this then .css will not be included
 		),
 		'.js.coffee' => array(
 			new Codesleeve\AssetPipeline\Filters\CoffeeScriptFilter
@@ -88,6 +84,10 @@ return array(
 	| to determine if we should minify. The pipeline will minify when the environment
 	| is set to "production". However, if minify is true or false then it overrides the
 	| setting, regardless of what the environment is set to.
+	|
+	| NOTE that the minification filter will be ran automatically for us, 
+	| we don't have to specify it here (it kicks in when the environment
+	| is set to production assuming 'minify' is null)
 	|
 	*/
 	'minify' => null
