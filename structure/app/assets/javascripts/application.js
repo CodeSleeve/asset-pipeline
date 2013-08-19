@@ -8,18 +8,6 @@
 // gets included (e.g. say you have require_tree . then the code will appear after all the directories 
 // but before any files alphabetically greater than 'application.js' 
 //
-//= require jquery
-//= require jquery-ui
-//= require jquery.form
-//= require jquery.bootstraper
-//= require moment
-//= require popup
-//= require select2
-//= require twitter/bootstrap
-//= require underscore
-//= require backbone
-//= require backbone.marionette
-//= require handlebars
-//= require bootbox
-//= require smoke
+// The available directives right now are require, require_directory, and require_tree
+// 	
 //= require_tree .
