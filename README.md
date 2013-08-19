@@ -91,13 +91,16 @@ Would process the directives inside of app/assets/frontend/application.js and (o
 
 A manifest file is where you put your sprocket's directives at. Here is a list of directives.
 
-  - #### require <filename>
+  - **require** filename
+ 
     This brings in a specific asset file within your path. You don't have to include the extension either, it will guess based on what extensions are in your `$filters` array inside of  `codesleeve/asset-pipeline/config.php`
 
-  - ##### require_directory some/directory
+  - **require_directory** some/directory
+ 
     This brings in assets only within some/directory (non-recurisve). You can also use '.' here which will resolve to the path that the manifest file is contained within.
 
-  - #### require_tree some/directory
+  - **require_tree** some/directory
+
     This is almost like require_directory except it is recursive.
 
 
@@ -107,11 +110,20 @@ You could stick all your handlebar/eco/underscore/etc templates insde of the Lar
 
 ### Images? Fonts? Other files?
 
-Place your fonts and images inside of the `app/assets/fonts` and `app/assets/images` folders. For you rails fans, can create image tags in your view using  
+Place your fonts and images inside of the `app/assets/fonts` and `app/assets/images` folders. Alternatively you can place them inside of `app/assets/javascripts` or `app/assets/stylesheets` if that tickles your fancy. 
+
+For you rails fans, can create image tags in your view using  
 
 ```php
-  <?= image_tag('filename.png', ['alt' => 'The alt for the image', 'class' => 'img-responsive']) ?>
+  <?= image_tag('awesome/filename.png', ['alt' => 'The alt for the image', 'class' => 'img-responsive']) ?>
 ```
+
+Assuming a file existed (e.g. `app/assets/stylesheets/awesome/filename.png`), this would return
+
+```html
+  <img src="assets/awesome/filename.png" alt="The alt for the image" class="img-response">
+```
+
 
 ## Configuration
 
