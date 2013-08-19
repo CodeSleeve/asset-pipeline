@@ -50,13 +50,14 @@ return array(
 	| here and we can also do any preprocessing on files with the extension if
 	| we choose to. 
 	|
+	| NOTE: Be sure not to remove .js or .css even though they are empty arrays.
 	*/
 	'filters' => array(
 		'.js' => array(
-			// if you remove this then .js will not be included
+
 		),
 		'.css' => array(
-			// if you remove this then .css will not be included
+
 		),
 		'.js.coffee' => array(
 			new Codesleeve\AssetPipeline\Filters\CoffeeScriptFilter
