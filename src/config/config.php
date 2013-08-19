@@ -27,11 +27,16 @@ return array(
 	|
 	*/
 	'paths' => array(
-		'app/assets/javascripts',
-		'app/assets/stylesheets',
+		'app/assets/fonts',
 		'app/assets/images',
+		'app/assets/javascripts',
+		'lib/assets/fonts',
+		'lib/assets/images',
+		'app/assets/stylesheets',
 		'lib/assets/javascripts',
 		'lib/assets/stylesheets',
+		'vendor/assets/fonts',
+		'vendor/assets/images',
 		'vendor/assets/javascripts',
 		'vendor/assets/stylesheets'
 	),

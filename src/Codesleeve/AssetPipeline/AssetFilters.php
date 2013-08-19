@@ -17,6 +17,10 @@ class AssetFilters
 		$this->filters = $this->config->get('asset-pipeline::filters');
 	}
 
+	/**
+	 * [extensions description]
+	 * @return [type] [description]
+	 */
 	public function extensions()
 	{
 		return array_keys($this->filters);
