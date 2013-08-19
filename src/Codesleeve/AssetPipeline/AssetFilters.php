@@ -12,9 +12,24 @@ class AssetFilters
 		$this->env = $app['env'];
 		$this->config = $app['config'];
 		$this->events = $app['events'];
-		$this->paths = $this->config->get('asset-pipeline::paths');	
-
+		$this->paths = $this->config->get('asset-pipeline::paths');
 		$this->filters = $this->config->get('asset-pipeline::filters');
+		$this->registered = false;
+	}
+
+	/**
+	 * Adds an extension for you with the following filters
+	 * 
+	 * @param [type] $extension [description]
+	 * @param [type] $filters   [description]
+	 */
+	public function add($extension, $filters)
+	{
+		if (!is_array($filters)) {
+			$filters = array($filters);
+		}
+
+		$this->filters[$extension] = $filters;
 	}
 
 	/**
@@ -24,6 +39,23 @@ class AssetFilters
 	public function extensions()
 	{
 		return array_keys($this->filters);
+	}
+
+	/**
+	 * [hasValidExtension description]
+	 * @param  [type]  $file       [description]
+	 * @param  [type]  $extensions [description]
+	 * @return boolean             [description]
+	 */
+	public function hasValidExtension($filepath, $extensions = array())
+	{
+        $extensions = ($extensions) ? $extensions : $this->extensions();
+		foreach($extensions as $extension) {
+			if (stripos(strrev($filepath), strrev($extension)) === 0) {
+				return $extension;
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -49,20 +81,18 @@ class AssetFilters
 	}
 
 	/**
-	 * [hasValidExtension description]
-	 * @param  [type]  $file       [description]
-	 * @param  [type]  $extensions [description]
-	 * @return boolean             [description]
+	 * Removes an extesnion for you
+	 * 
+	 * @param  [type] $extension [description]
+	 * @return [type]            [description]
 	 */
-	public function hasValidExtension($filepath, $extensions = array())
+	public function remove($extension)
 	{
-        $extensions = ($extensions) ? $extensions : $this->extensions();
-		foreach($extensions as $extension) {
-			if (stripos(strrev($filepath), strrev($extension)) === 0) {
-				return $extension;
-			}
+		if (!array_key_exists($extension, $this->filters)) {
+			return false;
 		}
-		return false;
+
+		unset($this->filters[$extension]);
 	}
 
 	/**
@@ -72,6 +102,11 @@ class AssetFilters
 	 */
 	private function registerAllFilters()
 	{
-		$this->events->fire('asset.register.filter', $this->filters);
+		if ($this->registered) {
+			return;
+		}
+
+		$this->registered = true;
+		$this->events->fire('assets.register.filters', array($this->filters));
 	}
 }

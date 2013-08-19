@@ -30,9 +30,9 @@ return array(
 		'app/assets/fonts',
 		'app/assets/images',
 		'app/assets/javascripts',
+		'app/assets/stylesheets',
 		'lib/assets/fonts',
 		'lib/assets/images',
-		'app/assets/stylesheets',
 		'lib/assets/javascripts',
 		'lib/assets/stylesheets',
 		'vendor/assets/fonts',
@@ -67,6 +67,9 @@ return array(
 		),
 		'.css.less' => array(
 			new Assetic\Filter\LessphpFilter
+		),
+		'.css.scss' => array(
+			new Assetic\Filter\ScssphpFilter
 		),
 		'.html' => array(
 			new Codesleeve\AssetPipeline\Filters\JSTFilter

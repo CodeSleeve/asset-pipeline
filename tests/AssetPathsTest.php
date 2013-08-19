@@ -35,8 +35,9 @@ class AssetPathsTest extends PHPUnit_Framework_TestCase
 
     public function testGetAllPaths()
     {
-        $outcome = $this->object()->get('all');
-        $this->assertEquals($outcome, $this->object()->paths);
+        $object = $this->object();
+        $outcome = $object->get('all');
+        $this->assertEquals($outcome, array_keys($object->paths));
     }
 
     public function testGetBogusIncludePath()
@@ -48,22 +49,24 @@ class AssetPathsTest extends PHPUnit_Framework_TestCase
     public function testPathThatIsBothStylesheetAndJavascript()
     {
         $object = $this->object();
-        $object->paths['another/path'] = 'javascripts,stylesheets';
+        $object->add('another/path', 'javascripts,stylesheets');
 
         $outcome = $object->get('javascripts');
+
         $this->assertEquals($outcome, array(
+            'another/path',
             'app/assets/javascripts',
             'lib/assets/javascripts',
-            'vendor/assets/javascripts',
-            'another/path'
+            'vendor/assets/javascripts'
         ));
 
         $outcome = $object->get('stylesheets');
         $this->assertEquals($outcome, array(
+            'another/path',
             'app/assets/stylesheets',
             'lib/assets/stylesheets',
-            'vendor/assets/stylesheets',
-            'another/path'
+            'vendor/assets/stylesheets'
         ));
     }
+
 }

@@ -91,11 +91,12 @@ class SprocketsRepository extends SprocketsTags {
 	{
 		try {
 			$file = $this->getFullPath($path, 'javascripts');
+			return $this->filters->hasValidExtension($path) !== false;
 		} catch (\Exception $e) {
-			return false;
+
 		}
 
-		return true;
+		return false;
 	}
 
 	/**
@@ -109,11 +110,12 @@ class SprocketsRepository extends SprocketsTags {
 	{
 		try {
 			$file = $this->getFullPath($path, 'stylesheets');
+			return $this->filters->hasValidExtension($path) !== false;
 		} catch (\Exception $e) {
-			return false;
+			
 		}
 
-		return true;
+		return false;
 	}
 
 	/**
@@ -124,12 +126,12 @@ class SprocketsRepository extends SprocketsTags {
 	{
 		$assets = array();
 
-		foreach ($files as $file) {
-			$extension = pathinfo($file, PATHINFO_EXTENSION);
-			
-			if ($file != '_jst_.js' && ($extension == 'js' || $extension == 'coffee' || $extension == 'html')) {
+		foreach ($files as $file)
+		{	
+			$base = $this->basePath($file);
+			if ($this->isJavascript($base))
+			{
 				$filters = $this->filters->matching($file);
-				$base = $this->basePath($file);
 				$assets[] = new FileAsset($this->getFullPath($base, 'javascripts'), $filters);
 			}
 		}
@@ -145,11 +147,12 @@ class SprocketsRepository extends SprocketsTags {
 	{
 		$assets = array();
 
-		foreach ($files as $file) {
-			$extension = pathinfo($file, PATHINFO_EXTENSION);
-			if ($extension == 'css' || $extension == 'less') {
-				$filters = $this->filters->matching($file);
-				$base = $this->basePath($file);				
+		foreach ($files as $file)
+		{
+			$base = $this->basePath($file);
+			if ($this->isStylesheet($base))
+			{
+				$filters = $this->filters->matching($base);
 				$assets[] = new FileAsset($this->getFullPath($base, 'stylesheets'), $filters);
 			}
 		}
@@ -157,26 +160,4 @@ class SprocketsRepository extends SprocketsTags {
 		return $assets;
 	}
 
-	/**
-	 * Creates a file asset that is basically just
-	 * a jst created from an html file
-	 * 
-	 * @return [type] [description]
-	 */
-	protected function getTemplateAssets()
-	{
-		$assets = array();
-		$files = $this->getFilesInFolder('.', true);
-		$filters = $this->getFiltersFor('.html');
-
-		foreach ($files as $file) {
-			$extension = pathinfo($file, PATHINFO_EXTENSION);
-			if ($extension == 'html') {
-				$base = $this->basePath($file);
-				$assets[] = new FileAsset($this->getFullPath($base, 'javascripts'), $filters);
-			}
-		}
-
-		return $assets;
-	}
 }
