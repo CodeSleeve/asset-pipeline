@@ -241,7 +241,7 @@ These filters are what determine
       new Assetic\Filter\LessphpFilter
     ),
     '.css.scss' => array(
-
+      new Assetic\Filter\ScssphpFilter
     )
     '.html' => array(
       new Codesleeve\AssetPipeline\Filters\JSTFilter
