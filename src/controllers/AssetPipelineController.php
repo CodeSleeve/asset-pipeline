@@ -21,7 +21,7 @@ class AssetPipelineController extends Controller {
 			return $this->javascript($path);			
 		}
 		
-		if (Asset::isStylesheet($path))
+		if (Asset::isStylesheet($path)) {
 			return $this->stylesheet($path);
 		} 
 
