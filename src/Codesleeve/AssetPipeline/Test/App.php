@@ -10,7 +10,7 @@ class App {
         $app["path.base"] = $dir . '/root/sprockets';
         $app['config'] = new Config;
         $app['cache'] = new Cache;
-        $app['event'] = new Event;
+        $app['events'] = new Events;
         
 		return $app;
 	}

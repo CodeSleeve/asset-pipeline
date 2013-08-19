@@ -2,7 +2,7 @@
 
 namespace Codesleeve\AssetPipeline\Test;
 
-class Event {
+class Events {
 
     public $data = array();
 

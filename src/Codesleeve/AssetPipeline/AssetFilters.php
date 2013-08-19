@@ -11,7 +11,7 @@ class AssetFilters
 	{
 		$this->env = $app['env'];
 		$this->config = $app['config'];
-		$this->event = $app['event'];
+		$this->events = $app['events'];
 		$this->paths = $this->config->get('asset-pipeline::paths');	
 
 		$this->filters = $this->config->get('asset-pipeline::filters');
@@ -68,6 +68,6 @@ class AssetFilters
 	 */
 	private function registerAllFilters()
 	{
-		$this->event->fire('asset.register.filter', $this->filters);
+		$this->events->fire('asset.register.filter', $this->filters);
 	}
 }

@@ -11,7 +11,7 @@ class AssetPaths
 	{
 		$this->env = $app['env'];
 		$this->config = $app['config'];
-		$this->event = $app['event'];
+		$this->events = $app['events'];
 		$this->paths = $this->config->get('asset-pipeline::paths');	
 	}
 
@@ -46,7 +46,7 @@ class AssetPaths
 	 */
 	protected function registerAllPaths()
 	{
-		$this->event->fire('assets.register.paths', $this->paths);
+		$this->events->fire('assets.register.paths', $this->paths);
 	}
 
 	/**
