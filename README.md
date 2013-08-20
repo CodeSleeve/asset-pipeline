@@ -275,10 +275,6 @@ However, I rarely find myself doing this since I can start the code in the larav
 All script and stylesheet files are cached only in production mode. The cache will be built on the first time it is requested from the server. It says alive forever, until the server admin runs a `php artisan assets:clean` to clear the cache. It is using Laravels' Cache facade, which uses the `file` driver out of the box, but you
 can make it use `memory` or `redis` or whatever you fancy.
 
-### You totally changed the asset pipeline from my old version?!?
-
-If you have a project using the old asset pipeline (pre-sprockets) then yes, you might want to change your composer.json to use the alpha version via `"codesleeve/asset-pipeline": "alpha"'`.
-
 ## License
 
 The codesleeve asset pipeline is open-source software licensed under the [MIT license](http://opensource.org/licenses/MIT)
