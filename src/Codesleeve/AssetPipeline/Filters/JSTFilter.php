@@ -41,7 +41,9 @@ class JSTFilter implements FilterInterface
     {
     	$base = $asset->getSourceRoot();
 
-    	$file = pathinfo($asset->getSourcePath())['filename'];
+    	$file = pathinfo($asset->getSourcePath());
+        $file = $file['filename'];
+
         $file = str_replace('\\', '/', $file);
     	$path = '';
 
