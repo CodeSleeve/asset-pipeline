@@ -13,13 +13,10 @@ namespace Codesleeve\AssetPipeline;
 
 class AssetCacheRepository
 {
+
 	/**
 	 * [__construct description]
-	 * @param  {[type]} $env
-	 * @param  {[type]} $cache
-	 * @param  {[type]} $config
-	 * @param  {[type]} $input
-	 * @return {[type]}
+	 * @param [type] $app
 	 */
 	public function __construct($app)
 	{

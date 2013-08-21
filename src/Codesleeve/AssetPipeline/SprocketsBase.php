@@ -18,14 +18,14 @@ class SprocketsBase {
 	public function __construct($app)
 	{
 		$this->app = $app;
-		$this->basePath = $app['path.base'];
+		$this->basePath = $this->normalizePath($app['path.base']);
 		$this->config = $app['config'];
 		$this->env = $app['env'];
-		$this->paths = $this->config->get('asset-pipeline::paths');	
 		$this->routingPrefix = $this->config->get('asset-pipeline::routing.prefix', '/assets') . '/';
-		$this->filters = $this->config->get('asset-pipeline::filters');
-		$this->extensions = array_keys($this->filters);
 		$this->jstFile = '_jst_.js';
+
+		$this->filters = new AssetFilters($app);
+		$this->paths = new AssetPaths($app);
 	}
 
 	/**
@@ -37,7 +37,7 @@ class SprocketsBase {
 	 */
 	public function getUrlPath($filepath, $includes = 'all')
 	{
-		foreach($this->getPaths($includes) as $path)
+		foreach($this->paths->get($includes) as $path)
 		{
 			if (substr($filepath, 0, strlen($path)) == $path) {
 				$filepath = substr($filepath, strlen($path));
@@ -45,7 +45,6 @@ class SprocketsBase {
 			}
 		}
 
-		$filepath = $this->normalizePath($filepath);
 		return $this->getAppUrlPath($this->routingPrefix . ltrim($filepath, '/'));
 	}
 
@@ -87,7 +86,7 @@ class SprocketsBase {
 	 */
 	public function getRelativePath($filepath, $includes = 'all')
 	{
-		return str_replace($this->app['path.base'] . '/', '', $this->getFullPath($filepath, $includes));
+		return str_replace($this->basePath . '/', '', $this->getFullPath($filepath, $includes));
 	}
 
 	/**
@@ -114,7 +113,7 @@ class SprocketsBase {
 
 		        if ($recursive && is_dir($fullpath) && $path != '.' && $path != '..') {
 		        	$directories[] = $parent . '/' . $path;
-		        } else if (is_file($fullpath) && $this->hasValidExtension($fullpath)) {
+		        } else if (is_file($fullpath) && $this->filters->hasValidExtension($fullpath)) {
 		        	$files[] = $relativeFolder . '/' . $this->normalizePath($path);
 		        }
 		    }
@@ -144,11 +143,11 @@ class SprocketsBase {
 	protected function getFullFile($filepath, $includes = 'all')
 	{
 		$filepath = $this->replaceRelativeDot($filepath);
-		$extensions = array_merge(array(''), $this->extensions);
+		$extensions = array_merge(array(''), $this->filters->extensions());
 
-		foreach ($this->getPaths($includes) as $path) {
+		foreach ($this->paths->get($includes) as $path) {
 			foreach ($extensions as $extension) {
-				$file = $this->app['path.base'] . "/$path/$filepath$extension";
+				$file = $this->basePath . "/$path/$filepath$extension";
 				if (is_file($file)) {
 					return $this->normalizePath($file);
 				}
@@ -170,8 +169,8 @@ class SprocketsBase {
 	{
 		$dirpath = $this->replaceRelativeDot($dirpath);
 
-		foreach ($this->getPaths($includes) as $path) {
-			$dir = $this->app['path.base'] . "/$path/$dirpath";
+		foreach ($this->paths->get($includes) as $path) {
+			$dir = $this->basePath . "/$path/$dirpath";
 			if (is_dir($dir)) {
 				return $this->normalizePath(rtrim($dir, '/'));
 			}
@@ -187,7 +186,7 @@ class SprocketsBase {
 	 */
 	protected function getRelativeDirectory($dirpath, $includes = 'all')
 	{
-		return $this->normalizePath(str_replace($this->app['path.base'] . '/', '', $this->getFullDirectory($dirpath, $includes)));
+		return str_replace($this->basePath . '/', '', $this->getFullDirectory($dirpath, $includes));
 	}
 
 	/**
@@ -199,10 +198,10 @@ class SprocketsBase {
 	 */
 	protected function basePath($filepath, $includes = 'all')
 	{
-		$filepath = str_replace($this->app['path.base'] . '/', '', $filepath);
+		$filepath = str_replace($this->basePath . '/', '', $filepath);
 		$filepath = $this->normalizePath($filepath);
 
-		foreach ($this->getPaths($includes) as $path)
+		foreach ($this->paths->get($includes) as $path)
 		{
 			if (stripos($filepath, $path) === 0) {
 				return ltrim(substr($filepath, strlen($path)), '/');
@@ -221,46 +220,10 @@ class SprocketsBase {
 	 */
 	protected function replaceRelativeDot($filepath)
 	{
+		$filepath = $this->normalizePath($filepath);
 		$filepath = preg_replace('/^\.\//', '', $filepath);
 		$filepath = preg_replace('/^\./', '', $filepath);
 		return $filepath;
-	}
-
-	/**
-	 * [hasValidExtension description]
-	 * @param  [type]  $file       [description]
-	 * @param  [type]  $extensions [description]
-	 * @return boolean             [description]
-	 */
-	protected function hasValidExtension($filepath, $extensions = array())
-	{
-        $extensions = ($extensions) ? $extensions : array_keys($this->config->get('asset-pipeline::filters'));
-		foreach($extensions as $extension) {
-			if (stripos(strrev($filepath), strrev($extension)) === 0) {
-				return $extension;
-			}
-		}
-		return false;
-	}
-
-	/**
-	 * Gets the files filters that should be applied based
-	 * on our configuration file.
-	 * 
-	 * @param  [type] $filepath [description]
-	 * @return [type]           [description]
-	 */
-	protected function getFiltersFor($filepath)
-	{
-		$filters = array();
-		$extension = $this->hasValidExtension($filepath);
-		$allFilters = $this->config->get("asset-pipeline::filters");
-
-		if ($extension) {
-			$filters = $allFilters[$extension];
-		}
-
-		return $filters;
 	}
 
 	/**
@@ -276,57 +239,6 @@ class SprocketsBase {
 	}
 
 	/**
-	 * Returns the paths from our config file that we should filter out
-	 * just doing 'all' will return all of $this->paths
-	 * 
-	 * @param  [type] $includes [description]
-	 * @return [type]           [description]
-	 */
-	protected function getPaths($includes)
-	{
-		if ($includes == 'all') {
-			return $this->paths;
-		}
-
-		$paths = array();
-
-		foreach ($this->paths as $key => $path)
-		{
-			if (strpos($key, $includes) !== false || strpos($path, $includes) !== false) {
-				$paths[] = $this->normalizePath($path);
-			}
-		}
-
-		return $paths;
-	}
-
-	/**
-	 * By looking at the file name we determine if this is a javascript
-	 * or stylesheet resource, else we just treat it as a generic 'all'
-	 * 
-	 * @param  [type] $file [description]
-	 * @return [type]       [description]
-	 */
-	protected function getIncludePathType($file)
-	{
-		$filename = pathinfo($file)['filename'];
-
-		if (pathinfo($file, PATHINFO_EXTENSION) == 'js' || 
-			strpos('.js', $filename) !== false ||
-			pathinfo($file, PATHINFO_EXTENSION) == 'html') {
-			return 'javascripts';
-		}
-
-		else if (pathinfo($file, PATHINFO_EXTENSION) == 'css' ||
-				 strpos('.js', $filename) !== false ||
-				 pathinfo($file, PATHINFO_EXTENSION) == 'less') {
-			return 'stylesheets';
-		}
-
-		return 'all';		
-	}
-
-	/**
 	 * Lets us tap into laravel's helper function and get the asset wrapper
 	 * for this path... in case someone is hosting at like 
 	 * http://sitename/subpath/assets/ or something...
@@ -336,6 +248,8 @@ class SprocketsBase {
 	 */
 	protected function getAppUrlPath($path)
 	{
+		$path = $this->normalizePath($path);
+
 		if (isset($this->app['url']))
 		{
 			return app('url')->asset($path, $this->config->get('secure'));

@@ -27,11 +27,16 @@ return array(
 	|
 	*/
 	'paths' => array(
+		'app/assets/fonts',
+		'app/assets/images',
 		'app/assets/javascripts',
 		'app/assets/stylesheets',
-		'app/assets/images',
+		'lib/assets/fonts',
+		'lib/assets/images',
 		'lib/assets/javascripts',
 		'lib/assets/stylesheets',
+		'vendor/assets/fonts',
+		'vendor/assets/images',
 		'vendor/assets/javascripts',
 		'vendor/assets/stylesheets'
 	),
@@ -45,10 +50,7 @@ return array(
 	| here and we can also do any preprocessing on files with the extension if
 	| we choose to. 
 	|
-	| NOTE that the minification filter will be ran automatically
-	| for us, we don't have to specify it here (it kicks in when the environment
-	| is set to production.
-	|
+	| NOTE: Be sure not to remove .js or .css even though they are empty arrays.
 	*/
 	'filters' => array(
 		'.js' => array(
@@ -62,6 +64,9 @@ return array(
 		),
 		'.css.less' => array(
 			new Assetic\Filter\LessphpFilter
+		),
+		'.css.scss' => array(
+			new Assetic\Filter\ScssphpFilter
 		),
 		'.html' => array(
 			new Codesleeve\AssetPipeline\Filters\JSTFilter
@@ -80,6 +85,10 @@ return array(
 	| to determine if we should minify. The pipeline will minify when the environment
 	| is set to "production". However, if minify is true or false then it overrides the
 	| setting, regardless of what the environment is set to.
+	|
+	| NOTE that the minification filter will be ran automatically for us, 
+	| we don't have to specify it here (it kicks in when the environment
+	| is set to production assuming 'minify' is null)
 	|
 	*/
 	'minify' => null

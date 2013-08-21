@@ -20,6 +20,17 @@ class BaseDirective extends \Codesleeve\AssetPipeline\SprocketsBase {
 	 */
 	protected function getIncludePaths()
 	{
-		return $this->getIncludePathType($this->manifestFile);
+		if (pathinfo($this->manifestFile, PATHINFO_EXTENSION) == 'js' || 
+			strpos('.js', $this->manifestFile) !== false) {
+			return 'javascripts';
+		}
+
+		else if (pathinfo($this->manifestFile, PATHINFO_EXTENSION) == 'css' ||
+				 strpos('.js', $this->manifestFile) !== false ||
+				 pathinfo($this->manifestFile, PATHINFO_EXTENSION) == 'less') {
+			return 'stylesheets';
+		}
+
+		return 'all';
 	}
 }

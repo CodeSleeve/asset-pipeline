@@ -40,11 +40,14 @@ class JSTFilter implements FilterInterface
     protected function getPath($asset)
     {
     	$base = $asset->getSourceRoot();
-    	$file = pathinfo($asset->getSourcePath())['filename'];
+
+    	$file = pathinfo($asset->getSourcePath());
+        $file = $file['filename'];
+
         $file = str_replace('\\', '/', $file);
     	$path = '';
 
-    	$searchFor = 'assets' . '/' . 'javascripts';
+    	$searchFor = 'assets/javascripts';
     	$pos = strpos($base, $searchFor);
 
     	if ($pos !== false) {
