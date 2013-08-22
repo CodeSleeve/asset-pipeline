@@ -3,7 +3,7 @@
 namespace Codesleeve\AssetPipeline\Test;
 
 class App {
-	public function make($dir)
+	public static function make($dir)
 	{
 		$app = array();
         $app['env'] = 'local';
