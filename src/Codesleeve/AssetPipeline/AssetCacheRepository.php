@@ -114,26 +114,4 @@ class AssetCacheRepository
 		return $this->cache->get('asset_pipeline_manager');
 	}
 
-	/**
-	 * Gets the last updated time for the entire path
-	 * 
-	 * @param  [type] $path [description]
-	 * @return [type]       [description]
-	 */
-	protected function lastUpdatedAt($path)
-	{
-		return filemtime($path);
-
-		// $path = $this->getPath($path);
-		// $this->checkDirectory($path);
-		// $lastUpdatedAt = 0;
-		// foreach ($iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($path, \RecursiveDirectoryIterator::SKIP_DOTS), \RecursiveIteratorIterator::SELF_FIRST) as $item)
-		// {
-		// 	$fileLastUpdatedAt = filemtime($item);
-		// 	if ($fileLastUpdatedAt > $lastUpdatedAt) {
-		// 		$lastUpdatedAt = $fileLastUpdatedAt;
-		// 	}
-		// }
-		// return $lastUpdatedAt;		
-	}
 }
