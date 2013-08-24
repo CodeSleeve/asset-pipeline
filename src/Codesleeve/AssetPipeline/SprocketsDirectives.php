@@ -33,8 +33,8 @@ class SprocketsDirectives extends SprocketsBase {
 
 		$this->manifestFile = $manifestFile;
 
-		$filelist = [];
-		$lines = ($manifestFile) ? file($manifestFile) : [];
+		$filelist = array();
+		$lines = ($manifestFile) ? file($manifestFile) : array();
 
 		foreach ($lines as $line)
 		{
