@@ -423,4 +423,17 @@ The codesleeve asset pipeline is open-source software licensed under the [MIT li
 ## Support
 
 Please file an issue if you see a problem. And enjoy! 
-Also, I do accept pull-requests for bug fixes (and probably feature requests if it's reasonable...). Again, enjoy!
+
+Also, I do accept pull-requests for bug fixes and please place in issues
+
+We use Travis CI for testing which you can see at: https://travis-ci.org/CodeSleeve/asset-pipeline
+
+*Again*, enjoy!
+
+## Extending Asset Pipeline
+
+One last thing. Below will be a list of some packages that use/extend asset pipeline. Give them a looking at...
+
+Feel free to read more about [extending asset pipeline](#creating-packages-for-asset-pipeline)
+
+- Nothing to show here yet... but there will be. [There will be.](http://www.youtube.com/watch?v=I54wGOSg_BQ)
