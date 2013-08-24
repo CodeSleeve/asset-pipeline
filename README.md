@@ -419,11 +419,13 @@ In case you skipped past this in the [installation](#installation) part I'll men
 
 _Make sure your environment is setup correctly because the asset pipeline caches and minfies assets on a production environment_.
 
-Inside bootstrap/start.php
+Inside `bootstrap/start.php`
 
+```php
   $env = $app->detectEnvironment(array(
     'local' => array('your-machine-name'),
   ));
+```
 
 ## License
 
