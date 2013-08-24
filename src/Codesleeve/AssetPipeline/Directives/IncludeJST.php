@@ -12,7 +12,7 @@ class IncludeJST extends BaseDirective {
 
 	public function process()
 	{
-		return [$this->jstFile];
+		return array($this->jstFile);
 	}
 
 }
