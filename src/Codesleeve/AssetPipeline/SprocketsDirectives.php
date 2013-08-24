@@ -78,7 +78,7 @@ class SprocketsDirectives extends SprocketsBase {
 	 */
 	private function processDirective($line)
 	{
-		$directives = [
+		$directives = array(
 			'require ' => new RequireFile($this->app, $this->manifestFile),
 			'require_directory' => new RequireDirectory($this->app, $this->manifestFile),
 			'require_tree' => new RequireTree($this->app, $this->manifestFile),
@@ -87,7 +87,7 @@ class SprocketsDirectives extends SprocketsBase {
 			'depend_on ' => new DependOn($this->app, $this->manifestFile),
 			'include ' => new IncludeFile($this->app, $this->manifestFile),
 			'stub ' => new Stub($this->app, $this->manifestFile)
-		];
+		);
 
 		foreach ($directives as $directive_name => $directive) {
 			$param = $this->checkForDirective($directive_name, $line);
