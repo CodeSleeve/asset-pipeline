@@ -415,6 +415,15 @@ For javascripts you can  do custom loads for specfic laravel views or check for 
 All script and stylesheet files are cached only in production mode. The cache will be built on the first time it is requested from the server. It says alive forever, until the server admin runs a `php artisan assets:clean` to clear the cache. It is using Laravels' Cache facade, which uses the `file` driver out of the box, but you
 can make it use `memory` or `redis` or whatever you fancy.
 
+In case you skipped past this in the [installation](#installation) part I'll mention it again.
+
+_Make sure your environment is setup correctly because the asset pipeline caches and minfies assets on a production environment_.
+
+Inside bootstrap/start.php
+
+  $env = $app->detectEnvironment(array(
+    'local' => array('your-machine-name'),
+  ));
 
 ## License
 
