@@ -45,10 +45,16 @@ Inside `bootstrap/start.php`
   ));
 ```
 
-One more thing. Run the `artisan` command from the Terminal for the `generate:assets` command.
+Run the `artisan` command from the Terminal for the `generate:assets` command.
 
 ```php
     php artisan assets:generate
+```
+
+Lastly, it is recommended to create a custom package config for [configuration of the asset pipeline.](#configuration)
+
+```php
+  php artisan config:publish codesleeve/asset-pipeline
 ```
 
 ## Usage
