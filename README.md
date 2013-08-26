@@ -109,7 +109,7 @@ then it is just a matter of placing a file with an extension of `.css.less` in t
    app/assets/stylesheets
 ```
 
-**NOTE** that if your environment is `production` then it will [cache](#how-does-caching-work) your assets for you, so check your Laravel `App('env')` if you're refreshing the page and not seeing any change.
+**NOTE** that if your environment is `production` then it will [cache](#how-does-caching-work) your assets for you, so check your Laravel `App::environment()` if you're refreshing the page and not seeing any change.
 
 ### Available Directives?
 
