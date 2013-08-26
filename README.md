@@ -45,7 +45,7 @@ Inside `bootstrap/start.php`
   ));
 ```
 
-Run the `artisan` command from the Terminal for the `generate:assets` command.
+Run the `artisan` command from the Terminal for the `assets:generate` command.
 
 ```php
     php artisan assets:generate
