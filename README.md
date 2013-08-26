@@ -45,10 +45,16 @@ Inside `bootstrap/start.php`
   ));
 ```
 
-One more thing. Run the `artisan` command from the Terminal for the `generate:assets` command.
+Run the `artisan` command from the Terminal for the `assets:generate` command.
 
 ```php
     php artisan assets:generate
+```
+
+Lastly, it is recommended to create a custom package config for [configuration of the asset pipeline.](#configuration)
+
+```php
+  php artisan config:publish codesleeve/asset-pipeline
 ```
 
 ## Usage
@@ -103,7 +109,7 @@ then it is just a matter of placing a file with an extension of `.css.less` in t
    app/assets/stylesheets
 ```
 
-**NOTE** that if your environment is `production` then it will [cache](#how-does-caching-work) your assets for you, so check your Laravel $env if you're refreshing the page and not see new changes.
+**NOTE** that if your environment is `production` then it will [cache](#how-does-caching-work) your assets for you, so check your Laravel `App::environment()` if you're refreshing the page and not seeing any change.
 
 ### Available Directives?
 
