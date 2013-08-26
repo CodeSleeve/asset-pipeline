@@ -9,10 +9,10 @@ class AssetFilters
 	 */
 	public function __construct($app)
 	{
+		$this->app = $app;
 		$this->env = $app['env'];
 		$this->config = $app['config'];
 		$this->events = $app['events'];
-		$this->paths = $this->config->get('asset-pipeline::paths');
 		$this->filters = $this->config->get('asset-pipeline::filters');
 		$this->registered = false;
 	}
@@ -75,6 +75,16 @@ class AssetFilters
 
 		if ($extension) {
 			$filters = $allFilters[$extension];
+		}
+
+		if (is_array($filters))
+		{
+			foreach ($filters as $filter)
+			{
+				if (method_exists($filter, 'initialize')) {
+					$filter->initialize($this->app);
+				}
+			}			
 		}
 
 		return $filters;
