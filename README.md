@@ -1,6 +1,8 @@
 ## What the heck is Asset Pipeline?
 
-*_A video is coming soon._*
+#### Watch an [introduction video](http://youtu.be/1iDB5BFsTw8) on the asset pipeline.
+
+[![Introduction Video](http://i810.photobucket.com/albums/zz28/kelt4/youtube-assetpipeline_zpsd864d5d6.png)](http://youtu.be/1iDB5BFsTw8)
 
 For those of you familar with Rails asset pipeline and sprockets, you will hopefully feel right at home using this package.
 
