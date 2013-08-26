@@ -364,7 +364,7 @@ Then in my package I could do something similar to this:
 
 ```php
    Event::listen('assets.register.filters', function($filters) {
-      $filter->add('.jst.hbs', array(new Codesleeve\L4AssetHandlebars\Filters\HandlebarsFilter));
+      $filters->add('.jst.hbs', array(new Codesleeve\L4AssetHandlebars\Filters\HandlebarsFilter));
    });
 ```
 and 
