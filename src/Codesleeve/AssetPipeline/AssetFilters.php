@@ -38,6 +38,7 @@ class AssetFilters
 	 */
 	public function extensions()
 	{
+		$this->registerAllFilters();
 		return array_keys($this->filters);
 	}
 
@@ -117,6 +118,6 @@ class AssetFilters
 		}
 
 		$this->registered = true;
-		$this->events->fire('assets.register.filters', array($this->filters));
+		$this->events->fire('assets.register.filters', $this);
 	}
 }
