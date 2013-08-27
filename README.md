@@ -4,6 +4,7 @@
 
 [![Introduction Video](http://i810.photobucket.com/albums/zz28/kelt4/youtube-assetpipeline_zpsd864d5d6.png)](http://youtu.be/1iDB5BFsTw8)
 
+
 For those of you familar with Rails asset pipeline and sprockets, you will hopefully feel right at home using this package.
 
 In a nutshell, this is what you will get from this package.
@@ -91,7 +92,7 @@ So something like this...
 
 Would process the directives inside of app/assets/frontend/application.js and (on production environment) generate
 
-```js
+```html
   <script src="assets/frontend/application.js" data-requires="foobar"></script>
 ```
 
@@ -233,7 +234,7 @@ But what if you had a path that did not have the string 'javascripts' in it? It 
       ... code omitted ...,
     'app/some/other/directory' => 'javascripts',
     'app/directory/with/style' => 'stylesheets',
-  ... over even both ...,
+      ... over even both ...,
     'app/some/mixed/directory' => 'javascripts,stylesheets',
   ),
 ```
@@ -247,8 +248,7 @@ You can also dynamically register your own paths (in say... your own Laravel pac
   });
 ```
 
-**TODO** Create a video on how to do this
-
+####[Watch me creating a handlebars package](http://youtu.be/IPgUUYb7SqU) for the asset pipeline.
 
 ### Filters
 
@@ -455,6 +455,29 @@ Inside `bootstrap/start.php`
     'local' => array('your-machine-name'),
   ));
 ```
+
+### How does asset pipeline work in development vs. production?
+
+This is a pretty common question, especially for those who have never used rails asset pipeline. Let's look at an example.
+
+In development the `stylesheet_link_tag()` will create a `link` tag for each asset you are including via asset pipeline manifest file `application.css`.
+
+```html
+   <link href="assets/awesome.css" rel="stylesheet" type="text/css">
+   <link href="assets/some/other/asset.css" rel="stylesheet" type="text/css">
+   ...
+   <link href="assets/application.css" rel="stylesheet" type="text/css">
+```
+
+but on production all these files would be concatenated under `application.css` and you would just have
+
+```html
+   <link href="assets/application.css" rel="stylesheet" type="text/css">
+```
+
+### Want to watch some videos?
+  - [Introduction To Asset Pipeline](http://youtu.be/1iDB5BFsTw8)
+  - [Handlebars Asset Package](http://youtu.be/IPgUUYb7SqU)
 
 ## License
 
