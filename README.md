@@ -134,6 +134,8 @@ A manifest file is where you put your sprocket's directives at. Here is a list o
 
     This brings in the manifest file itself as an asset. This is already done on `require_tree .` if the manifest file is within that directory. Where you might want to use this is when you have a manifest file that does like `require_tree subdir/`
 
+It is even possible to register your own custom directives or override existing ones. [More about that here.](#more-on-directives)
+
 ### Javascript Templates?
 
 You could stick all your handlebar/eco/underscore/etc templates insde of the Laravel view but that adds up quickly. Any .html files you place within `app/assets/javascripts` will be accessible in a global javascript variable called JST. Just open up your javascript console and examine the `JST` object. Read more about [filters](#filters) below if you want your own custom filter (besides just .html files).
@@ -406,6 +408,50 @@ and then finally in my `app/assets/javascripts/application.js` manifest file I c
 and any files with `.jst.hbs` extension would start showing up in my `JST` array as a compiled Handlebars template.
 
 ** TODO Make a video showing how to make your l4-asset-handlebars package including handlebars assets and .jst.hbs filter **
+
+## More on Directives
+
+Using laravel's event handlers we can override existing and create custom directives. We can use this to add in our own files for any given directive.
+
+Here is an example of overriding the `require jquery` directive
+
+```php
+   Event::listen('assets.register.directive', function($directive) {
+      if (!$directive->isJavascriptManifest()) {
+         return;
+      }
+      
+      if ($directive->name == 'require' && $directive->param == 'jquery') {
+            $directive->add('jquery.js');
+      }
+   });
+```
+
+Or if I wanted to be crazy, I could even create my own custom stylesheet directive ... called `awesome_directive`
+
+```php
+   Event::listen('assets.register.directive', function($directive) {
+      if (!$directive->isStylesheetManifest()) {
+         return;
+      }
+      
+      if ($directive->name == 'awesome_directive') {
+         $directive->add('awesome/stuff1.js');
+		       $directive->add('awesome/stuff2.js');
+		       $directive->add('awesome/stuff3.js');
+      }
+   });
+```
+
+and in my application.css I could do
+
+```css
+   /**
+    *= awesome_directive
+    */
+```
+
+so this allows us to create whatever kind of directives we need for our application. However, custom directives should probably be rare.
 
 ## FAQ
 
