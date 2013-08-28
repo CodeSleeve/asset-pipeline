@@ -259,23 +259,33 @@ These filters are what determine
 
 ```php
   'filters' => array(
+    '.min.js' => array(
+      // don't minify files with this extension
+    ),
+    '.min.css' => array(
+      // don't minify files with this extension
+    ),
     '.js' => array(
-
+      new Codesleeve\AssetPipeline\Filters\MinifyJS('production')
     ),
     '.css' => array(
-
+      new Codesleeve\AssetPipeline\Filters\MinifyCSS('production')
     ),
     '.js.coffee' => array(
-      new Codesleeve\AssetPipeline\Filters\CoffeeScriptFilter
+      new Codesleeve\AssetPipeline\Filters\CoffeeScriptFilter,
+      new Codesleeve\AssetPipeline\Filters\MinifyJS('production')
     ),
     '.css.less' => array(
-      new Assetic\Filter\LessphpFilter
+      new Assetic\Filter\LessphpFilter,
+      new Codesleeve\AssetPipeline\Filters\MinifyCSS('production')
     ),
     '.css.scss' => array(
-      new Assetic\Filter\ScssphpFilter
-    )
+      new Assetic\Filter\ScssphpFilter,
+      new Codesleeve\AssetPipeline\Filters\MinifyCSS('production')
+    ),
     '.html' => array(
-      new Codesleeve\AssetPipeline\Filters\JSTFilter
+      new Codesleeve\AssetPipeline\Filters\JSTFilter,
+      new Codesleeve\AssetPipeline\Filters\MinifyJS('production')
     )
   ),
 ```
@@ -333,24 +343,34 @@ So what does a `HandlebarsFilter` look like? Filters are all handled via [Asseti
 Check out [AssetInfterface](https://github.com/kriswallsmith/assetic/blob/master/src/Assetic/Asset/AssetInterface.php) for the list of functions you can do. I use `getSourcePath` and `getSourceDirectory` in some of my filters.
 
 
-### Minify
+### Concat
 
-If you want to turn on/off minification (for debugging perhaps?) you can do that easily here.
-Leaving the value as null will fallback to the machine's environment to determine if assets are minified.
+If you want to turn on/off concatenation (for debugging perhaps?) you can do that easily here.
+
+Leaving the value as null will fallback to the machine's environment to determine if assets are concatenated all within
+the manifest file. Probably best to leave this alone if you're unsure.
 
 ```php
-  'minify' => null,
+  'cache' => null,
 ```
 
 ## Cache
 
-In the asset pipeline, there is no configuration item for this but on the back end we are caching elements when the laravel environment detects itself as being in production.
+In the asset pipeline, assets can be cached for performance gains which is particularly helpful on production environments.
 
-To clear the cache you can run
+Leaving the value as null will fallback to the machine's environment to determine if assets are cached.
+
+```php
+  'cache' => null,
+```
+
+At anytime you can clear the cache by running
 
 ```php
   php artisan assets:clean
 ```
+
+#### NOTE: Anytime you make a change to this config value you need to clear the cache!
 
 ## Creating Packages For Asset Pipeline
 
@@ -441,7 +461,7 @@ For javascripts you can  do custom loads for specfic laravel views or check for 
 
 ### How does caching work?
 
-All script and stylesheet files are cached only in production mode. The cache will be built on the first time it is requested from the server. It says alive forever, until the server admin runs a `php artisan assets:clean` to clear the cache. It is using Laravels' Cache facade, which uses the `file` driver out of the box, but you
+Out of the box, all script and stylesheet files are cached in production environment. However, you can always change this via config options. The cache will be built on the first time it is requested from the server. It lives forever, until the server admin runs a `php artisan assets:clean` to clear the cache. It is using Laravels' Cache facade, which uses the `file` driver out of the box, but you
 can make it use `memory` or `redis` or whatever you fancy.
 
 In case you skipped past this in the [installation](#installation) part I'll mention it again.
@@ -485,18 +505,10 @@ The codesleeve asset pipeline is open-source software licensed under the [MIT li
 
 ## Support
 
-Please file an issue if you see a problem. And enjoy! 
+Hopefully, you're satified with the pipeline. [You will be.](http://www.youtube.com/watch?v=I54wGOSg_BQ). But if you do see an problem then please file an issue.
 
 Also, I do accept pull-requests for bug fixes and please place in issues
 
 We use Travis CI for testing which you can see at: https://travis-ci.org/CodeSleeve/asset-pipeline
 
-*Again*, enjoy!
-
-## Extending Asset Pipeline
-
-One last thing. Below will be a list of some packages that use/extend asset pipeline. Give them a looking at...
-
-Feel free to read more about [extending asset pipeline](#creating-packages-for-asset-pipeline)
-
-- Nothing to show here yet... but there will be. [There will be.](http://www.youtube.com/watch?v=I54wGOSg_BQ)
+*Again*, enjoy! And have a nice day!

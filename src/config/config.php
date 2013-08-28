@@ -56,10 +56,10 @@ return array(
 	*/
 	'filters' => array(
 		'.min.js' => array(
-
+			// don't minify files with this extension
 		),
 		'.min.css' => array(
-
+			// don't minify files with this extension
 		),
 		'.js' => array(
 			new Codesleeve\AssetPipeline\Filters\MinifyJS('production')
