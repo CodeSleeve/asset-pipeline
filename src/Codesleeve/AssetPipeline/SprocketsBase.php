@@ -23,6 +23,7 @@ class SprocketsBase {
 		$this->env = $app['env'];
 		$this->routingPrefix = $this->config->get('asset-pipeline::routing.prefix', '/assets') . '/';
 		$this->jstFile = '_jst_.js';
+		$this->event = $app['events'];
 
 		$this->filters = new AssetFilters($app);
 		$this->paths = new AssetPaths($app);

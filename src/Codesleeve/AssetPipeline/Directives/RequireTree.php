@@ -6,6 +6,10 @@ class RequireTree extends BaseDirective {
 
 	public function process($directory)
 	{
+		if ($this->added("require_tree $directory")) {
+			return $this->files;
+		}
+
 		if (strpos($directory, '/') === 0) {
 			throw new \InvalidArgumentException('Directory cannot start with a /');
 		}

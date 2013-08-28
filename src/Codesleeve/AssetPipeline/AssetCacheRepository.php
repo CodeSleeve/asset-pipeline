@@ -129,13 +129,15 @@ class AssetCacheRepository
  		{
  			$cached = $this->config->get('asset-pipeline::cache');
 
- 			if (is_null($cached)) {
- 				$cached = ($this->env == 'production') ? true : false;
- 			}
-
 			$this->cache->forever('asset_pipeline_cached', $cached);
 		}
 
-		return $this->cache->get('asset_pipeline_cached');
+		$cached = $this->cache->get('asset_pipeline_cached');
+
+		if (is_null($cached)) {
+			$cached = ($this->env == 'production') ? true : false;
+		}
+
+		return $cached;
 	}
 }

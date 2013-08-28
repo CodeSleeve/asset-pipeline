@@ -4,10 +4,64 @@ namespace Codesleeve\AssetPipeline\Directives;
 
 class BaseDirective extends \Codesleeve\AssetPipeline\SprocketsBase {
 
+	protected $files = array();
+
 	public function __construct($app, $manifestFile)
 	{
 		parent::__construct($app);
 		$this->manifestFile = $manifestFile;
+	}
+
+	/**
+	 * [isStylesheetManifest description]
+	 * @return boolean [description]
+	 */
+	public function isStylesheetManifest()
+	{
+		return $this->getIncludePaths() == 'stylesheets';
+	}
+
+	/**
+	 * [isJavascriptManifest description]
+	 * @return boolean [description]
+	 */
+	public function isJavascriptManifest()
+	{
+		return $this->getIncludePaths() == 'javascripts';
+	}
+
+	/**
+	 * This allows us to add our own files to a directive which
+	 * then will override the files included via the directive itself
+	 * 
+	 * @param [type] $file [description]
+	 */
+	public function add($file)
+	{
+		$this->files[] = $file;
+	}
+
+	/**
+	 * Let's us know if files have been added via event listeners
+	 * 
+	 * @return [type] [description]
+	 */
+	public function added($name)
+	{
+		$this->name = $name;
+		$this->event->fire('assets.register.directive', $this);
+
+		return count($this->files) > 0;
+	}
+
+	/**
+	 * See if a directive equals to string
+	 * 
+	 * @return string [description]
+	 */
+	public function equals($string)
+	{
+		return $this->name == $string;
 	}
 
 	/**
@@ -21,16 +75,19 @@ class BaseDirective extends \Codesleeve\AssetPipeline\SprocketsBase {
 	protected function getIncludePaths()
 	{
 		if (pathinfo($this->manifestFile, PATHINFO_EXTENSION) == 'js' || 
-			strpos('.js', $this->manifestFile) !== false) {
+			strpos('.js', $this->manifestFile) !== false ||
+			pathinfo($this->manifestFile, PATHINFO_EXTENSION) == 'coffee') {
 			return 'javascripts';
 		}
 
 		else if (pathinfo($this->manifestFile, PATHINFO_EXTENSION) == 'css' ||
-				 strpos('.js', $this->manifestFile) !== false ||
-				 pathinfo($this->manifestFile, PATHINFO_EXTENSION) == 'less') {
+				 strpos('.css', $this->manifestFile) !== false ||
+				 pathinfo($this->manifestFile, PATHINFO_EXTENSION) == 'less' ||
+				 pathinfo($this->manifestFile, PATHINFO_EXTENSION) == 'scss') {
 			return 'stylesheets';
 		}
 
 		return 'all';
 	}
+
 }
