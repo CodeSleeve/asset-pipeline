@@ -5,6 +5,7 @@ namespace Codesleeve\AssetPipeline;
  * We are using the following cache keys in Laravel
  *
  *   asset_pipeline_manager
+ *   asset_pipeline_cached
  *
  * So if we ever to clear the cache, we just need to remove
  * these keys above...
@@ -13,7 +14,6 @@ namespace Codesleeve\AssetPipeline;
 
 class AssetCacheRepository
 {
-
 	/**
 	 * [__construct description]
 	 * @param [type] $app
@@ -27,7 +27,7 @@ class AssetCacheRepository
 	}
 
 	/**
-	 * If we are not on production this just gets sent straight to asset pipeline
+	 * If we should not cache then this just gets sent straight to asset pipeline
 	 *
 	 * Else, in order to keep from hammering the file system we use the cache manager
 	 * to see if we have 
@@ -41,7 +41,7 @@ class AssetCacheRepository
 	 */
 	public function javascripts($path)
 	{
-		if ($this->env != "production") {
+		if (!$this->shouldCache()) {
 			return $this->asset->javascripts($path);			
 		}
 
@@ -49,7 +49,7 @@ class AssetCacheRepository
 	}
 
 	/**
-	 * If we are not on production this just gets sent straight to asset pipeline
+	 * If we should not cache this just gets sent straight to asset pipeline
 	 *
 	 * Else, in order to keep from hammering the file system we use the cache manager
 	 * to see if we have
@@ -63,7 +63,7 @@ class AssetCacheRepository
 	 */
 	public function stylesheets($path)
 	{
-		if ($this->env != "production") {
+		if (!$this->shouldCache()) {
 			return $this->asset->stylesheets($path);
 		}
 
@@ -71,7 +71,8 @@ class AssetCacheRepository
 	}
 
 	/**
-	 * [fetch description]
+	 * Fetch returns the asset content for the given path
+	 * 
 	 * @param  {[type]} $path
 	 * @param  {[type]} $type
 	 * @return {[type]}
@@ -98,7 +99,8 @@ class AssetCacheRepository
 	}
 
 	/**
-	 * [manager description]
+	 * Manages all of the cached assets
+	 * 
 	 * @return {[type]}
 	 */
 	protected function manager($manager = null)
@@ -114,4 +116,26 @@ class AssetCacheRepository
 		return $this->cache->get('asset_pipeline_manager');
 	}
 
+	/**
+	 * We don't want to read the laravel config file on 
+	 * every GET /assets/<file> (especially in production)
+	 * so we cache this boolean value
+	 * 
+	 * @return boolean should we cache these assets?
+	 */
+	protected function shouldCache()
+	{
+ 		if (!$this->cache->has('asset_pipeline_cached'))
+ 		{
+ 			$cached = $this->config->get('asset-pipeline::cache');
+
+ 			if (is_null($cached)) {
+ 				$cached = ($this->env == 'production') ? true : false;
+ 			}
+
+			$this->cache->forever('asset_pipeline_cached', $cached);
+		}
+
+		return $this->cache->get('asset_pipeline_cached');
+	}
 }

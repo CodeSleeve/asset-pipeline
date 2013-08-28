@@ -48,49 +48,82 @@ return array(
 	|
 	| In order for a file to be included with sprockets, it needs to be listed 
 	| here and we can also do any preprocessing on files with the extension if
-	| we choose to. 
+	| we choose to.
 	|
-	| NOTE: Be sure not to remove .js or .css even though they are empty arrays.
+	| NOTE: if you want to turn minification on for specific Laravel environments
+	|       you could do (the same applies for MinifyCSS)
+	|			new Codesleeve\AssetPipeline\Filters\MinifyJS(array('production', 'staging'))
 	*/
 	'filters' => array(
-		'.js' => array(
+		'.min.js' => array(
 
+		),
+		'.min.css' => array(
+
+		),
+		'.js' => array(
+			new Codesleeve\AssetPipeline\Filters\MinifyJS('production')
 		),
 		'.css' => array(
-
+			new Codesleeve\AssetPipeline\Filters\MinifyCSS('production')
 		),
 		'.js.coffee' => array(
-			new Codesleeve\AssetPipeline\Filters\CoffeeScriptFilter
+			new Codesleeve\AssetPipeline\Filters\CoffeeScriptFilter,
+			new Codesleeve\AssetPipeline\Filters\MinifyJS('production')
 		),
 		'.css.less' => array(
-			new Assetic\Filter\LessphpFilter
+			new Assetic\Filter\LessphpFilter,
+			new Codesleeve\AssetPipeline\Filters\MinifyCSS('production')
 		),
 		'.css.scss' => array(
-			new Assetic\Filter\ScssphpFilter
+			new Assetic\Filter\ScssphpFilter,
+			new Codesleeve\AssetPipeline\Filters\MinifyCSS('production')
 		),
 		'.html' => array(
-			new Codesleeve\AssetPipeline\Filters\JSTFilter
+			new Codesleeve\AssetPipeline\Filters\JSTFilter,
+			new Codesleeve\AssetPipeline\Filters\MinifyJS('production')
 		)
 	),
 
 	/*
 	|--------------------------------------------------------------------------
-	| minify
+	| cache
 	|--------------------------------------------------------------------------
 	|
-	| This allows us to turn on/off minify if we choose to do so. This might be
-	| used for debugging.
+	| This allows us to turn on/off the asset cache if we choose to do so.
 	|
-	| When minify is set to null, we simply ignore it and use the laravel environment
-	| to determine if we should minify. The pipeline will minify when the environment
-	| is set to "production". However, if minify is true or false then it overrides the
-	| setting, regardless of what the environment is set to.
+	| When cache is set to true we will cache assets that are served. Caching 
+	| is probably a good idea to turn on in your production environment as it
+	| will dramatically improve speed. 
 	|
-	| NOTE that the minification filter will be ran automatically for us, 
-	| we don't have to specify it here (it kicks in when the environment
-	| is set to production assuming 'minify' is null)
+	| NOTE: anytime you change cache config you need to run	
+	|
+	|		php artisan assets:clean
+	|
+	| Your system admins can use assets:clean anytime they 
+	| update servers where there have been changes to assets
+	|
+	| When set to null, cache will be true whenever laravel environment is
+	| set to 'production' but false otherwise
 	|
 	*/
-	'minify' => null
+	'cache' => null,
+
+	/*
+	|--------------------------------------------------------------------------
+	| concat
+	|--------------------------------------------------------------------------
+	|
+	| This allows us to turn on/off the asset concatenation
+	|
+	| When concat is set to false javascript_link_tag will just a bunch of
+	| different script tags but if it is true we will just get 1 single 
+	| manifest file that has all the javascript from all the required files
+	|
+	| When set to null, concat will be true whenever laravel environment is 
+	| set to 'production' but false otherwise
+	|
+	*/
+	'concat' => null
 
 );

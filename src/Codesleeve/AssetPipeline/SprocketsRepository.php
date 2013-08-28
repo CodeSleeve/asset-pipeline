@@ -20,7 +20,7 @@ class SprocketsRepository extends SprocketsTags {
 	/**
 	 * Dumps out the javascript for this file
 	 * 
-	 * If we are in production this should probably be a 
+	 * If we should concat then this should probably be a 
 	 * manifest file so we should process directives inside
 	 * 
 	 * @param  [type] $path [description]
@@ -31,17 +31,8 @@ class SprocketsRepository extends SprocketsTags {
 		$filters = array();
 		$files = array($this->getFullPath($path, 'javascripts'));
 
-		$minify = $this->config->get('asset-pipeline::minify');
-
-		if ($minify === true) {
-			$filters[] = new JSMinPlusFilter;			
-		}
-
-		if ($this->env == 'production') {
+		if ($this->shouldConcat()) {
 			$files = $this->directives->getFilesFrom($this->getFullPath($path, 'javascripts'));
-			if (is_null($minify)) {
-				$filters[] = new JSMinPlusFilter;
-			}
 		}
 
 		$scripts = new AssetCollection($this->getScriptAssets($files), $filters);
@@ -52,7 +43,7 @@ class SprocketsRepository extends SprocketsTags {
 	/**
 	 * Dumps out the stylesheets for this file
 	 * 
-	 * If we are in production this should probably be a 
+	 * If we should concat then this should probably be a 
 	 * manifest file so we should process directives inside
 	 * 
 	 * @param  [type] $path [description]
@@ -63,17 +54,8 @@ class SprocketsRepository extends SprocketsTags {
 		$filters = array();
 		$files = array($this->getFullPath($path, 'stylesheets'));
 
-		$minify = $this->config->get('asset-pipeline::minify');
-
-		if ($minify === true) {
-			$filters[] = new CssMinPlusFilter;
-		}
-
-		if ($this->env == 'production') {
+		if ($this->shouldConcat()) {
 			$files = $this->directives->getFilesFrom($this->getFullPath($path, 'stylesheets'));
-			if (is_null($minify)) {
-				$filters[] = new CssMinPlusFilter;
-			}
 		}
 
 		$styles = new AssetCollection($this->getStyleAssets($files), $filters);

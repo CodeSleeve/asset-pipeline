@@ -15,6 +15,7 @@ class AssetCacheRepositoryTest extends PHPUnit_Framework_TestCase
     {
      	$this->app = App::make(__DIR__);
         $this->app['env'] = 'production';
+        $this->app['config']->data['cache'] = true;
         $this->app['asset'] = new SprocketsRepository($this->app);
     }
 

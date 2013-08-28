@@ -28,6 +28,7 @@ class AssetsCleanCommand extends Command {
     public function fire()
     {
         \Cache::forget('asset_pipeline_manager');
+        \Cache::forget('asset_pipeline_cached');
 
         $this->line('');
         $this->line('Asset pipeline cache cleared!');

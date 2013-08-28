@@ -82,8 +82,11 @@ class JSTFilter implements FilterInterface
                 continue;
             }
         }
+        
+        $path = str_replace('"', '', $base . '/' . $file);
+        $path = $this->strip_beginning_slash($path);
 
-    	return str_replace('"', '', $base . '/' . $file);
+    	return $path;
     }
 
     /**

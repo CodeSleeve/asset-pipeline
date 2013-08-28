@@ -133,6 +133,23 @@ class SprocketsBase {
 	}
 
 	/**
+	 * Let's us know if we should concatenate files into one big giant file
+	 * or not. It's up to the config really.
+	 * 
+	 * @return [type] [description]
+	 */
+	public function shouldConcat()
+	{
+		$concat = $this->config->get('asset-pipeline::concat');
+
+		if (is_null($concat)) {
+			$concat = ($this->env == "production") ? true : false;
+		}
+
+		return $concat;
+	}
+
+	/**
 	 * Loops through all the paths and extensions and tries to find
 	 *  this file we provided in the $filepath (i.e. find the first jquery.js)
 	 * 
