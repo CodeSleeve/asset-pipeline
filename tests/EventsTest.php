@@ -15,13 +15,12 @@ class EventsTest extends PHPUnit_Framework_TestCase
      	$this->app = App::make(__DIR__);
     }
 
-    public function testThing()
+    public function testDirectiveAdding()
     {
     	$object = $this->object();
 
         // pretend this was added via laravel event listener
         $object->add('jquery');
-
         $object->process('foobaz');
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Codesleeve\AssetPipeline;
 
+use Codesleeve\AssetPipeline\Directives\BaseDirective;
 use Codesleeve\AssetPipeline\Directives\RequireDirectory;
 use Codesleeve\AssetPipeline\Directives\RequireTree;
 use Codesleeve\AssetPipeline\Directives\RequireSelf;
@@ -94,10 +95,11 @@ class SprocketsDirectives extends SprocketsBase {
 			
 			if (!is_null($param)) {
 				return $directive->process($param);
-			}			
+			}
 		}
 
-		throw new Exceptions\UnknownSprocketsDirective("Could not find the directive for $line");
+		$directive = new BaseDirective($this->app, $this->manifestFile);
+		return $directive->process_basic($line);
 	}
 
 	/**

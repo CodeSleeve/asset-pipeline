@@ -2,6 +2,8 @@
 
 namespace Codesleeve\AssetPipeline\Directives;
 
+use Codesleeve\AssetPipeline\Exceptions\UnknownSprocketsDirective;
+
 class BaseDirective extends \Codesleeve\AssetPipeline\SprocketsBase {
 
 	protected $files = array();
@@ -46,9 +48,12 @@ class BaseDirective extends \Codesleeve\AssetPipeline\SprocketsBase {
 	 * 
 	 * @return [type] [description]
 	 */
-	public function added($name)
+	public function added($line)
 	{
-		$this->name = $name;
+		$this->line = $line;
+		$this->name = $this->getName();
+		$this->param = $this->getParam();
+
 		$this->event->fire('assets.register.directive', $this);
 
 		return count($this->files) > 0;
@@ -61,7 +66,23 @@ class BaseDirective extends \Codesleeve\AssetPipeline\SprocketsBase {
 	 */
 	public function equals($string)
 	{
-		return $this->name == $string;
+		return $this->line == $string;
+	}
+
+	/**
+	 * Allows for custom directives if someone wants to register
+	 * one... something like //= awesome_directive
+	 * 
+	 * @param  [type] $line [description]
+	 * @return [type]       [description]
+	 */
+	public function process_basic($line)
+	{
+		if ($this->added($line)) {
+			return $this->files;
+		}
+
+		throw new UnknownSprocketsDirective("Could not find the directive for $line");
 	}
 
 	/**
@@ -88,6 +109,28 @@ class BaseDirective extends \Codesleeve\AssetPipeline\SprocketsBase {
 		}
 
 		return 'all';
+	}
+
+	/**
+	 * Gets the name from $this->line
+	 * @return [type] [description]
+	 */
+	protected function getName()
+	{
+		$name = explode(' ', $this->line);
+		return ($name) ? $name[0] : 'unknown';
+	}
+
+	/**
+	 * Gets the parameter from this->line
+	 * @return [type] [description]
+	 */
+	protected function getParam()
+	{
+		$param = strstr($this->line, " ");
+		$param = ($param) ? substr($param, 1) : $param;
+
+		return $param;
 	}
 
 }
