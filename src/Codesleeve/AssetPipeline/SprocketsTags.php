@@ -29,7 +29,7 @@ class SprocketsTags extends SprocketsBase {
 	 */
 	public function javascriptIncludeTag($manifestFile = 'application', $attributes = array())
 	{
-		if ($this->env == 'production') {
+		if ($this->shouldConcat()) {
 			return $this->create_javascript_include($manifestFile . '.js', $attributes);
 		}
 
@@ -52,7 +52,7 @@ class SprocketsTags extends SprocketsBase {
 	 */
 	public function stylesheetLinkTag($manifestFile = 'application', $attributes = array())
 	{
-		if ($this->env == 'production') {
+		if ($this->shouldConcat()) {
 			return $this->create_stylesheet_link($manifestFile . '.css', $attributes);
 		}
 
