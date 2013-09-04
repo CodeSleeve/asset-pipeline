@@ -21,7 +21,7 @@ class AssetPathsTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($outcome, array(
             'app/assets/javascripts',
             'lib/assets/javascripts',
-            'vendor/assets/javascripts'));
+            'provider/assets/javascripts'));
     }
 
     public function testGetStylesheetPaths()
@@ -30,7 +30,7 @@ class AssetPathsTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($outcome, array(
             'app/assets/stylesheets',
             'lib/assets/stylesheets',
-            'vendor/assets/stylesheets'));
+            'provider/assets/stylesheets'));
     }
 
     public function testGetAllPaths()
@@ -57,7 +57,7 @@ class AssetPathsTest extends PHPUnit_Framework_TestCase
             'another/path',
             'app/assets/javascripts',
             'lib/assets/javascripts',
-            'vendor/assets/javascripts'
+            'provider/assets/javascripts'
         ));
 
         $outcome = $object->get('stylesheets');
@@ -65,7 +65,7 @@ class AssetPathsTest extends PHPUnit_Framework_TestCase
             'another/path',
             'app/assets/stylesheets',
             'lib/assets/stylesheets',
-            'vendor/assets/stylesheets'
+            'provider/assets/stylesheets'
         ));
     }
 

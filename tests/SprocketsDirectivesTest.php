@@ -25,7 +25,7 @@ class SprocketsDirectivesTest extends PHPUnit_Framework_TestCase
     {
 		$outcome = $this->object()->getFilesFrom(__DIR__ . '/fixtures/require/manifest02.js');
 		$this->assertEquals(array(
-            'vendor/assets/javascripts/jquery.js'
+            'provider/assets/javascripts/jquery.js'
         ), $outcome);
     }
 
@@ -33,7 +33,7 @@ class SprocketsDirectivesTest extends PHPUnit_Framework_TestCase
     {
         $outcome = $this->object()->getFilesFrom(__DIR__ . '/fixtures/require/manifest03.js');
         $this->assertEquals($outcome, array(
-            'vendor/assets/javascripts/jquery.js'
+            'provider/assets/javascripts/jquery.js'
         ), $outcome);
     }
 
@@ -41,8 +41,8 @@ class SprocketsDirectivesTest extends PHPUnit_Framework_TestCase
     {
         $outcome = $this->object()->getFilesFrom(__DIR__ . '/fixtures/require/manifest04.js');
         $this->assertEquals($outcome, array(
-            'vendor/assets/javascripts/jquery.js',
-            'vendor/assets/javascripts/foobar/foobar.js'
+            'provider/assets/javascripts/jquery.js',
+            'provider/assets/javascripts/foobar/foobar.js'
         ), $outcome);
     }
 
@@ -50,7 +50,7 @@ class SprocketsDirectivesTest extends PHPUnit_Framework_TestCase
     {
         $outcome = $this->object()->getFilesFrom(__DIR__ . '/fixtures/require/manifest05.js');
         $this->assertEquals(array(
-            'vendor/assets/javascripts/jquery.js'
+            'provider/assets/javascripts/jquery.js'
         ), $outcome);
     }
 
@@ -64,7 +64,7 @@ class SprocketsDirectivesTest extends PHPUnit_Framework_TestCase
     {
         $outcome = $this->object()->getFilesFrom(__DIR__ . '/fixtures/require/manifest07.js');
         $this->assertEquals(array(
-            'vendor/assets/javascripts/folder with spaces/file1.js'
+            'provider/assets/javascripts/folder with spaces/file1.js'
         ), $outcome);
     }
 
@@ -72,7 +72,7 @@ class SprocketsDirectivesTest extends PHPUnit_Framework_TestCase
     {
         $outcome = $this->object()->getFilesFrom(__DIR__ . '/fixtures/require/manifest08.js');
         $this->assertEquals(array(
-            'vendor/assets/javascripts/jquery.js',
+            'provider/assets/javascripts/jquery.js',
             'lib/assets/javascripts/cool.js',
             'app/assets/javascripts/apps/cool.js'
         ), $outcome);
