@@ -35,10 +35,10 @@ return array(
 		'lib/assets/images',
 		'lib/assets/javascripts',
 		'lib/assets/stylesheets',
-		'vendor/assets/fonts',
-		'vendor/assets/images',
-		'vendor/assets/javascripts',
-		'vendor/assets/stylesheets'
+		'provider/assets/fonts',
+		'provider/assets/images',
+		'provider/assets/javascripts',
+		'provider/assets/stylesheets'
 	),
 
 	/*
@@ -96,12 +96,9 @@ return array(
 	| is probably a good idea to turn on in your production environment as it
 	| will dramatically improve speed. 
 	|
-	| NOTE: anytime you change cache config you need to run	
+	| NOTE: if your system admin wants to recache they can run
 	|
 	|		php artisan assets:clean
-	|
-	| Your system admins can use assets:clean anytime they 
-	| update servers where there have been changes to assets
 	|
 	| When set to null, cache will be true whenever laravel environment is
 	| set to 'production' but false otherwise

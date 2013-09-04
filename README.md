@@ -62,7 +62,7 @@ Lastly, it is recommended to create a custom package config for [configuration o
 
 ## Usage
 
-After running `php artisan assets:generate` you should notice two new directories with some files, `app/assets` and `vendor/assets`.
+After running `php artisan assets:generate` you should notice two new directories with some files, `app/assets` and `provider/assets`.
 
 Be sure to check out the `app/assets/javascripts/application.js` and `app/assets/stylesheets/application.css` files. These are the default manifest files where you can adjust the files you want included into your manifest.
 
@@ -206,7 +206,7 @@ The auth filter comes in Laravel 4 by default in the `filters.php` file but I'll
 Simple huh?
 
 ### Paths
-These are the directories we search for files in relative to your laravel root base directory `base_path()`
+These are the directories we search for files in relative to your laravel root base directory `base_path()`. These almost match up to how rails asset pipeline works with the exception of `vendor` being changed to `provider`. The name `vendor` is already used by composer so we decided not to use it.
 
 ```php
   'paths' => array(
@@ -218,16 +218,16 @@ These are the directories we search for files in relative to your laravel root b
     'lib/assets/images',
     'lib/assets/javascripts',
     'lib/assets/stylesheets',
-    'vendor/assets/fonts',
-    'vendor/assets/images',
-    'vendor/assets/javascripts',
-    'vendor/assets/stylesheets'
+    'provider/assets/fonts',            // vendor already used by
+    'provider/assets/images',           // composer so by default
+    'provider/assets/javascripts',      // laravel's .gitignore does
+    'provider/assets/stylesheets'       // not include those files
   ),
 ```
 
 How is this used? Say you search for `/assets/foobar.js`, the asset pipeline will search for (in order) any path that has 'javascripts' in it.
 
-So you might finally find '/assets/foobar.js` inside of `vendor/assets/javascripts/foobar.js`
+So you might finally find '/assets/foobar.js` inside of `provider/assets/javascripts/foobar.js`
 
 But what if you had a path that did not have the string 'javascripts' in it? It is treated as an `other` resource. To get around this, you can use the word `javascripts` to tell asset pipeline that the resources in this directory are javascripts. The same applies for stylesheets.
 
