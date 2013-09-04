@@ -125,14 +125,7 @@ class AssetCacheRepository
 	 */
 	protected function shouldCache()
 	{
- 		if (!$this->cache->has('asset_pipeline_cached'))
- 		{
- 			$cached = $this->config->get('asset-pipeline::cache');
-
-			$this->cache->forever('asset_pipeline_cached', $cached);
-		}
-
-		$cached = $this->cache->get('asset_pipeline_cached');
+		$cached = $this->config->get('asset-pipeline::cache');
 
 		if (is_null($cached)) {
 			$cached = ($this->env == 'production') ? true : false;
