@@ -5,6 +5,7 @@ namespace Codesleeve\AssetPipeline;
 use Illuminate\Support\Facades\App;
 use Illuminate\Routing\Controllers\Controller;
 use Illuminate\Support\Facades\Response;
+use Codesleeve\AssetPipeline\Exceptions\InvalidPath;
 
 class AssetPipelineController extends Controller {
 
@@ -15,7 +16,12 @@ class AssetPipelineController extends Controller {
 	 */
 	public function file($path)
 	{
-		$file = Asset::getFullPath($path);
+		try {
+			$file = Asset::getFullPath($path);
+		} catch (InvalidPath $ex) {
+			//throw a 404 on an invalid path instead of having an unhandled exception
+			App::abort(404);
+		}
 
 		if (Asset::isJavascript($path)) {
 			return $this->javascript($path);			
