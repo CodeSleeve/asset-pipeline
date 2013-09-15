@@ -63,7 +63,7 @@ class SprocketsTags extends SprocketsBase {
 			$tags .= $this->create_stylesheet_link($file, $attributes) . PHP_EOL;
 		}
 
-		return $tags;		
+		return $tags;
 	}
 
 	/**
@@ -79,9 +79,9 @@ class SprocketsTags extends SprocketsBase {
 		foreach ($attributes as $attribute_key => $attribute_value) {
 			$tag .= " $attribute_key=\"$attribute_value\"";
 		}
-		$tag .= '>';
+		$tag .= ' />';
 
-		return $tag;		
+		return $tag;
 	}
 
 	/**
@@ -131,7 +131,7 @@ class SprocketsTags extends SprocketsBase {
 	 */
 	protected function create_javascript_include($filepath, $attributes)
 	{
-		$tag = '<script src="' . $this->getUrlPath($filepath, 'javascripts') .'"';
+		$tag = '<script type="text/javascript" src="' . $this->getUrlPath($filepath, 'javascripts') .'"';
 		foreach ($attributes as $attribute_key => $attribute_value) {
 			$tag .= " $attribute_key=\"$attribute_value\"";
 		}
@@ -149,13 +149,13 @@ class SprocketsTags extends SprocketsBase {
 	 */
 	protected function create_stylesheet_link($filepath, $attributes)
 	{
-		$tag = '<link rel="stylesheet" type="text/css" href="' . $this->getUrlPath($filepath, 'stylesheets') . '"';
+		$tag = '<link type="text/css" rel="stylesheet" href="' . $this->getUrlPath($filepath, 'stylesheets') . '"';
 		foreach ($attributes as $attribute_key => $attribute_value) {
 			$tag .= " $attribute_key=\"$attribute_value\"";
 		}
-		$tag .= '>';
+		$tag .= ' />';
 
-		return $tag;		
+		return $tag;
 	}
 
 }
