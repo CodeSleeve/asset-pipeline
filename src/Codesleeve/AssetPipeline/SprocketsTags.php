@@ -46,9 +46,9 @@ class SprocketsTags extends SprocketsBase {
 	/**
 	 * Returns a list of stylesheet tags for given manifest file
 	 * 
-	 * @param  string $manifestFile       [description]
-	 * @param  array  $attributes [description]
-	 * @return [type]             [description]
+	 * @param  string $manifestFile [description]
+	 * @param  array  $attributes   [description]
+	 * @return [type]               [description]
 	 */
 	public function stylesheetLinkTag($manifestFile = 'application', $attributes = array())
 	{
@@ -88,9 +88,9 @@ class SprocketsTags extends SprocketsBase {
 	 * Offering a snake case way to call this method
 	 * (since rails does it this way)
 	 * 
-	 * @param  string $manifestFile       [description]
-	 * @param  array  $attributes [description]
-	 * @return [type]             [description]
+	 * @param  string $manifestFile [description]
+	 * @param  array  $attributes   [description]
+	 * @return [type]               [description]
 	 */
 	public function javascript_include_tag($manifestFile = 'application', $attributes = array())
 	{
@@ -101,9 +101,9 @@ class SprocketsTags extends SprocketsBase {
 	 * Offering a snake case way to call this method
 	 * (since rails does it this way)
 	 * 
-	 * @param  string $manifestFile       [description]
-	 * @param  array  $attributes [description]
-	 * @return [type]             [description]
+	 * @param  string $manifestFile [description]
+	 * @param  array  $attributes   [description]
+	 * @return [type]               [description]
 	 */
 	public function stylesheet_link_tag($manifestFile = 'application', $attributes = array())
 	{
@@ -125,7 +125,7 @@ class SprocketsTags extends SprocketsBase {
 	/**
 	 * Creates a script tag given a file path
 	 * 
-	 * @param  [type] $filepath       [description]
+	 * @param  [type] $filepath   [description]
 	 * @param  [type] $attributes [description]
 	 * @return [type]             [description]
 	 */

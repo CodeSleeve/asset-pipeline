@@ -32,14 +32,13 @@ class SprocketsBase {
 	/**
 	 * Returns the url to get to a given asset
 	 * 
-	 * @param  [type] $filepath   [description]
+	 * @param  string $filepath   [description]
 	 * @param  array  $extensions [description]
 	 * @return [type]             [description]
 	 */
 	public function getUrlPath($filepath, $includes = 'all')
 	{
-		foreach($this->paths->get($includes) as $path)
-		{
+		foreach($this->paths->get($includes) as $path) {
 			if (substr($filepath, 0, strlen($path)) == $path) {
 				$filepath = substr($filepath, strlen($path));
 				continue;
@@ -81,9 +80,9 @@ class SprocketsBase {
 	/**
 	 * Get the relative file or relative directory path
 	 * 
-	 * @param  [type] $filepath   [description]
+	 * @param  [type] $filepath [description]
 	 * @param  array  $includes [description]
-	 * @return [type]             [description]
+	 * @return [type]           [description]
 	 */
 	public function getRelativePath($filepath, $includes = 'all')
 	{
@@ -108,16 +107,16 @@ class SprocketsBase {
 
 		if ($handle = opendir($folder))
 		{
-		    while (false !== ($path = readdir($handle))) 
-		    {
-		    	$fullpath = $folder . '/' . $path;
+				while (false !== ($path = readdir($handle))) 
+				{
+					$fullpath = $folder . '/' . $path;
 
-		        if ($recursive && is_dir($fullpath) && $path != '.' && $path != '..') {
-		        	$directories[] = $parent . '/' . $path;
-		        } else if (is_file($fullpath) && $this->filters->hasValidExtension($fullpath)) {
-		        	$files[] = $relativeFolder . '/' . $this->normalizePath($path);
-		        }
-		    }
+						if ($recursive && is_dir($fullpath) && $path != '.' && $path != '..') {
+							$directories[] = $parent . '/' . $path;
+						} else if (is_file($fullpath) && $this->filters->hasValidExtension($fullpath)) {
+							$files[] = $relativeFolder . '/' . $this->normalizePath($path);
+						}
+				}
 			closedir($handle);
 		}
 
@@ -199,8 +198,8 @@ class SprocketsBase {
 
 	/**
 	 * [getFullDirectory description]
-	 * @param  [type] $filepath   [description]
-	 * @return [type]             [description]
+	 * @param  string $filepath   [description]
+	 * @return string             [description]
 	 */
 	protected function getRelativeDirectory($dirpath, $includes = 'all')
 	{
@@ -211,8 +210,8 @@ class SprocketsBase {
 	 * Strips off the paths from the beginning of string 
 	 * if we find a path that is...
 	 * 
-	 * @param  [type] $filepath [description]
-	 * @return [type]           [description]
+	 * @param  string $filepath [description]
+	 * @return string           [description]
 	 */
 	protected function basePath($filepath, $includes = 'all')
 	{
@@ -268,11 +267,10 @@ class SprocketsBase {
 	{
 		$path = $this->normalizePath($path);
 
-		if (isset($this->app['url']))
-		{
+		if (isset($this->app['url'])) {
 			return app('url')->asset($path, $this->config->get('secure'));
 		}
-		
+
 		return $path;
 	}
 
@@ -280,7 +278,7 @@ class SprocketsBase {
 	 * This is used to convert any Windows slashes into unix style slashes
 	 *
 	 * @param [type] $path [description]
-	 * @return [type] 	   [description]
+	 * @return [type]      [description]
 	 */
 	protected function normalizePath($path)
 	{

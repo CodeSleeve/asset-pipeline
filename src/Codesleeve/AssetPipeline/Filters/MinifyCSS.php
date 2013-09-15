@@ -35,27 +35,27 @@ class MinifyCSS implements FilterInterface
 	 * @param  AssetInterface $asset [description]
 	 * @return [type]                [description]
 	 */
-    public function filterLoad(AssetInterface $asset)
-    {
+		public function filterLoad(AssetInterface $asset)
+		{
 
-    }
+		}
  
- 	/**
- 	 * [filterDump description]
- 	 * @param  AssetInterface $asset [description]
- 	 * @return [type]                [description]
- 	 */
-    public function filterDump(AssetInterface $asset)
-    {
-    	if ($this->shouldMinify()) {
+	/**
+	 * [filterDump description]
+	 * @param  AssetInterface $asset [description]
+	 * @return [type]                [description]
+	 */
+		public function filterDump(AssetInterface $asset)
+		{
+			if ($this->shouldMinify()) {
 			$asset->setContent(\CssMin::minify($asset->getContent()));    		
-    	}
-    }
+			}
+		}
 
-    /**
-     * [shouldMinify description]
-     * @return {[type]} [description]
-     */
+		/**
+		 * [shouldMinify description]
+		 * @return {[type]} [description]
+		 */
 	protected function shouldMinify()
 	{
 		return in_array($this->app['env'], $this->environments);
