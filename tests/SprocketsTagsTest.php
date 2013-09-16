@@ -23,7 +23,8 @@ class SprocketsTagsTest extends PHPUnit_Framework_TestCase
 	public function testjavascriptTag()
 	{
 		$outcome = $this->object()->javascriptIncludeTag();
-		$this->assertEquals('<script src="/assets/jquery.js"></script>' . PHP_EOL, $outcome);
+
+		$this->assertEquals('<script type="text/javascript" src="/assets/jquery.js"></script>' . PHP_EOL, $outcome);
 	}
 
 	public function testStylesheetTag()
@@ -38,4 +39,4 @@ class SprocketsTagsTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals('<img src="/assets/awesome/durka.png" />', $outcome);
 	}
 
-}    
+}

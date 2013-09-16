@@ -18,7 +18,7 @@ class SprocketsRepositoryTest extends PHPUnit_Framework_TestCase
 	public function testJavascripts()
 	{
 		$outcome = $this->object()->javascripts('application');
-		$this->assertContains('//= require jquery', $outcome);
+		$this->assertContains('= require jquery', $outcome);
 	}
 
 	public function testJavascriptsProd()
@@ -31,7 +31,7 @@ class SprocketsRepositoryTest extends PHPUnit_Framework_TestCase
 	public function testStylesheets()
 	{
 		$outcome = $this->object()->stylesheets('application');
-		$this->assertContains('*= require foobar2', $outcome);
+		$this->assertContains('= require foobar2', $outcome);
 	}
 
 	public function testStylesheetsProd()
