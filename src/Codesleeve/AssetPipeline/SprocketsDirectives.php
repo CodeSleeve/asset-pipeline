@@ -14,17 +14,62 @@ use Codesleeve\AssetPipeline\Directives\Stub;
 
 
 /**
- * Purpose of this class returns a list of 
+ * Purpose of this class returns a list of valid directives
  */
 class SprocketsDirectives extends SprocketsBase {
 
 	private $manifestFile;
-
+	
+	const HEADER_PATTERN = '/
+		\A (
+			(?m:\s*) (
+				(\/\* (?s:.*) \*\/) |
+				(\#\#\# (?s:.*) \#\#\#) |
+				(\/\/ .* \n?)+ |
+				(\# .* \n?)+
+			)
+		)+
+	/x';
+	
+	const DIRECTIVE_PATTERN = '/
+		^ \W* = \s* (\w+.*?) ((\*\/)? | (\#\#\#)?) $
+	/x';
+	
+	/**
+	 * Extracts the header string of a specific file
+	 * 
+	 * @param  string $manifestFile file path to extract the header string from
+	 * @return string               header string
+	 */
+	private function getFileHeader($manifestFile)
+	{
+		$contents = file_get_contents($manifestFile);
+		preg_match($this::HEADER_PATTERN, $contents, $matches);
+		return isset($matches[0]) ? $matches[0] : '';
+	}
+	
+	/**
+	 * Returns an array of directives index by its line number
+	 * 
+	 * @param  string $manifestFile file path to extract the directives from
+	 * @return array                List of directives
+	 */
+	private function getDirectiveLines($manifestFile)
+	{
+		$directives = array();
+		foreach (preg_split('/\n/', $this->getFileHeader($manifestFile)) as $i => $line) {
+			if (preg_match($this::DIRECTIVE_PATTERN, $line, $directive)) {
+				$directives[$i + 1] = $directive[1];
+			}
+		}
+		return $directives;
+	}
+	
 	/**
 	 * Returns an array of all the files inside of this manifest file
 	 * 
 	 * @param  string $manifest Filename to open to search for manifest
-	 * @return array           	List of relative file paths
+	 * @return array            List of relative file paths
 	 */
 	public function getFilesFrom($manifestFile)
 	{
@@ -33,43 +78,13 @@ class SprocketsDirectives extends SprocketsBase {
 		}
 
 		$this->manifestFile = $manifestFile;
-
-		$filelist = array();
-		$lines = ($manifestFile) ? file($manifestFile) : array();
-
-		foreach ($lines as $line)
-		{
-			$files = $this->findFilesFromDirective($line);
-			if ($files) {
-				$filelist = array_merge($filelist, $files);
-			}
-		}
-
-		return array_unique($filelist);
-	}
-
-	/**
-	 * Returns an array of files from the directive on this $line
-	 * 
-	 * @param  string            $line      This is the potential directive line
-	 * @param  array             $tokens    This is a list of valid tokens
-	 */
-	private function findFilesFromDirective($line, $tokens = array('//=', '*=', '#='))
-	{
-		$line = ltrim($line);
 		
-		if (!$line) {
-			return false;
+		$filelist = array();
+		foreach ($this->getDirectiveLines($manifestFile) as $line => $directive) {
+			$files = $this->processDirective($directive);
+			$filelist = array_merge($filelist, $files);
 		}
-
-		foreach ($tokens as $token) {
-			if (strpos($line, $token) === 0) {
-				$directive = trim(substr($line, strlen($token)));
-				return $this->processDirective($directive);
-			}
-		}
-
-		return false;
+		return array_unique($filelist);
 	}
 
 	/**
@@ -113,8 +128,8 @@ class SprocketsDirectives extends SprocketsBase {
 	private function checkForDirective($directive_name, $directive)
 	{
 		if (strpos($directive, $directive_name) === 0) {
-		 	$param = trim(substr($directive, strlen($directive_name)));
-		 	return ($param) ? $param : true;
+			$param = trim(substr($directive, strlen($directive_name)));
+			return ($param) ? $param : true;
 		}
 
 		return null;

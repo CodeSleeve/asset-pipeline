@@ -59,6 +59,7 @@ class SprocketsRepository extends SprocketsTags {
 		}
 
 		$styles = new AssetCollection($this->getStyleAssets($files), $filters);
+
 		return $styles->dump();
 	}
 
@@ -108,11 +109,9 @@ class SprocketsRepository extends SprocketsTags {
 	{
 		$assets = array();
 
-		foreach ($files as $file)
-		{	
+		foreach ($files as $file) {
 			$base = $this->basePath($file);
-			if ($this->isJavascript($base))
-			{
+			if ($this->isJavascript($base)) {
 				$filters = $this->filters->matching($file);
 				$assets[] = new FileAsset($this->getFullPath($base, 'javascripts'), $filters);
 			}
@@ -129,11 +128,9 @@ class SprocketsRepository extends SprocketsTags {
 	{
 		$assets = array();
 
-		foreach ($files as $file)
-		{
+		foreach ($files as $file) {
 			$base = $this->basePath($file);
-			if ($this->isStylesheet($base))
-			{
+			if ($this->isStylesheet($base)) {
 				$filters = $this->filters->matching($base);
 				$assets[] = new FileAsset($this->getFullPath($base, 'stylesheets'), $filters);
 			}

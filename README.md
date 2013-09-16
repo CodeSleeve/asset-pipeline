@@ -90,6 +90,12 @@ So something like this...
   <?= javascript_include_tag('frontend/application', ['data-requires' => 'foobar']); ?>
 ```
 
+Or if you are using Laravel's blade templating engine, you can use it in a more awesome way like this...
+
+```php
+  @javascripts('frontend/application', ['data-requires' => 'foobar'])
+```
+
 Would process the directives inside of app/assets/frontend/application.js and (on production environment) generate
 
 ```html

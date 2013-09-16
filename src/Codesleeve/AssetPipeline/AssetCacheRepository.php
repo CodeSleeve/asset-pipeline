@@ -42,7 +42,7 @@ class AssetCacheRepository
 	public function javascripts($path)
 	{
 		if (!$this->shouldCache()) {
-			return $this->asset->javascripts($path);			
+			return $this->asset->javascripts($path);
 		}
 
 		return $this->fetch($path, 'javascripts');
@@ -125,10 +125,8 @@ class AssetCacheRepository
 	 */
 	protected function shouldCache()
 	{
- 		if (!$this->cache->has('asset_pipeline_cached'))
- 		{
- 			$cached = $this->config->get('asset-pipeline::cache');
-
+		if (!$this->cache->has('asset_pipeline_cached')) {
+			$cached = $this->config->get('asset-pipeline::cache');
 			$this->cache->forever('asset_pipeline_cached', $cached);
 		}
 
