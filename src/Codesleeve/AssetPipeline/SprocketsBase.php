@@ -122,13 +122,13 @@ class SprocketsBase {
 		}
 
 		sort($files);
-		sort($directories);
+    sort($directories);
+
+		$paths = array_merge($paths, $files);
 
 		foreach($directories as $directory) {
 			$paths = array_merge($paths, $this->getFilesInFolder($directory, $recursive, $includes));
 		}
-
-		$paths = array_merge($paths, $files);
 
 		return $paths;
 	}
