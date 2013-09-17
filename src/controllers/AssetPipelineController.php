@@ -19,8 +19,11 @@ class AssetPipelineController extends Controller {
 		try {
 			$file = Asset::getFullPath($path);
 		} catch (InvalidPath $ex) {
-			//throw a 404 on an invalid path instead of having an unhandled exception
-			App::abort(404);
+			//throw a 404 on an invalid path in production instead of having an unhandled exception
+			if (App::environment() == "production") {
+				App::abort(404);
+			}
+			throw $ex;
 		}
 
 		if (Asset::isJavascript($path)) {
