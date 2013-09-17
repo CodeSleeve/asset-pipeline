@@ -2,6 +2,7 @@
 
 use Codesleeve\AssetPipeline\Test\App;
 use Codesleeve\AssetPipeline\AssetFilters;
+use Codesleeve\AssetPipeline\SprocketsRepository;
 
 class AssetFiltersTest extends PHPUnit_Framework_TestCase
 { 
@@ -13,6 +14,7 @@ class AssetFiltersTest extends PHPUnit_Framework_TestCase
     public function setUp()
     {
      	$this->app = App::make(__DIR__);
+        $this->app['asset'] = new SprocketsRepository($this->app);
     }
 
     public function testHasValidExtensions()

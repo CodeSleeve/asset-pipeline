@@ -10,6 +10,7 @@ class AssetETag
      */
     public function __construct($app)
     {
+        $this->app = $app;
         $this->env = $app['env'];
         $this->cache = $app['cache'];
         $this->config = $app['config'];

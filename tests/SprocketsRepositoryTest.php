@@ -12,7 +12,8 @@ class SprocketsRepositoryTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-     	$this->app = App::make(__DIR__);
+        $this->app = App::make(__DIR__);
+        $this->app['asset'] = new SprocketsRepository($this->app);
     }
 
     public function testJavascripts()

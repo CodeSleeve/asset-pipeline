@@ -17,6 +17,12 @@ class AssetCacheRepositoryTest extends PHPUnit_Framework_TestCase
         $this->app['env'] = 'production';
         $this->app['config']->data['cache'] = true;
         $this->app['asset'] = new SprocketsRepository($this->app);
+
+        // kinda fishy but it works... I need to tell a cssfilter
+        // how to get to the asset pipeline inside of SprocketsRepository
+        // this probably isn't an issue on real laravel environment
+        // since App is a singleton... but here it is not
+        $this->app['asset'] = new SprocketsRepository($this->app);
     }
 
     public function testJavascripts()

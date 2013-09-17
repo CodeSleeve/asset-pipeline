@@ -59,12 +59,14 @@ return array(
 			// don't minify files with this extension
 		),
 		'.min.css' => array(
+			new Codesleeve\AssetPipeline\Filters\CssRewrite
 			// don't minify files with this extension
 		),
 		'.js' => array(
 			new Codesleeve\AssetPipeline\Filters\MinifyJS('production')
 		),
 		'.css' => array(
+			new Codesleeve\AssetPipeline\Filters\CssRewrite,
 			new Codesleeve\AssetPipeline\Filters\MinifyCSS('production')
 		),
 		'.js.coffee' => array(
@@ -73,10 +75,12 @@ return array(
 		),
 		'.css.less' => array(
 			new Assetic\Filter\LessphpFilter,
+			new Codesleeve\AssetPipeline\Filters\CssRewrite,
 			new Codesleeve\AssetPipeline\Filters\MinifyCSS('production')
 		),
 		'.css.scss' => array(
 			new Assetic\Filter\ScssphpFilter,
+			new Codesleeve\AssetPipeline\Filters\CssRewrite,
 			new Codesleeve\AssetPipeline\Filters\MinifyCSS('production')
 		),
 		'.html' => array(
