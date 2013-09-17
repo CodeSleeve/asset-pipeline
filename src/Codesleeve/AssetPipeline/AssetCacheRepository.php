@@ -12,20 +12,8 @@ namespace Codesleeve\AssetPipeline;
  * 
  */
 
-class AssetCacheRepository
+class AssetCacheRepository extends AssetETag
 {
-	/**
-	 * [__construct description]
-	 * @param [type] $app
-	 */
-	public function __construct($app)
-	{
-		$this->env = $app['env'];
-		$this->cache = $app['cache'];
-		$this->config = $app['config'];
-		$this->asset = $app['asset'];
-	}
-
 	/**
 	 * If we should not cache then this just gets sent straight to asset pipeline
 	 *
@@ -44,6 +32,7 @@ class AssetCacheRepository
 		if (!$this->shouldCache()) {
 			return $this->asset->javascripts($path);			
 		}
+
 
 		return $this->fetch($path, 'javascripts');
 	}
@@ -69,6 +58,7 @@ class AssetCacheRepository
 
 		return $this->fetch($path, 'stylesheets');
 	}
+
 
 	/**
 	 * Fetch returns the asset content for the given path
@@ -116,21 +106,19 @@ class AssetCacheRepository
 		return $this->cache->get('asset_pipeline_manager');
 	}
 
-	/**
-	 * We don't want to read the laravel config file on 
-	 * every GET /assets/<file> (especially in production)
-	 * so we cache this boolean value
-	 * 
-	 * @return boolean should we cache these assets?
-	 */
-	protected function shouldCache()
-	{
-		$cached = $this->config->get('asset-pipeline::cache');
+    /**
+     * Tells us whether or not we should cache assets or not
+     * 
+     * @return boolean should we cache these assets?
+     */
+    protected function shouldCache()
+    {
+        $cached = $this->config->get('asset-pipeline::cache');
 
-		if (is_null($cached)) {
-			$cached = ($this->env == 'production') ? true : false;
-		}
+        if (is_null($cached)) {
+            $cached = ($this->env == 'production') ? true : false;
+        }
 
-		return $cached;
-	}
+        return $cached;
+    }
 }

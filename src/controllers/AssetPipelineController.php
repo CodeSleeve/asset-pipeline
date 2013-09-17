@@ -39,11 +39,15 @@ class AssetPipelineController extends Controller {
 	 */
 	private function javascript($path)
 	{
-		$javascript = AssetCache::javascripts($path);
+		$response = Response::make('', 304);
 
-		$response = Response::make($javascript, 200);
+		if (!AssetCache::hasValidEtag($path)) {
+			$response = Response::make(AssetCache::javascripts($path), 200);
+		}
 
 		$response->header('Content-Type', 'application/javascript');
+    	
+    	$response->setEtag(AssetCache::getEtag($path));
 
 		return $response;
 	}
@@ -55,11 +59,15 @@ class AssetPipelineController extends Controller {
 	 */
 	private function stylesheet($path)
 	{
-		$stylesheet = AssetCache::stylesheets($path);
+		$response = Response::make('', 304);
 
-		$response = Response::make($stylesheet, 200);
+		if (!AssetCache::hasValidEtag($path)) {
+			$response = Response::make(AssetCache::stylesheets($path), 200);
+		}
 
 		$response->header('Content-Type', 'text/css');
+
+    	$response->setEtag(AssetCache::getEtag($path));			
 
 		return $response;
 	}

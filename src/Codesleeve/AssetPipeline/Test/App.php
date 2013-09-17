@@ -11,7 +11,8 @@ class App {
         $app['config'] = new Config;
         $app['cache'] = new Cache;
         $app['events'] = new Events;
-        
+        $app['request'] = new Request;
+
 		return $app;
 	}
 }
