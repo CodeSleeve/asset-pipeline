@@ -57,22 +57,18 @@ class SprocketsBase {
 	 */
 	public function getFullPath($filepath, $includes = 'all')
 	{
-		$this->protect($filepath);
+		$fullpath = $this->getFullPathFromFilePath($filepath, $includes);
 
-		$file = $this->getFullFile($filepath, $includes);
-
-		if ($file) {
-			return $file;
+		if (!is_null($fullpath)) {
+			return $fullpath;
 		}
 
-		$directory = $this->getFullDirectory($filepath);
-	
-		if ($directory) {
-			return $directory;
-		}
+		$filepath = $this->basePath($filepath, $includes);
 
-		if ($filepath == $this->jstFile) {
-			return $filepath;
+		$fullpath = $this->getFullPathFromFilePath($filepath, $includes);
+
+		if (!is_null($fullpath)) {
+			return $fullpath;
 		}
 
 		throw new Exceptions\InvalidPath('Cannot find given path in paths: ' . $filepath);
@@ -122,7 +118,7 @@ class SprocketsBase {
 		}
 
 		sort($files);
-    sort($directories);
+    	sort($directories);
 
 		$paths = array_merge($paths, $files);
 
@@ -148,6 +144,37 @@ class SprocketsBase {
 		}
 
 		return $concat;
+	}
+
+	/**
+	 * This will turn a filepath into a full path if it exists. Otherwise we
+	 * just return null.
+	 * 
+	 * @param  string $filepath
+	 * @param  string $includes
+	 * @return string|null
+	 */
+	protected function getFullPathFromFilePath($filepath, $includes)
+	{
+		$this->protect($filepath);
+
+		$file = $this->getFullFile($filepath, $includes);
+
+		if ($file) {
+			return $file;
+		}
+
+		$directory = $this->getFullDirectory($filepath);
+	
+		if ($directory) {
+			return $directory;
+		}
+
+		if ($filepath == $this->jstFile) {
+			return $filepath;
+		}
+
+		return null;
 	}
 
 	/**
@@ -286,4 +313,5 @@ class SprocketsBase {
 	{
 		return str_replace('\\', '/', $path);
 	}
+
 }
