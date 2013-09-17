@@ -27,6 +27,10 @@ class AssetETag
      */
     public function hasValidEtag($path)
     {
+        if (!$this->shouldClientCache()) {
+            return false;
+        }
+
         $etag = $this->request->getETags();
 
         if (isset($etag[0]))
@@ -50,10 +54,25 @@ class AssetETag
      */
     public function getEtag($path)
     {
+        if (!$this->shouldClientCache()) {
+            return null;
+        }
+
         $filepath = $this->asset->getFullPath($path);
         $filetime = filemtime($filepath);
 
         return md5($filepath + $filetime);
     }
 
+    /**
+     * Check to see if we should try to cache on the client
+     * 
+     * @return boolean
+     */
+    public function shouldClientCache()
+    {
+        $cached = $this->config->get('asset-pipeline::client_cache');
+
+        return is_null($cached) ? true : $cached === true;
+    }
 }

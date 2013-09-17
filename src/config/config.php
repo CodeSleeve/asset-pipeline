@@ -108,12 +108,29 @@ return array(
 
 	/*
 	|--------------------------------------------------------------------------
+	| client_cache (304 redirects)
+	|--------------------------------------------------------------------------
+	|
+	| This allows us to turn on/off client side caching 
+	|
+	| When true, files that have not been updated since the last time the
+	| user fetched the file will receive a 304 redirect instead of a 200
+	| and modern browsers will know to use the locally cached file instead
+	| of wasting bandwidth traffic to fetch the new file
+	|
+	| When this is set to null, then client_cache will be turned on.
+	|
+	*/
+	'client_cache' => null,
+
+	/*
+	|--------------------------------------------------------------------------
 	| concat
 	|--------------------------------------------------------------------------
 	|
 	| This allows us to turn on/off the asset concatenation
 	|
-	| When concat is set to false javascript_link_tag will just a bunch of
+	| When concat is set to false javascript_link_tag will just be a bunch of
 	| different script tags but if it is true we will just get 1 single 
 	| manifest file that has all the javascript from all the required files
 	|
