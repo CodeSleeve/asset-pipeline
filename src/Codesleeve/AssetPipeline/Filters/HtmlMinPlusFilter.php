@@ -12,19 +12,19 @@ class HtmlMinPlusFilter implements FilterInterface
 	 * @param  AssetInterface $asset [description]
 	 * @return [type]                [description]
 	 */
-    public function filterLoad(AssetInterface $asset)
-    {
+		public function filterLoad(AssetInterface $asset)
+		{
 
-    }
+		}
  
- 	/**
- 	 * [filterDump description]
- 	 * @param  AssetInterface $asset [description]
- 	 * @return [type]                [description]
- 	 */
-    public function filterDump(AssetInterface $asset)
-    {
+	/**
+	 * [filterDump description]
+	 * @param  AssetInterface $asset [description]
+	 * @return [type]                [description]
+	 */
+		public function filterDump(AssetInterface $asset)
+		{
 		$asset->setContent(preg_replace(array('/ {2,}/', '/<!--.*?-->|\t|(?:\r?\n[ \t]*)+/s'), array(' ',''), $asset->getContent()));
-    }
+		}
 
 }

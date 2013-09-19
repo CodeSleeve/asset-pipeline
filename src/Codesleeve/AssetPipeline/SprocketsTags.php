@@ -46,9 +46,9 @@ class SprocketsTags extends SprocketsBase {
 	/**
 	 * Returns a list of stylesheet tags for given manifest file
 	 * 
-	 * @param  string $manifestFile       [description]
-	 * @param  array  $attributes [description]
-	 * @return [type]             [description]
+	 * @param  string $manifestFile [description]
+	 * @param  array  $attributes   [description]
+	 * @return [type]               [description]
 	 */
 	public function stylesheetLinkTag($manifestFile = 'application', $attributes = array())
 	{
@@ -63,7 +63,7 @@ class SprocketsTags extends SprocketsBase {
 			$tags .= $this->create_stylesheet_link($file, $attributes) . PHP_EOL;
 		}
 
-		return $tags;		
+		return $tags;
 	}
 
 	/**
@@ -79,18 +79,18 @@ class SprocketsTags extends SprocketsBase {
 		foreach ($attributes as $attribute_key => $attribute_value) {
 			$tag .= " $attribute_key=\"$attribute_value\"";
 		}
-		$tag .= '>';
+		$tag .= ' />';
 
-		return $tag;		
+		return $tag;
 	}
 
 	/**
 	 * Offering a snake case way to call this method
 	 * (since rails does it this way)
 	 * 
-	 * @param  string $manifestFile       [description]
-	 * @param  array  $attributes [description]
-	 * @return [type]             [description]
+	 * @param  string $manifestFile [description]
+	 * @param  array  $attributes   [description]
+	 * @return [type]               [description]
 	 */
 	public function javascript_include_tag($manifestFile = 'application', $attributes = array())
 	{
@@ -101,9 +101,9 @@ class SprocketsTags extends SprocketsBase {
 	 * Offering a snake case way to call this method
 	 * (since rails does it this way)
 	 * 
-	 * @param  string $manifestFile       [description]
-	 * @param  array  $attributes [description]
-	 * @return [type]             [description]
+	 * @param  string $manifestFile [description]
+	 * @param  array  $attributes   [description]
+	 * @return [type]               [description]
 	 */
 	public function stylesheet_link_tag($manifestFile = 'application', $attributes = array())
 	{
@@ -125,13 +125,13 @@ class SprocketsTags extends SprocketsBase {
 	/**
 	 * Creates a script tag given a file path
 	 * 
-	 * @param  [type] $filepath       [description]
+	 * @param  [type] $filepath   [description]
 	 * @param  [type] $attributes [description]
 	 * @return [type]             [description]
 	 */
 	protected function create_javascript_include($filepath, $attributes)
 	{
-		$tag = '<script src="' . $this->getUrlPath($filepath, 'javascripts') .'"';
+		$tag = '<script type="text/javascript" src="' . $this->getUrlPath($filepath, 'javascripts') .'"';
 		foreach ($attributes as $attribute_key => $attribute_value) {
 			$tag .= " $attribute_key=\"$attribute_value\"";
 		}
@@ -149,13 +149,13 @@ class SprocketsTags extends SprocketsBase {
 	 */
 	protected function create_stylesheet_link($filepath, $attributes)
 	{
-		$tag = '<link rel="stylesheet" type="text/css" href="' . $this->getUrlPath($filepath, 'stylesheets') . '"';
+		$tag = '<link type="text/css" rel="stylesheet" href="' . $this->getUrlPath($filepath, 'stylesheets') . '"';
 		foreach ($attributes as $attribute_key => $attribute_value) {
 			$tag .= " $attribute_key=\"$attribute_value\"";
 		}
-		$tag .= '>';
+		$tag .= ' />';
 
-		return $tag;		
+		return $tag;
 	}
 
 }

@@ -18,7 +18,7 @@ class AssetPipelineController extends Controller {
 		$file = Asset::getFullPath($path);
 
 		if (Asset::isJavascript($path)) {
-			return $this->javascript($path);			
+			return $this->javascript($path);
 		}
 		
 		if (Asset::isStylesheet($path)) {
