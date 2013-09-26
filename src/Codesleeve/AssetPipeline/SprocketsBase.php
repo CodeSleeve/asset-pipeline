@@ -297,7 +297,7 @@ class SprocketsBase {
 
 		if (isset($this->app['url']))
 		{
-			return app('url')->asset($path, $this->config->get('secure'));
+			return str_replace(array('http:', 'https:'), app('url')->asset($path, $this->config->get('secure')));
 		}
 		
 		return $path;
