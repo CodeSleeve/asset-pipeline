@@ -45,4 +45,9 @@ class SprocketsBaseTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('app/assets/stylesheets/application.css', $outcome);
     }
 
+    public function testGetUrlPath()
+    {
+        $outcome = $this->object()->getUrlPath('application.css', 'stylesheets');
+        $this->assertEquals('/assets/application.css', $outcome);
+    }
 }
