@@ -133,4 +133,17 @@ class BaseDirective extends \Codesleeve\AssetPipeline\SprocketsBase {
 		return $param;
 	}
 
+	/**
+	 * [resolveRelativePaths description]
+	 * @param  [type] $directory [description]
+	 * @return [type]            [description]
+	 */
+	protected function resolveRelativePaths($directory)
+	{
+		$replaceWith = pathinfo($this->manifestFile, PATHINFO_DIRNAME);
+
+		$directory = $this->replaceRelativeDot($directory, $replaceWith);
+
+		return $this->basePath($directory);
+	}
 }

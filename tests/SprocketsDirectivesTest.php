@@ -120,14 +120,14 @@ class SprocketsDirectivesTest extends PHPUnit_Framework_TestCase
 
     public function testRequireTreeIncludesRecursively()
     {
-        $outcome = $this->object()->getFilesFrom(__DIR__ . '/fixtures/require_tree/manifest01.js');
+        $this->app["path.base"] = __DIR__ . '/fixtures/require_tree';
+
+        $outcome = $this->object()->getFilesFrom(__DIR__ . '/fixtures/require_tree/app/assets/javascripts/manifest01.js');
         $this->assertEquals(array(
-            'app/assets/javascripts/application.js',
-            'app/assets/javascripts/application1.js',
-            'app/assets/javascripts/application2.js',
-            'app/assets/javascripts/test.js',
-            'app/assets/javascripts/apps/cool.js',
-            'app/assets/javascripts/apps/test/whoa.html'
+            'app/assets/javascripts/manifest01.js',
+            'app/assets/javascripts/folder1/foobar1.js',
+            'app/assets/javascripts/folder2/app1.js',
+            'app/assets/javascripts/folder2/folder3/more depth.js'
         ), $outcome);
     }
 

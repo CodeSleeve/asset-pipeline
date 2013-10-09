@@ -120,9 +120,10 @@ class SprocketsBase {
 		sort($files);
     	sort($directories);
 
+		// bring in more paths from sub directories
 		$paths = array_merge($paths, $files);
-
 		foreach($directories as $directory) {
+			$directory = $this->stripFrontForwardSlash($directory);
 			$paths = array_merge($paths, $this->getFilesInFolder($directory, $recursive, $includes));
 		}
 
@@ -263,11 +264,11 @@ class SprocketsBase {
 	 * @param  [type] $filepath [description]
 	 * @return [type]           [description]
 	 */
-	protected function replaceRelativeDot($filepath)
+	protected function replaceRelativeDot($filepath, $withString = '')
 	{
 		$filepath = $this->normalizePath($filepath);
-		$filepath = preg_replace('/^\.\//', '', $filepath);
-		$filepath = preg_replace('/^\./', '', $filepath);
+		$filepath = preg_replace('/^\.\//', $withString, $filepath);
+		$filepath = preg_replace('/^\./', $withString, $filepath);
 		return $filepath;
 	}
 
@@ -314,4 +315,13 @@ class SprocketsBase {
 		return str_replace('\\', '/', $path);
 	}
 
+	/**
+	 * [stripFrontForwardSlash description]
+	 * @param  [type] $path [description]
+	 * @return [type]       [description]
+	 */
+	protected function stripFrontForwardSlash($path)
+	{
+		return preg_replace('/^\//', '', $path);
+	}
 }
