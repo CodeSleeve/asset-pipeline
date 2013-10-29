@@ -3,6 +3,13 @@ namespace Codesleeve\AssetPipeline;
 
 class AssetFilters
 {
+    /**
+     * filter categories
+     */
+    const JAVASCRIPTS = 'javascripts';
+    const STYLESHEETS = 'stylesheets';
+    const OTHERS = 'others';
+    
 	/**
 	 * [__construct description]
 	 * @param [type] $app
@@ -34,12 +41,16 @@ class AssetFilters
 
 	/**
 	 * [extensions description]
-	 * @return [type] [description]
+     * @param  [type] $category     [description]
+	 * @return [type]               [description]
 	 */
-	public function extensions()
+	public function extensions($category = null)
 	{
 		$this->registerAllFilters();
-		return array_keys($this->filters);
+        if (is_null($category)) {
+            return array_keys($this->filters);
+        }
+        return $this->getExtensionsOfCategory($category);
 	}
 
 	/**
@@ -92,7 +103,7 @@ class AssetFilters
 	}
 
 	/**
-	 * Removes an extesnion for you
+	 * Removes an extension for you
 	 * 
 	 * @param  [type] $extension [description]
 	 * @return [type]            [description]
@@ -120,4 +131,20 @@ class AssetFilters
 		$this->registered = true;
 		$this->events->fire('assets.register.filters', $this);
 	}
+    
+    /**
+     * get filter extensions of a given category
+     * 
+     * @param  string       $category     requested filter category
+     * @return array        returns the filter exensions
+     */
+    private function getExtensionsOfCategory($category)
+    {
+        $class = 'Codesleeve\\AssetPipeline\\Filters\\Impl\\'.
+            ucfirst($category).'TypeFilter';
+        $filter = new $class();
+        return array_values(
+            array_filter(array_keys($this->filters), array($filter, 'isOfType'))
+        );
+    }
 }
