@@ -52,8 +52,18 @@ class SprocketsRepositoryTest extends PHPUnit_Framework_TestCase
         $outcome = $this->object()->isJavascript('application.js1');
         $this->assertFalse($outcome);
     }
+    
+    public function testIsJavascriptOnCssAssetWithPath()
+    {
+        $this->app['config']->set(
+            'paths',
+            array('foo/assets' => 'stylesheets,javascripts')
+        );
+        $outcome = $this->object()->isJavascript('thirdparty/css/thirdparty.css');
+        $this->assertFalse($outcome);
+    }
 
-    public function testIsJavascriptWthPath()
+    public function testIsJavascriptWithPath()
     {
         $outcome = $this->object()->isJavascript('foobar/foobar.js');
         $this->assertTrue($outcome);
@@ -71,6 +81,16 @@ class SprocketsRepositoryTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($outcome);        
     }
 
+    public function testIsStylesheetOnJsAssetWithPath()
+    {
+        $this->app['config']->set(
+            'paths',
+            array('foo/assets' => 'stylesheets,javascripts')
+        );
+        $outcome = $this->object()->isStylesheet('thirdparty/js/thirdparty.js');
+        $this->assertFalse($outcome);
+    }
+    
     public function testStylesheetWithPath()
     {
         $outcome = $this->object()->isStylesheet('foobar\\foobar.css');
