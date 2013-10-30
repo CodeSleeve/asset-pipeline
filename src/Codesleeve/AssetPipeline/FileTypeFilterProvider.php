@@ -2,11 +2,12 @@
 
 namespace Codesleeve\AssetPipeline;
 
+use Codesleeve\AssetPipeline\Filters\FilterTypeProvider;
 use Codesleeve\AssetPipeline\Filters\Impl\JavascriptsTypeFilter;
 use Codesleeve\AssetPipeline\Filters\Impl\StylesheetsTypeFilter;
 use Codesleeve\AssetPipeline\Filters\Impl\OthersTypeFilter;
 
-final class FileTypeFilterProvider
+final class FileTypeFilterProvider implements FilterTypeProvider
 {
 	/**
 	 * constructor
@@ -20,22 +21,22 @@ final class FileTypeFilterProvider
 		$this->types = $this->config->get('asset-pipeline::filtertypes');
 		$this->filters = array(
 			AssetFilters::JAVASCRIPTS => new JavascriptsTypeFilter(
+                $this,
 				$this->types [AssetFilters::JAVASCRIPTS]
 			),
 			AssetFilters::STYLESHEETS => new StylesheetsTypeFilter(
+                $this,
 				$this->types [AssetFilters::STYLESHEETS]
 			),
 			AssetFilters::OTHERS =>  new OthersTypeFilter(
+                $this,
 				$this->types [AssetFilters::OTHERS]
 			),
 		);
 	}
 	
 	/**
-	 * get the filter of a given type
-	 * 
-	 * @param string $type
-	 * @return Codesleeve\AssetPipeline\Filters\FileTypeFilter
+	 * @inheritdoc
 	 */
 	public function getTypeFilter($type)
 	{

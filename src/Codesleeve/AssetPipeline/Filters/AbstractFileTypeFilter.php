@@ -4,6 +4,13 @@ namespace Codesleeve\AssetPipeline\Filters;
 
 abstract class AbstractFileTypeFilter implements FileTypeFilter
 {
+    /**
+     * filter type provider
+     * 
+     * @var FilterTypeProvider 
+     */
+    protected $provider;
+    
 	/**
 	 * default filtered file extensions
 	 * 
@@ -16,8 +23,9 @@ abstract class AbstractFileTypeFilter implements FileTypeFilter
 	 * 
 	 * @param array $extensions additional extensions to filter
 	 */
-	public function __construct($extensions = array())
+	public function __construct(FilterTypeProvider $provider, $extensions = array())
 	{
+        $this->provider = $provider;
 		$this->extensions = array_unique(
 			array_merge($this->extensions, $extensions)
 		);
