@@ -40,6 +40,21 @@ class SprocketsRepositoryTest extends PHPUnit_Framework_TestCase
     	$outcome = $this->object()->stylesheets('application');
         $this->assertEquals('.foobar2{color:black}', $outcome);
     }
+    
+    public function testStylesheetsProdUrlFiltered()
+    {
+    	$this->app['env'] = 'production';
+        $this->app['config']->set(
+            'paths',
+            array(
+                'app/assets/stylesheets',
+                'foo/assets' => 'stylesheets,javascripts'
+            )
+        );
+        $expected = ".filterurl{background:transparent url(/assets/foo/assets/thirdparty/images/background.png) no-repeat 50% 50%}@font-face{src:url(/assets/foo/assets/thirdparty/fonts/icons.eot);src:url(/assets/foo/assets/thirdparty/fonts/icons.eot?#iefix) format('embedded-opentype'), url(/assets/foo/assets/thirdparty/fonts/icons.woff) format('woff'), url(/assets/foo/assets/thirdparty/fonts/icons.ttf) format('truetype'), url(/assets/foo/assets/thirdparty/fonts/icons.svg#icons) format('svg')}";
+    	$outcome = $this->object()->stylesheets('application1');
+        $this->assertEquals($expected, $outcome);
+    }
 
     public function testIsJavascript()
     {
