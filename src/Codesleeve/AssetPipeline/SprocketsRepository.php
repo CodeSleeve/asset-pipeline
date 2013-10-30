@@ -73,7 +73,7 @@ class SprocketsRepository extends SprocketsTags {
 	{
 		try {
 			$file = $this->getFullPath($path, 'javascripts');
-            $extensions = $this->filters->extensions(AssetFilters::JAVASCRIPTS);
+			$extensions = $this->filters->extensions(AssetFilters::JAVASCRIPTS);
 			return $this->filters->hasValidExtension($file, $extensions) !== false;
 		} catch (\Exception $e) {
 
@@ -93,7 +93,7 @@ class SprocketsRepository extends SprocketsTags {
 	{
 		try {
 			$file = $this->getFullPath($path, 'stylesheets');
-            $extensions = $this->filters->extensions(AssetFilters::STYLESHEETS);
+			$extensions = $this->filters->extensions(AssetFilters::STYLESHEETS);
 			return $this->filters->hasValidExtension($file, $extensions) !== false;
 		} catch (\Exception $e) {
 			

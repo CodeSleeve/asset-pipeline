@@ -84,29 +84,29 @@ return array(
 			new Codesleeve\AssetPipeline\Filters\MinifyJS('production')
 		)
 	),
-    
-    /*
+	
+	/*
 	|--------------------------------------------------------------------------
 	| filter types
 	|--------------------------------------------------------------------------
 	|
 	| set file types to belong to an asset meta type category :
-    |   - javascripts
-    |   - stylesheets
-    |   - others
-    |
+	|   - javascripts
+	|   - stylesheets
+	|   - others
+	|
 	| NOTE: default filter types are automatically filtered
-    |
+	|
 	*/
-    'filtertypes' => array(
-        'javascripts' => array(            
-        ),        
-        'stylesheets' => array(            
-        ),        
-        'others' => array(            
-        ),
-    ),
-    
+	'filtertypes' => array(
+	    'javascripts' => array(            
+	    ),        
+	    'stylesheets' => array(            
+	    ),        
+	    'others' => array(            
+	    ),
+	),
+	
 	/*
 	|--------------------------------------------------------------------------
 	| cache
