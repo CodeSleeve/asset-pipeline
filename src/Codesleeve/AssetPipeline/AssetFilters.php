@@ -21,6 +21,7 @@ class AssetFilters
 		$this->config = $app['config'];
 		$this->events = $app['events'];
 		$this->filters = $this->config->get('asset-pipeline::filters');
+        $this->filtertypes = new FileTypeFilterProvider($app);
 		$this->registered = false;
 	}
 
@@ -139,10 +140,8 @@ class AssetFilters
      * @return array        returns the filter exensions
      */
     private function getExtensionsOfCategory($category)
-    {
-        $class = 'Codesleeve\\AssetPipeline\\Filters\\Impl\\'.
-            ucfirst($category).'TypeFilter';
-        $filter = new $class();
+    {        
+        $filter = $this->filtertypes->getTypeFilter($category);
         return array_values(
             array_filter(array_keys($this->filters), array($filter, 'isOfType'))
         );
