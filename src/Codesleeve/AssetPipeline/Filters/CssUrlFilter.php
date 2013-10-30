@@ -119,10 +119,11 @@ class CssUrlFilter implements FilterInterface
         $filepath = $this->normalizePath(
             str_replace($this->app['path.base'] . '/', '', $asset->getSourceRoot())
         );
-        foreach($this->paths as $path)
+        foreach($this->paths as $key => $path)
 		{
-			if (substr($filepath, 0, strlen($path)) == $path) {
-				$filepath = substr($filepath, strlen($path));
+            $compare = is_integer($key) ? $path : $key;
+			if (substr($filepath, 0, strlen($compare)) == $compare) {
+				$filepath = substr($filepath, strlen($compare));
 				continue;
 			}
 		}
