@@ -2,14 +2,15 @@
 
 namespace Codesleeve\AssetPipeline\Filters\Impl;
 
-use Codesleeve\AssetPipeline\Filters\FileTypeFilter;
+use Codesleeve\AssetPipeline\FileTypeFilterProvider;
+use Codesleeve\AssetPipeline\Filters\AbstractFileTypeFilter;
 
-class OthersTypeFilter implements FileTypeFilter
+final class OthersTypeFilter extends AbstractFileTypeFilter
 {
     /**
      * @inheritdoc
      */
-    public function isOfType($file)
+    protected function overrideableIsOfType($file)
     {
         $scriptfilter = new JavascriptsTypeFilter();
         $stylefilter = new StylesheetsTypeFilter();

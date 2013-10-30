@@ -2,16 +2,25 @@
 
 namespace Codesleeve\AssetPipeline\Filters\Impl;
 
-use Codesleeve\AssetPipeline\Filters\FileTypeFilter;
+use Codesleeve\AssetPipeline\Filters\AbstractFileTypeFilter;
 
-class JavascriptsTypeFilter implements FileTypeFilter
+class JavascriptsTypeFilter extends AbstractFileTypeFilter
 {
     /**
      * @inheritdoc
      */
-    public function isOfType($file)
+    protected $extensions = array(
+        '.min.js',
+        '.js',
+        '.js.coffee',
+        '.coffee',
+    );
+    
+    /**
+     * @inheritdoc
+     */
+    protected function overrideableIsOfType($file)
     {
-        $pattern = '/\.(js|coffee)$/';
-        return preg_match($pattern, $file);
+        return $this->defaultIsOfType($file);
     }
 }

@@ -2,16 +2,27 @@
 
 namespace Codesleeve\AssetPipeline\Filters\Impl;
 
-use Codesleeve\AssetPipeline\Filters\FileTypeFilter;
+use Codesleeve\AssetPipeline\Filters\AbstractFileTypeFilter;
 
-class StylesheetsTypeFilter implements FileTypeFilter
+class StylesheetsTypeFilter extends AbstractFileTypeFilter
 {
     /**
      * @inheritdoc
      */
-    public function isOfType($file)
+    protected $extensions = array(
+        '.min.css',
+        '.css',
+        '.css.less',
+        '.less',
+        '.css.scss',
+        '.scss',
+    );
+    
+    /**
+     * @inheritdoc
+     */
+    protected function overrideableIsOfType($file)
     {
-        $pattern = '/\.(css|less|scss)$/';
-        return preg_match($pattern, $file);
+        return $this->defaultIsOfType($file);
     }
 }
