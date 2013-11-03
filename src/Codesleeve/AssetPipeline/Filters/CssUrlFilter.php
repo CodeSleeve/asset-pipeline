@@ -16,13 +16,6 @@ class CssUrlFilter implements FilterInterface
     private $app;
 
     /**
-     * current path handler
-     * 
-     * @var string
-     */
-    private $path;
-
-    /**
      * environments
      * 
      * @var array
@@ -84,11 +77,11 @@ class CssUrlFilter implements FilterInterface
     {
         if ($this->shouldProcess()) {
             $content = $asset->getContent();
-            $this->path = $this->calculatePath($asset);
+            $path = $this->calculatePath($asset);
             $asset->setContent(
-                CssUtils::filterUrls($content, function($matches) {
+                CssUtils::filterUrls($content, function($matches) use ($path) {
                     $urlparts = explode('/', $matches['url']);
-                    $pathparts = explode('/', $this->path);
+                    $pathparts = explode('/', $path);
                     $filepath = array();
                     foreach ($urlparts as $urlpart) {
                         if ($urlpart == '..') {
@@ -104,7 +97,6 @@ class CssUrlFilter implements FilterInterface
                     );
                 })
             );
-            $this->path = '';
         }
     }
 
