@@ -541,6 +541,10 @@ but on production all these files would be concatenated under `application.css` 
    <link href="assets/application.css" rel="stylesheet" type="text/css">
 ```
 
+### How do I access a files that are pre-processed like `myfile.js.coffee`?
+
+Currently file names are not re-named so if you have a file called `myfile.js.coffee` then you would simply go to the url: `http://localhost:8000/assets/myfile.js.coffee`. This won't be the original coffeescript `myfile.js.coffee` but rather the javascript compiled version.
+
 ### Want to watch some videos?
   - [Introduction To Asset Pipeline](http://youtu.be/1iDB5BFsTw8)
   - [Handlebars Asset Package](http://youtu.be/IPgUUYb7SqU)
@@ -553,7 +557,7 @@ The codesleeve asset pipeline is open-source software licensed under the [MIT li
 
 Hopefully, you're satified with the pipeline. [You will be.](http://www.youtube.com/watch?v=I54wGOSg_BQ). But if you do see an problem then please file an issue.
 
-Also, I do accept pull-requests for bug fixes and please place in issues
+Also, before you do a pull request for a new feature please place in a proposal request. For bug fixes, please place in issues to track those.
 
 We use Travis CI for testing which you can see at: https://travis-ci.org/CodeSleeve/asset-pipeline
 
