@@ -4,6 +4,13 @@ namespace Codesleeve\AssetPipeline;
 class AssetFilters
 {
 	/**
+	 * filter categories
+	 */
+	const JAVASCRIPTS = 'javascripts';
+	const STYLESHEETS = 'stylesheets';
+	const OTHERS = 'others';
+	
+	/**
 	 * [__construct description]
 	 * @param [type] $app
 	 */
@@ -14,6 +21,7 @@ class AssetFilters
 		$this->config = $app['config'];
 		$this->events = $app['events'];
 		$this->filters = $this->config->get('asset-pipeline::filters');
+		$this->filtertypes = new FileTypeFilterProvider($app);
 		$this->registered = false;
 	}
 
@@ -34,12 +42,16 @@ class AssetFilters
 
 	/**
 	 * [extensions description]
-	 * @return [type] [description]
+	 * @param  [type] $category     [description]
+	 * @return [type]               [description]
 	 */
-	public function extensions()
+	public function extensions($category = null)
 	{
 		$this->registerAllFilters();
-		return array_keys($this->filters);
+		if (is_null($category)) {
+			return array_keys($this->filters);
+		}
+		return $this->getExtensionsOfCategory($category);
 	}
 
 	/**
@@ -50,7 +62,7 @@ class AssetFilters
 	 */
 	public function hasValidExtension($filepath, $extensions = array())
 	{
-        $extensions = ($extensions) ? $extensions : $this->extensions();
+		$extensions = ($extensions) ? $extensions : $this->extensions();
 		foreach($extensions as $extension) {
 			if (stripos(strrev($filepath), strrev($extension)) === 0) {
 				return $extension;
@@ -92,7 +104,7 @@ class AssetFilters
 	}
 
 	/**
-	 * Removes an extesnion for you
+	 * Removes an extension for you
 	 * 
 	 * @param  [type] $extension [description]
 	 * @return [type]            [description]
@@ -119,5 +131,19 @@ class AssetFilters
 
 		$this->registered = true;
 		$this->events->fire('assets.register.filters', $this);
+	}
+	
+	/**
+	 * get filter extensions of a given category
+	 * 
+	 * @param  string       $category     requested filter category
+	 * @return array        returns the filter exensions
+	 */
+	private function getExtensionsOfCategory($category)
+	{
+		$filter = $this->filtertypes->getTypeFilter($category);
+		return array_values(
+			array_filter(array_keys($this->filters), array($filter, 'isOfType'))
+		);
 	}
 }
