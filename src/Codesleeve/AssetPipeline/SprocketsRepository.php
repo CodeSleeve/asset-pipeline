@@ -73,7 +73,7 @@ class SprocketsRepository extends SprocketsTags {
 	{
 		try {
 			$file = $this->getFullPath($path, 'javascripts');
-			return $this->filters->hasValidExtension($path) !== false;
+			return $this->filters->hasValidExtension($path, array('js', 'coffee')) !== false;
 		} catch (\Exception $e) {
 
 		}
@@ -92,7 +92,7 @@ class SprocketsRepository extends SprocketsTags {
 	{
 		try {
 			$file = $this->getFullPath($path, 'stylesheets');
-			return $this->filters->hasValidExtension($path) !== false;
+			return $this->filters->hasValidExtension($path, array('css', 'less', 'scss')) !== false;
 		} catch (\Exception $e) {
 			
 		}
