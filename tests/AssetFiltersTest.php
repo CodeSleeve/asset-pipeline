@@ -37,4 +37,32 @@ class AssetFiltersTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($outcome, 'awesome');
 
     }
+    
+    public function testExtensions()
+    {
+        $expected = array_keys($this->app['config']->get('filters'));
+        $outcome = $this->object()->extensions();
+        $this->assertEquals($expected, $outcome);
+    }
+    
+    public function testExtensionsOnlyJavascripts()
+    {
+        $expected = array('.min.js', '.js', '.js.coffee');
+        $outcome = $this->object()->extensions(AssetFilters::JAVASCRIPTS);
+        $this->assertEquals($expected, $outcome);
+    }
+    
+    public function testExtensionsOnlyStylesheets()
+    {
+        $expected = array('.min.css', '.css', '.css.less', '.css.scss');
+        $outcome = $this->object()->extensions(AssetFilters::STYLESHEETS);
+        $this->assertEquals($expected, $outcome);
+    }
+    
+    public function testExtensionsOnlyOthers()
+    {
+        $expected = array('.html');
+        $outcome = $this->object()->extensions(AssetFilters::OTHERS);
+        $this->assertEquals($expected, $outcome);
+    }
 }
