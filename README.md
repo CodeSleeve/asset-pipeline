@@ -545,6 +545,11 @@ but on production all these files would be concatenated under `application.css` 
 
 Currently file names are not re-named so if you have a file called `myfile.js.coffee` then you would simply go to the url: `http://localhost:8000/assets/myfile.js.coffee`. This won't be the original coffeescript `myfile.js.coffee` but rather the javascript compiled version.
 
+
+### How do I order the files I want to include in my manifest?
+
+If you're not familar with Rails/Sprockets directives then take a gander a this [issue](https://github.com/CodeSleeve/asset-pipeline/issues/55).
+
 ### Want to watch some videos?
   - [Introduction To Asset Pipeline](http://youtu.be/1iDB5BFsTw8)
   - [Handlebars Asset Package](http://youtu.be/IPgUUYb7SqU)
