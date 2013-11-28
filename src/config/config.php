@@ -27,16 +27,10 @@ return array(
 	|
 	*/
 	'paths' => array(
-		'app/assets/fonts',
-		'app/assets/images',
 		'app/assets/javascripts',
 		'app/assets/stylesheets',
-		'lib/assets/fonts',
-		'lib/assets/images',
 		'lib/assets/javascripts',
 		'lib/assets/stylesheets',
-		'provider/assets/fonts',
-		'provider/assets/images',
 		'provider/assets/javascripts',
 		'provider/assets/stylesheets'
 	),
@@ -50,120 +44,89 @@ return array(
 	| here and we can also do any preprocessing on files with the extension if
 	| we choose to.
 	|
-	| NOTE: if you want to turn minification on for specific Laravel environments
-	|       you could do (the same applies for MinifyCSS)
-	|			new Codesleeve\AssetPipeline\Filters\MinifyJS(array('production', 'staging'))
 	*/
 	'filters' => array(
 		'.min.js' => array(
-			// don't minify files with this extension
-		),
-		'.min.css' => array(
-			new Codesleeve\AssetPipeline\Filters\CssRewrite
-			// don't minify files with this extension
+
 		),
 		'.js' => array(
-			new Codesleeve\AssetPipeline\Filters\MinifyJS('production')
+			new Codesleeve\AssetPipeline\Filters\MinifyJS(App::environment())
+		),
+		'.min.css' => array(
+
 		),
 		'.css' => array(
-			new Codesleeve\AssetPipeline\Filters\CssRewrite,
-			new Codesleeve\AssetPipeline\Filters\MinifyCSS('production')
+			new Codesleeve\AssetPipeline\Filters\URLRewrite,
+			new Codesleeve\AssetPipeline\Filters\MinifyCSS(App::environment())
 		),
 		'.js.coffee' => array(
-			new Codesleeve\AssetPipeline\Filters\CoffeeScriptFilter,
-			new Codesleeve\AssetPipeline\Filters\MinifyJS('production')
+			new Codesleeve\AssetPipeline\Filters\CoffeeScript,
+			new Codesleeve\AssetPipeline\Filters\MinifyJS(App::environment())
 		),
 		'.css.less' => array(
 			new Assetic\Filter\LessphpFilter,
-			new Codesleeve\AssetPipeline\Filters\CssRewrite,
-			new Codesleeve\AssetPipeline\Filters\MinifyCSS('production')
+			new Codesleeve\AssetPipeline\Filters\URLRewrite,
+			new Codesleeve\AssetPipeline\Filters\MinifyCSS(App::environment())
 		),
 		'.css.scss' => array(
 			new Assetic\Filter\ScssphpFilter,
-			new Codesleeve\AssetPipeline\Filters\CssRewrite,
-			new Codesleeve\AssetPipeline\Filters\MinifyCSS('production')
+			new Codesleeve\AssetPipeline\Filters\URLRewrite,
+			new Codesleeve\AssetPipeline\Filters\MinifyCSS(App::environment())
 		),
 		'.html' => array(
-			new Codesleeve\AssetPipeline\Filters\JSTFilter,
-			new Codesleeve\AssetPipeline\Filters\MinifyJS('production')
+			new Codesleeve\AssetPipeline\Filters\JST,
+			new Codesleeve\AssetPipeline\Filters\MinifyJS(App::environment())
 		)
 	),
-	
+
 	/*
 	|--------------------------------------------------------------------------
-	| filter types
+	| mimes
 	|--------------------------------------------------------------------------
 	|
-	| set file types to belong to an asset meta type category :
-	|   - javascripts
-	|   - stylesheets
-	|   - others
-	|
-	| NOTE: default filter types are automatically filtered
+	| In order to know which mime type to send back to the server
+	| we need to know if it is a javascript or stylesheet type. If
+	| the extension is not found below then we just return a regular
+	| download.
 	|
 	*/
-	'filtertypes' => array(
-	    'javascripts' => array(            
-	    ),        
-	    'stylesheets' => array(            
-	    ),        
-	    'others' => array(            
-	    ),
+	'mimes' => array(
+	    'javascripts' => '.js, .js.coffee, .min.js, .html',
+	    'stylesheets' => '.css, .css.less, .css.scss, .min.css',
 	),
-	
+
 	/*
 	|--------------------------------------------------------------------------
 	| cache
 	|--------------------------------------------------------------------------
 	|
-	| This allows us to turn on/off the asset cache if we choose to do so.
+	| By default we cache all assets. This will greatly increase performance; however,
+	| it is up to the developer to determine how the pipeline should tell Assetic to 
+	| cache assets. You can create your own CacheInterface if the filesystem cache is
+	| not up to your standards. See more in CacheInterface.php at
 	|
-	| When cache is set to true we will cache assets that are served. Caching 
-	| is probably a good idea to turn on in your production environment as it
-	| will dramatically improve speed. 
+	|    https://github.com/kriswallsmith/assetic/blob/master/src/Assetic/Cache
 	|
-	| NOTE: if your system admin wants to recache they can run
+	| If you want to turn off caching completely you can use this CacheInterface
 	|
-	|		php artisan assets:clean
-	|
-	| When set to null, cache will be true whenever laravel environment is
-	| set to 'production' but false otherwise
+	|	'cache' => new Codesleeve\AssetPipeline\Filters\FilesNotCached,
 	|
 	*/
-	'cache' => null,
-
-	/*
-	|--------------------------------------------------------------------------
-	| client_cache (304 redirects)
-	|--------------------------------------------------------------------------
-	|
-	| This allows us to turn on/off client side caching 
-	|
-	| When true, files that have not been updated since the last time the
-	| user fetched the file will receive a 304 redirect instead of a 200
-	| and modern browsers will know to use the locally cached file instead
-	| of wasting bandwidth traffic to fetch the new file
-	|
-	| When this is set to null, then client_cache will be turned on.
-	|
-	*/
-	'client_cache' => null,
-
+	//'cache' => new Assetic\Cache\FilesystemCache(storage_path() . '/cache/asset-pipeline'),
+	'cache' => new Codesleeve\AssetPipeline\Filters\FilesNotCached,
+	
 	/*
 	|--------------------------------------------------------------------------
 	| concat
 	|--------------------------------------------------------------------------
 	|
-	| This allows us to turn on/off the asset concatenation
-	|
-	| When concat is set to false javascript_link_tag will just be a bunch of
-	| different script tags but if it is true we will just get 1 single 
-	| manifest file that has all the javascript from all the required files
-	|
-	| When set to null, concat will be true whenever laravel environment is 
-	| set to 'production' but false otherwise
+	| This allows us to turn on the asset concatenation for specific
+	| environments listed below. You can turn off local environment if
+	| you are trying to troubleshoot, but you will likely have better
+	| performance if you leave concat on (except if you are doing a lot
+	| of minification stuff on each page refresh)
 	|
 	*/
-	'concat' => null
+	'concat' => array('production', 'local')
 
 );

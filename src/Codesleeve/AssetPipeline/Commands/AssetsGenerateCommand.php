@@ -4,8 +4,8 @@ use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 
-class AssetsGenerateCommand extends Command {
-
+class AssetsGenerateCommand extends Command
+{
     /**
      * The console command name.
      *

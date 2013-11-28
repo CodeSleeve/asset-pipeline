@@ -1,13 +1,11 @@
-<?php
-
-namespace Codesleeve\AssetPipeline;
+<?php namespace Codesleeve\AssetPipeline;
 
 use Illuminate\Support\Facades\App;
 use Illuminate\Routing\Controllers\Controller;
 use Illuminate\Support\Facades\Response;
 
-class AssetPipelineController extends Controller {
-
+class AssetPipelineController extends Controller
+{
 	/**
 	 * Returns a file in the assets directory
 	 * 
@@ -15,18 +13,19 @@ class AssetPipelineController extends Controller {
 	 */
 	public function file($path)
 	{
-		$file = Asset::getFullPath($path);
-
-		if (Asset::isJavascript($path)) {
-			return $this->javascript($path);			
+		$absolutePath = Asset::isJavascript($path);
+		if ($absolutePath) {
+			return $this->javascript($absolutePath);
 		}
-		
-		if (Asset::isStylesheet($path)) {
-			return $this->stylesheet($path);
-		} 
 
-		if (file_exists($file)) {
-			return Response::download($file);
+		$absolutePath = Asset::isStylesheet($path);
+		if ($absolutePath) {
+			return $this->stylesheet($absolutePath);
+		}
+
+		$absolutePath = Asset::isFile($path);
+		if ($absolutePath) {
+			return Response::download($absolutePath);
 		}
 
 		App::abort(404);
@@ -39,15 +38,9 @@ class AssetPipelineController extends Controller {
 	 */
 	private function javascript($path)
 	{
-		$response = Response::make('', 304);
-
-		if (!AssetCache::hasValidEtag($path)) {
-			$response = Response::make(AssetCache::javascripts($path), 200);
-		}
+		$response = Response::make(Asset::javascript($path), 200);
 
 		$response->header('Content-Type', 'application/javascript');
-    	
-    	$response->setEtag(AssetCache::getEtag($path));
 
 		return $response;
 	}
@@ -59,15 +52,9 @@ class AssetPipelineController extends Controller {
 	 */
 	private function stylesheet($path)
 	{
-		$response = Response::make('', 304);
-
-		if (!AssetCache::hasValidEtag($path)) {
-			$response = Response::make(AssetCache::stylesheets($path), 200);
-		}
+		$response = Response::make(Asset::stylesheet($path), 200);
 
 		$response->header('Content-Type', 'text/css');
-
-    	$response->setEtag(AssetCache::getEtag($path));			
 
 		return $response;
 	}

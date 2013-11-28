@@ -1,5 +1,4 @@
-<?php
-namespace Codesleeve\AssetPipeline;
+<?php namespace Codesleeve\AssetPipeline;
 
 use Illuminate\Support\Facades\Facade;
 

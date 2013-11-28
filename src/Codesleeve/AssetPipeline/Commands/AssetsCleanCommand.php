@@ -4,8 +4,8 @@ use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 
-class AssetsCleanCommand extends Command {
-
+class AssetsCleanCommand extends Command
+{
     /**
      * The console command name.
      *

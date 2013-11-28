@@ -1,28 +1,21 @@
-<?php
- 
-namespace Codesleeve\AssetPipeline\Filters;
+<?php namespace Codesleeve\AssetPipeline\Filters;
 
 use Assetic\Asset\AssetInterface;
 use Assetic\Filter\FilterInterface;
 use CoffeeScript\Compiler;
 
-class CoffeeScriptFilter implements FilterInterface
+class CoffeeScript implements FilterInterface
 {
-	/**
-	 * [filterLoad description]
-	 * @param  AssetInterface $asset [description]
-	 * @return [type]                [description]
-	 */
+    public function __construct()
+    {
+
+    }
+
     public function filterLoad(AssetInterface $asset)
     {
 
     }
  
- 	/**
- 	 * [filterDump description]
- 	 * @param  AssetInterface $asset [description]
- 	 * @return [type]                [description]
- 	 */
     public function filterDump(AssetInterface $asset)
     {       
         $content = $asset->getContent();
