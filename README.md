@@ -110,6 +110,22 @@ This is how you control your dependencies.
 
     This brings in the manifest file itself as an asset. This is already done on `require_tree .` if the manifest file is within that directory. Where you might want to use this is when you have a manifest file that does like `require_tree subdir/`
 
+## Configuration
+
+... include the configuration stuff here ...
+
+## FAQ
+
+### Can I do Javascript Templates (JST)
+
+
+### Can I do images, fonts, and other files?
+
+
+### Can I do conditional includes?
+
+
+
 ## License
 
 The codesleeve asset pipeline is open-source software licensed under the [MIT license](http://opensource.org/licenses/MIT)
