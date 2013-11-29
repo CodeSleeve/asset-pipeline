@@ -190,14 +190,15 @@ In order for a file to be included with sprockets, the extension needs to be lis
 In order to know which mime type to send back to the server we need to know if it is a javascript or stylesheet type. If the extension is not found below then we just return a regular download. You should include all extensions in your `filters` here or you will likely experience unexpected behavior. This should allow developers to mix javascript and css files in the same directory.
 
 ### cache
+
+```php
   'cache' => new Assetic\Cache\FilesystemCache(storage_path() . '/cache/asset-pipeline'),
+```
 
 By default we cache all assets. This will greatly increase performance. However, it is up to the developer to determine how the pipeline should tell Assetic to cache assets. 
 
-You can create your own [CacheInterface](https://github.com/kriswallsmith/assetic/blob/master/src/Assetic/Cache) if you want to handle caching differently.
+You can create your own [CacheInterface](https://github.com/kriswallsmith/assetic/blob/master/src/Assetic/Cache) if you want to handle caching differently. If you want to turn off caching completely you can use a CacheInterface that comes already bundled with asset pipeline `Codesleeve\AssetPipeline\Filters\FilesNotCached`
 
-If you want to turn off caching completely you can use a cacheinterface that comes with asset pipeline `Codesleeve\AssetPipeline\Filters\FilesNotCached`
-  
 ### concat
 
 ```php
