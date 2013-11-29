@@ -219,7 +219,7 @@ Files that are not in the `mime` and `filters` array of our configuration will b
 
 ### Can I do conditional includes?
 
-There is no mechanism to conditionally include assets via the asset pipeline. One technique  I use is to namespace my html page in my layout view. I create a view share that always contains the current route for me.
+There is no built-in mechanism to conditionally include assets via the asset pipeline. One technique  I use is to namespace my html page in my layout view. I create a view share that always contains the current route for me.
 
 ```html
   <html class="<?= $currentRoute ?>" lang="en">
