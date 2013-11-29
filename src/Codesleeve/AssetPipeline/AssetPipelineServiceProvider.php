@@ -36,7 +36,12 @@ class AssetPipelineServiceProvider extends ServiceProvider {
 			$parser = new SprocketsParser($config);
 			$generator = new SprocketsGenerator($config);
 
-			return new AssetPipeline($parser, $generator);
+			$pipeline = new AssetPipeline($parser, $generator);
+
+			// let other packages hook into pipeline configuration
+			$app['events']->fire('asset.pipeline.started', $pipeline);
+
+			return $pipeline;
 		});
 	}
 

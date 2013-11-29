@@ -116,4 +116,25 @@ class AssetPipeline
     {
         return $this->isFile($path);
     }
+
+    /**
+     * Get the config array
+     * 
+     * @return array
+     */
+    public function getConfig()
+    {
+        return $this->parser->config;
+    }
+
+    /**
+     * Set the config array
+     * 
+     * @param array $config
+     */
+    public function setConfig(array $config)
+    {
+        $this->parser->config = $config;
+        $this->generator->config = $config;
+    }
 }
