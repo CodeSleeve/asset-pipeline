@@ -39,7 +39,7 @@ class AssetPipelineServiceProvider extends ServiceProvider {
 			$pipeline = new AssetPipeline($parser, $generator);
 
 			// let other packages hook into pipeline configuration
-			$app['events']->fire('asset.pipeline.started', $pipeline);
+			$app['events']->fire('asset.pipeline.boot', $pipeline);
 
 			return $pipeline;
 		});

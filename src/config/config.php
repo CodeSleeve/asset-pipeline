@@ -91,8 +91,8 @@ return array(
 	|
 	*/
 	'mimes' => array(
-	    'javascripts' => '.js, .js.coffee, .min.js, .html',
-	    'stylesheets' => '.css, .css.less, .css.scss, .min.css',
+	    'javascripts' => array('.js', '.js.coffee', '.min.js', '.html'),
+	    'stylesheets' => array('.css', '.css.less', '.css.scss', '.min.css'),
 	),
 
 	/*

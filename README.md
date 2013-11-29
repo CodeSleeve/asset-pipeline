@@ -182,8 +182,8 @@ In order for a file to be included with sprockets, the extension needs to be lis
 
 ```php
   'mimes' => array(
-      'javascripts' => '.js, .js.coffee, .min.js, .html',
-      'stylesheets' => '.css, .css.less, .css.scss, .min.css',
+      'javascripts' => array('.js', '.js.coffee', '.min.js', '.html'),
+      'stylesheets' => array('.css', '.css.less', '.css.scss', '.min.css'),
   ),
 ```
 
@@ -208,6 +208,29 @@ You can create your own [CacheInterface](https://github.com/kriswallsmith/asseti
 This allows us to turn on the asset concatenation for the specific environments listed. I recommend keeping this turned on except if you are trying to troubleshoot an javascript issue.
 
 ## FAQ
+
+### Can I modify the asset pipeline config at runtime?
+
+You can listen to `asset.pipeline.boot` event and this will pass the pipeline object to you for any changes you might want to make.
+
+```php
+  Event::listen('asset.pipeline.boot', function($pipeline) {
+    $config = $pipeline->getConfig();
+
+    $config['paths'][] = 'some/special/javascripts';
+    $config['paths'][] = 'some/special/stylesheets';
+
+    $config['mimes']['javascripts'][] = '.foo.bar';
+
+    $config['filters']['.foo.bar'] = array(
+      new My\Special\Filter
+    );
+
+    $pipeline->setConfig($config);
+  });
+```
+
+This code registers two new paths and creates a new extension called .foo.bar that is filtered with `My\Special\Filter`. Using the event listener allows us to extend the functionality of the asset pipeline in separate packages.
 
 ### Can I do Javascript Templates (JST)
 
