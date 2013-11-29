@@ -2,7 +2,7 @@
 
 For those of you familar with Rails asset pipeline and sprockets, you will hopefully feel right at home using this package.
 
-For those of you unfamilar with Rails asset pipeline and sprockets, I suggest reading [introduction to directives](#intro_to_directives).
+For those of you unfamilar with Rails asset pipeline and sprockets, I suggest reading [introduction to directives](#introduction-to-directives).
 
 ## Installation
 
@@ -78,7 +78,7 @@ and assuming `concat => array('production')` and we are on a production environm
 
 ## Introduction to Directives
 
-The next step is to open up your manifest file. Let's use the default at `app/assets/javascripts/application.js`.
+Let's open up the default javascript manifest file `app/assets/javascripts/application.js`. You should see something like
 
 ```javascript
 
@@ -88,11 +88,11 @@ The next step is to open up your manifest file. Let's use the default at `app/as
 
 ```
 
-This will bring in `/providers/assets/javascripts/jquery.min.js` and all files and folders within in `/app/assets/javascripts`
+This will bring in the file  `/providers/assets/javascripts/jquery.min.js` and also all files and sub directories within in `/app/assets/javascripts` folder.
 
-This is how you control your dependencies.
+This is how you control your dependencies. Simple right?
 
-#### You can use the following directives.
+#### Here is a list of directives you can use
 
   - **require** filename
  
@@ -112,19 +112,142 @@ This is how you control your dependencies.
 
 ## Configuration
 
-... include the configuration stuff here ...
+### routing array
+
+```php
+  'routing' => array(
+    'prefix' => '/assets'
+  ),
+```
+
+Sprockets parser also uses this to help generate the correct web path for our assets. It is also used by the asset pipeline for routing.
+
+
+### paths
+
+```php
+  'paths' => array(
+    'app/assets/javascripts',
+    'app/assets/stylesheets',
+    'lib/assets/javascripts',
+    'lib/assets/stylesheets',
+    'provider/assets/javascripts',
+    'provider/assets/stylesheets'
+  ),
+```
+  
+These are the directories we search for files in. You can think of this like PATH environment variable on your OS. We search for files in the path order listed below.
+
+### filters
+
+```php
+  'filters' => array(
+    '.min.js' => array(
+
+    ),
+    '.js' => array(
+      new Codesleeve\AssetPipeline\Filters\MinifyJS(App::environment())
+    ),
+    '.min.css' => array(
+
+    ),
+    '.css' => array(
+      new Codesleeve\AssetPipeline\Filters\URLRewrite,
+      new Codesleeve\AssetPipeline\Filters\MinifyCSS(App::environment())
+    ),
+    '.js.coffee' => array(
+      new Codesleeve\AssetPipeline\Filters\CoffeeScript,
+      new Codesleeve\AssetPipeline\Filters\MinifyJS(App::environment())
+    ),
+    '.css.less' => array(
+      new Assetic\Filter\LessphpFilter,
+      new Codesleeve\AssetPipeline\Filters\URLRewrite,
+      new Codesleeve\AssetPipeline\Filters\MinifyCSS(App::environment())
+    ),
+    '.css.scss' => array(
+      new Assetic\Filter\ScssphpFilter,
+      new Codesleeve\AssetPipeline\Filters\URLRewrite,
+      new Codesleeve\AssetPipeline\Filters\MinifyCSS(App::environment())
+    ),
+    '.html' => array(
+      new Codesleeve\AssetPipeline\Filters\JST,
+      new Codesleeve\AssetPipeline\Filters\MinifyJS(App::environment())
+    )
+  ),
+```
+
+In order for a file to be included with sprockets, the extension needs to be listed here. We can also preprocess those extension types with Assetic Filters.
+
+### mimes
+
+```php
+  'mimes' => array(
+      'javascripts' => '.js, .js.coffee, .min.js, .html',
+      'stylesheets' => '.css, .css.less, .css.scss, .min.css',
+  ),
+```
+
+In order to know which mime type to send back to the server we need to know if it is a javascript or stylesheet type. If the extension is not found below then we just return a regular download. You should include all extensions in your `filters` here or you will likely experience unexpected behavior. This should allow developers to mix javascript and css files in the same directory.
+
+### cache
+  'cache' => new Assetic\Cache\FilesystemCache(storage_path() . '/cache/asset-pipeline'),
+
+By default we cache all assets. This will greatly increase performance. However, it is up to the developer to determine how the pipeline should tell Assetic to cache assets. 
+
+You can create your own [CacheInterface](https://github.com/kriswallsmith/assetic/blob/master/src/Assetic/Cache) if you want to handle caching differently.
+
+If you want to turn off caching completely you can use a cacheinterface that comes with asset pipeline `Codesleeve\AssetPipeline\Filters\FilesNotCached`
+  
+### concat
+
+```php
+  'concat' => array('production', 'local')
+```
+
+This allows us to turn on the asset concatenation for the specific environments listed. I recommend keeping this turned on except if you are trying to troubleshoot an javascript issue.
 
 ## FAQ
 
 ### Can I do Javascript Templates (JST)
 
+Yes. Out of the box you can use .html files somewhere within your `app/assets/javascripts` folder and you will be given a JST array on your front end javascript that contains the html page. If you want a different extension (i.e. jst.hbs) you will need to bring that in.
 
 ### Can I do images, fonts, and other files?
 
+Files that are not in the `mime` and `filters` array of our configuration will be treated as regular files. You can still access them via web urls, but they will trigger a `Response::download` instead of being served as javascript or stylesheet files.
 
 ### Can I do conditional includes?
 
+There is no mechanism to conditionally include assets via the asset pipeline. One technique  I use is to namespace my html page in my layout view. I create a view share that always contains the current route for me.
 
+```html
+  <html class="<?= $currentRoute ?>" lang="en">
+```
+
+This allows me to prefix my css with the route. So if I only wanted a blue background on the home page I could do something like this.
+
+```css
+  html.home.index body {
+    background-color: blue;
+  }
+```
+
+If you are trying to conditionally include javascript on a page, I recommend the use of bindings. Create specific scripts that will only be run when certain data attributes or class names are found.
+
+```js
+  $('[data-foo]').each(function()
+  {
+    console.log('only run when we find data-foo="" attribute');
+  });
+```
+
+And so if we have an element like this it will run
+
+```html
+  <a data-foo="bar" href="#">Hey there</a>
+```
+
+If you find yourself having issues with conditionally including assets your best bet may be to break apart your manifest files into sections that make sense for your application. For example, if your application is silo'ed into admin section and user section then it probably makes sense to have a separate manifest file for each section.
 
 ## License
 
