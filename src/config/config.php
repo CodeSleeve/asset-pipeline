@@ -53,7 +53,7 @@ return array(
 			new Codesleeve\AssetPipeline\Filters\MinifyJS(App::environment())
 		),
 		'.min.css' => array(
-
+			new Codesleeve\AssetPipeline\Filters\URLRewrite
 		),
 		'.css' => array(
 			new Codesleeve\AssetPipeline\Filters\URLRewrite,
