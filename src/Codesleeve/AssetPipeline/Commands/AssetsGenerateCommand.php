@@ -37,8 +37,8 @@ class AssetsGenerateCommand extends Command
         $this->xcopy(realpath($structure), realpath($base));
 
         $this->line('');
-        $this->line('Finished. Have a nice day! :)');
-        $this->line('                                                                 - Codesleeve Team');
+        $this->line('Finished. Have a nice day!');
+        $this->line('         - Codesleeve Team');
     }
 
     private function xcopy($source, $dest)
