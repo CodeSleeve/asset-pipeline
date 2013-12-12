@@ -129,4 +129,23 @@ return array(
 	*/
 	'concat' => array('production', 'local')
 
+	/*
+	|--------------------------------------------------------------------------
+	| directives
+	|--------------------------------------------------------------------------
+	|
+	| This allows us to turn completely control which directives are used
+	| for the sprockets parser that asset pipeline uses to parse manifest files.
+	|
+	| It is rrobably safe just to leave this alone unless you are familar with 
+	| what is actually going on here.
+	|
+	*/
+	'directives' => array(
+		'require ' => new Codesleeve\Sprockets\Directives\RequireFile,
+		'require_directory' => new Codesleeve\Sprockets\Directives\RequireDirectory,
+		'require_tree' => new Codesleeve\Sprockets\Directives\RequireTree,
+		'require_self' => new Codesleeve\Sprockets\Directives\RequireSelf,
+	),
+
 );
