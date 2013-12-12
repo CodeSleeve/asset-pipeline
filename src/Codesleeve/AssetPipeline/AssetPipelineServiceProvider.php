@@ -30,7 +30,6 @@ class AssetPipelineServiceProvider extends ServiceProvider {
 		{
 			$config = $app->config->get('asset-pipeline::config');
 			$config['base_path'] = base_path();
-			$config['project_path'] = __DIR__;
 			$config['environment'] = $app['env'];
 			
 			$parser = new SprocketsParser($config);
