@@ -107,13 +107,12 @@ return array(
 	|
 	|    https://github.com/kriswallsmith/assetic/blob/master/src/Assetic/Cache
 	|
-	| If you want to turn off caching completely you can use this CacheInterface
+	| If you want to turn on caching you could use this CacheInterface
 	|
-	|	'cache' => new Codesleeve\AssetPipeline\Filters\FilesNotCached,
+	|	'cache' => new Assetic\Cache\FilesystemCache(storage_path() . '/cache/asset-pipeline'),
 	|
 	*/
-	'cache' => new Assetic\Cache\FilesystemCache(storage_path() . '/cache/asset-pipeline'),
-	//'cache' => new Codesleeve\AssetPipeline\Filters\FilesNotCached,
+	'cache' => new Codesleeve\AssetPipeline\Filters\FilesNotCached,
 
 	/*
 	|--------------------------------------------------------------------------
