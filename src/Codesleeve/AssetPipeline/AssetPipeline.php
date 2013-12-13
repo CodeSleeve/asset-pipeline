@@ -30,9 +30,9 @@ class AssetPipeline
             $webPaths[] = $this->parser->absolutePathToWebPath($absolutePath);
         }
 
-        $interceptor = $this->getConfig()['javascript_include_tag'];
+        $composer = $this->getConfig()['javascript_include_tag'];
 
-        return $interceptor->process($webPaths, $absolutePaths, $attributes);
+        return $composer->process($webPaths, $absolutePaths, $attributes);
     }
 
     /**
@@ -52,9 +52,9 @@ class AssetPipeline
             $webPaths[] = $this->parser->absolutePathToWebPath($absolutePath);
         }
 
-        $interceptor = $this->getConfig()['stylesheet_link_tag'];
+        $composer = $this->getConfig()['stylesheet_link_tag'];
 
-        return $interceptor->process($webPaths, $absolutePaths, $attributes);
+        return $composer->process($webPaths, $absolutePaths, $attributes);
     }
 
     /**
