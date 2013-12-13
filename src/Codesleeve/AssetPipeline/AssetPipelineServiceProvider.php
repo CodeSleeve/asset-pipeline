@@ -1,6 +1,8 @@
 <?php namespace Codesleeve\AssetPipeline;
 
 use Illuminate\Support\ServiceProvider;
+use Codesleeve\Sprockets\SprocketsParser;
+use Codesleeve\Sprockets\SprocketsGenerator;
 
 class AssetPipelineServiceProvider extends ServiceProvider {
 
@@ -22,28 +24,32 @@ class AssetPipelineServiceProvider extends ServiceProvider {
 
 		include __DIR__.'/../../routes.php';
 		
-		include_once __DIR__.'/SprocketsGlobalHelpers.php';
+		include_once __DIR__.'/AssetPipelineGlobalHelpers.php';
 
-		$this->app['asset'] = $this->app->share(function($app) {
-			return new SprocketsRepository($app);
+		$this->app['asset'] = $this->app->share(function($app)
+		{
+			$config = $app->config->get('asset-pipeline::config');
+			$config['base_path'] = base_path();
+			$config['environment'] = $app['env'];
+			
+			$parser = new SprocketsParser($config);
+			$generator = new SprocketsGenerator($config);
+
+			$pipeline = new AssetPipeline($parser, $generator);
+
+			// let other packages hook into pipeline configuration
+			$app['events']->fire('asset.pipeline.boot', $pipeline);
+
+
+			return $pipeline;
 		});
-
-		$this->app['asset-cache'] = $this->app->share(function($app) {
-			return new AssetCacheRepository($app);
-		});
-
+	
 		$this->app['assets.generate'] = $this->app->share(function($app)
-		{
-			return new Commands\AssetsGenerateCommand;
-		});
-
-		$this->app['assets.clean'] = $this->app->share(function($app)
-		{
-			return new Commands\AssetsCleanCommand;
-		});
+        {
+            return new Commands\AssetsGenerateCommand;
+        });
 
 		$this->commands('assets.generate');
-		$this->commands('assets.clean');
 	}
 
 	/**

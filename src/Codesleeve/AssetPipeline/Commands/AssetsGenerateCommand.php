@@ -4,8 +4,8 @@ use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 
-class AssetsGenerateCommand extends Command {
-
+class AssetsGenerateCommand extends Command
+{
     /**
      * The console command name.
      *
@@ -37,8 +37,8 @@ class AssetsGenerateCommand extends Command {
         $this->xcopy(realpath($structure), realpath($base));
 
         $this->line('');
-        $this->line('Finished. Have a nice day! :)');
-        $this->line('                                                                 - Codesleeve Team');
+        $this->line('Finished. Have a nice day!');
+        $this->line('         - Codesleeve Team');
     }
 
     private function xcopy($source, $dest)
