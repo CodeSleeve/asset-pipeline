@@ -112,8 +112,7 @@ return array(
 	|	'cache' => new Codesleeve\AssetPipeline\Filters\FilesNotCached,
 	|
 	*/
-	//'cache' => new Assetic\Cache\FilesystemCache(storage_path() . '/cache/asset-pipeline'),
-	'cache' => new Codesleeve\AssetPipeline\Filters\FilesNotCached,
+	'cache' => new Assetic\Cache\FilesystemCache(storage_path() . '/cache/asset-pipeline'),
 	
 	/*
 	|--------------------------------------------------------------------------
@@ -137,7 +136,7 @@ return array(
 	| This allows us to turn completely control which directives are used
 	| for the sprockets parser that asset pipeline uses to parse manifest files.
 	|
-	| It is rrobably safe just to leave this alone unless you are familar with 
+	| It is probably safe just to leave this alone unless you are familar with 
 	| what is actually going on here.
 	|
 	*/
