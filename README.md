@@ -1,6 +1,6 @@
 ### NEW Asset Pipeline for 4.1
 
-The asset pipeline has been refactored to be smarter, cleaner, better. It also has breaking changes (because things work a little differently). For example, going forward we are only supporting Laravel 4.1. So please use previous v1.2 tag if you need to back go the way things were before.
+The asset pipeline has been refactored to be smarter, cleaner, better. It also has breaking changes (because things work a little differently). So if you have existing projects that were pointing to dev-master, you should probably just use tag v1.2
 
 ## What is Asset Pipeline?
 
