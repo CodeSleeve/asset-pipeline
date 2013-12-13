@@ -17,7 +17,7 @@ It might look something like:
 ```php
   "require": {
     "laravel/framework": "4.1.*",
-    "codesleeve/asset-pipeline": "v1.4"
+    "codesleeve/asset-pipeline": "dev-master"
   }
 ```
 
