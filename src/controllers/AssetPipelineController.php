@@ -1,8 +1,6 @@
 <?php namespace Codesleeve\AssetPipeline;
 
-use Illuminate\Support\Facades\App;
-use Illuminate\Routing\Controllers\Controller;
-use Illuminate\Support\Facades\Response;
+use App, Response, Controller;
 
 class AssetPipelineController extends Controller
 {
