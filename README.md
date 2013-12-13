@@ -1,6 +1,6 @@
 ### NEW Asset Pipeline for 4.1
 
-The asset pipeline has been refactored to be smarter, cleaner, better. It also has breaking changes (because things work a little differently). So if you have existing projects that were pointing to dev-master, you should probably just use tag v1.2
+The asset pipeline has been refactored to be smarter, cleaner, better. It also has breaking changes (because things work a little differently). So if you have existing projects that were pointing to dev-master, you should probably just use tag v1.3
 
 ## What is Asset Pipeline?
 
@@ -17,7 +17,7 @@ It might look something like:
 ```php
   "require": {
     "laravel/framework": "4.1.*",
-    "codesleeve/asset-pipeline": "v1.3"
+    "codesleeve/asset-pipeline": "v1.4"
   }
 ```
 
