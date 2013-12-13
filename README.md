@@ -1,3 +1,7 @@
+### NEW Asset Pipeline for 4.1
+
+Going forward we are only supporting Laravel 4.1. The asset pipeline has been refactored to be smarter, cleaner, better. It also has breaking changes (because things work a little differently). So please use previous v1.2 tag if you need to back go the way things were before.
+
 ## What is Asset Pipeline?
 
 For those of you familar with Rails asset pipeline and sprockets, you will hopefully feel right at home using this package.
@@ -12,8 +16,8 @@ It might look something like:
 
 ```php
   "require": {
-    "laravel/framework": "4.0.*",
-    "codesleeve/asset-pipeline": "dev-refactor"
+    "laravel/framework": "4.1.*",
+    "codesleeve/asset-pipeline": "v1.3"
   }
 ```
 
