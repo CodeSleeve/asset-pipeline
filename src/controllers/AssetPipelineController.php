@@ -1,6 +1,7 @@
 <?php namespace Codesleeve\AssetPipeline;
 
 use App, Response, Controller;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class AssetPipelineController extends Controller
 {
@@ -23,7 +24,7 @@ class AssetPipelineController extends Controller
 
 		$absolutePath = Asset::isFile($path);
 		if ($absolutePath) {
-			return Response::download($absolutePath);
+			return BinaryFileResponse($absolutePath, 200);
 		}
 
 		App::abort(404);
