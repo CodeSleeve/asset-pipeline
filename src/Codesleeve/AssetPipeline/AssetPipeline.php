@@ -23,8 +23,6 @@ class AssetPipeline
     public function javascriptIncludeTag($filename, $attributes)
     {
         $webPaths = array();
-
-        $attributesText = $this->attributesArrayToText($attributes);
         $absolutePaths = $this->parser->javascriptFiles($filename);
 
         foreach ($absolutePaths as $absolutePath)
@@ -32,9 +30,9 @@ class AssetPipeline
             $webPaths[] = $this->parser->absolutePathToWebPath($absolutePath);
         }
 
-        $closure = $this->getConfig()['javascript_include_tag'];
+        $interceptor = $this->getConfig()['javascript_include_tag'];
 
-        return $closure($webPaths, $attributesText, $absolutePaths, $attributes);
+        return $interceptor->process($webPaths, $absolutePaths, $attributes);
     }
 
     /**
@@ -47,8 +45,6 @@ class AssetPipeline
     public function stylesheetLinkTag($filename, $attributes)
     {
         $webPaths = array();
-
-        $attributesText = $this->attributesArrayToText($attributes);
         $absolutePaths = $this->parser->stylesheetFiles($filename);
 
         foreach ($absolutePaths as $absolutePath)
@@ -56,9 +52,9 @@ class AssetPipeline
             $webPaths[] = $this->parser->absolutePathToWebPath($absolutePath);
         }
 
-        $closure = $this->getConfig()['stylesheet_link_tag'];
+        $interceptor = $this->getConfig()['stylesheet_link_tag'];
 
-        return $closure($webPaths, $attributesText, $absolutePaths, $attributes);
+        return $interceptor->process($webPaths, $absolutePaths, $attributes);
     }
 
     /**
@@ -148,24 +144,5 @@ class AssetPipeline
     {
         $this->parser->config = $config;
         $this->generator->config = $config;
-    }
-
-    /**
-     * Helper function to create a string of text for the array
-     * of attributes that are passed in
-     * 
-     * @param  array $attributes
-     * @return string
-     */
-    protected function attributesArrayToText($attributes)
-    {
-        $text = "";
-
-        foreach ($attributes as $name => $value)
-        {
-            $text .= "{$name} = \"{$value}\" ";
-        }
-
-        return $text;
     }
 }

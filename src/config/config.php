@@ -160,13 +160,7 @@ return array(
 	| what is actually going on here.
 	|
 	*/
-	'javascript_include_tag' => function($paths, $attribute_text, $absolute_paths, $attributes)
-	{
-        foreach ($paths as $path)
-        {
-			print "<script src=\"{$path}\" {$attribute_text}></script>" . PHP_EOL;
-        }
-	},
+	'javascript_include_tag' => new Codesleeve\AssetPipeline\Composers\JavascriptComposer,
 
 	/*
 	|--------------------------------------------------------------------------
@@ -180,12 +174,20 @@ return array(
 	| what is actually going on here.
 	|
 	*/
-	'stylesheet_link_tag' => function($paths, $attribute_text, $absolute_paths, $attributes)
-	{
-        foreach ($paths as $path)
-        {
-			print "<link href=\"{$path}\" {$attribute_text} rel=\"stylesheet\" type=\"text/css\">" . PHP_EOL;
-        }
-	},
+	'stylesheet_link_tag' => new Codesleeve\AssetPipeline\Composers\StylesheetComposer,
 
+	/*
+	|--------------------------------------------------------------------------
+	| controller_action
+	|--------------------------------------------------------------------------
+	|
+	| Asset pipeline will route all requests through the controller action 
+	| listed here. This allows us to completely control how the controller 
+	| should behave for incoming requests for assets.
+	|
+	| It is probably safe just to leave this alone unless you are familar with 
+	| what is actually going on here.
+	|
+	*/
+	'controller_action' => '\Codesleeve\AssetPipeline\AssetPipelineController@file'
 );
