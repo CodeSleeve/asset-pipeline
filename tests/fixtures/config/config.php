@@ -50,32 +50,32 @@ return array(
 
 		),
 		'.js' => array(
-			new Codesleeve\AssetPipeline\Filters\MinifyJS(App::environment())
+			new Codesleeve\AssetPipeline\Filters\MinifyJS('local')
 		),
 		'.min.css' => array(
 			new Codesleeve\AssetPipeline\Filters\URLRewrite
 		),
 		'.css' => array(
 			new Codesleeve\AssetPipeline\Filters\URLRewrite,
-			new Codesleeve\AssetPipeline\Filters\MinifyCSS(App::environment())
+			new Codesleeve\AssetPipeline\Filters\MinifyCSS('local')
 		),
 		'.js.coffee' => array(
 			new Codesleeve\AssetPipeline\Filters\CoffeeScript,
-			new Codesleeve\AssetPipeline\Filters\MinifyJS(App::environment())
+			new Codesleeve\AssetPipeline\Filters\MinifyJS('local')
 		),
 		'.css.less' => array(
 			new Assetic\Filter\LessphpFilter,
 			new Codesleeve\AssetPipeline\Filters\URLRewrite,
-			new Codesleeve\AssetPipeline\Filters\MinifyCSS(App::environment())
+			new Codesleeve\AssetPipeline\Filters\MinifyCSS('local')
 		),
 		'.css.scss' => array(
 			new Assetic\Filter\ScssphpFilter,
 			new Codesleeve\AssetPipeline\Filters\URLRewrite,
-			new Codesleeve\AssetPipeline\Filters\MinifyCSS(App::environment())
+			new Codesleeve\AssetPipeline\Filters\MinifyCSS('local')
 		),
 		'.html' => array(
 			new Codesleeve\AssetPipeline\Filters\JST,
-			new Codesleeve\AssetPipeline\Filters\MinifyJS(App::environment())
+			new Codesleeve\AssetPipeline\Filters\MinifyJS('local')
 		)
 	),
 
@@ -107,9 +107,9 @@ return array(
 	|
 	|    https://github.com/kriswallsmith/assetic/blob/master/src/Assetic/Cache
 	|
-	| If you want to turn on caching you could use this CacheInterface
+	| If you want to turn off caching completely you can use this CacheInterface
 	|
-	|	'cache' => new Assetic\Cache\FilesystemCache(storage_path() . '/cache/asset-pipeline'),
+	|	'cache' => new Codesleeve\AssetPipeline\Filters\FilesNotCached,
 	|
 	*/
 	'cache' => new Codesleeve\AssetPipeline\Filters\FilesNotCached,

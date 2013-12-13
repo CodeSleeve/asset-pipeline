@@ -22,13 +22,17 @@ class AssetPipeline
      */
     public function javascriptIncludeTag($filename, $attributes)
     {
-        $files = $this->parser->javascriptFiles($filename);
+        $webPaths = array();
+        $absolutePaths = $this->parser->javascriptFiles($filename);
 
-        foreach ($files as $file)
+        foreach ($absolutePaths as $absolutePath)
         {
-            $webPath = $this->parser->absolutePathToWebPath($file);
-             print '<script src="' . $webPath . '"></script>' . PHP_EOL;
+            $webPaths[] = $this->parser->absolutePathToWebPath($absolutePath);
         }
+
+        $composer = $this->getConfig()['javascript_include_tag'];
+
+        return $composer->process($webPaths, $absolutePaths, $attributes);
     }
 
     /**
@@ -40,13 +44,17 @@ class AssetPipeline
      */
     public function stylesheetLinkTag($filename, $attributes)
     {
-        $files = $this->parser->stylesheetFiles($filename);
+        $webPaths = array();
+        $absolutePaths = $this->parser->stylesheetFiles($filename);
 
-        foreach ($files as $file)
+        foreach ($absolutePaths as $absolutePath)
         {
-            $webPath = $this->parser->absolutePathToWebPath($file);
-             print '<link href="' . $webPath . '" rel="stylesheet" type="text/css">' . PHP_EOL;
+            $webPaths[] = $this->parser->absolutePathToWebPath($absolutePath);
         }
+
+        $composer = $this->getConfig()['stylesheet_link_tag'];
+
+        return $composer->process($webPaths, $absolutePaths, $attributes);
     }
 
     /**
