@@ -1,6 +1,8 @@
 ### NEW Asset Pipeline for 4.1
 
-The asset pipeline has been refactored to be smarter, cleaner, better. It also has breaking changes (because things work a little differently). So if you have existing projects that were pointing to dev-master, you should probably just use tag v1.3
+The asset pipeline has been refactored to be smarter, cleaner, better. It also has breaking changes (because things work a little differently). So if you have existing projects that were pointing to dev-master, you should probably just use tag v1.3 or...
+
+### You will need to re-publish your config file to use the new version of asset pipeline.
 
 ## What is Asset Pipeline?
 
