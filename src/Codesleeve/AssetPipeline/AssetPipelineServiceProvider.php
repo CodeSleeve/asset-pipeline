@@ -48,6 +48,8 @@ class AssetPipelineServiceProvider extends ServiceProvider {
         {
             return new Commands\AssetsGenerateCommand;
         });
+
+		$this->commands('assets.generate');
 	}
 
 	/**
