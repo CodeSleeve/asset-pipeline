@@ -1,19 +1,27 @@
 <?php namespace Codesleeve\AssetPipeline;
 
-use PHPUnit_Framework_TestCase;
+use Codesleeve\Sprockets\SprocketsParser;
+use Codesleeve\Sprockets\SprocketsGenerator;
 
-class AssetPipelineTest extends PHPUnit_Framework_TestCase
+class AssetPipelineTest extends TestCase
 { 
     public function setUp()
     {
-        $generator = null; // mock sprockets generator
-        $parser = null; // mock sprockets parser
+        require_once('App.php');
+
+        $config = include __DIR__ . "/../src/config/config.php";       
+        $config['base_path'] = __DIR__ . '/fixtures';
+        $config['environment'] = "local";
+
+        $parser = new SprocketsParser($config);
+        $generator = new SprocketsGenerator($config);
+
         $this->pipeline = new AssetPipeline($parser, $generator);
     }
 
     public function testJavascriptIncludeTag()
     {
-
+        $this->pipeline->javascriptIncludeTag('application', array());
     }
 
     public function testStylesheetLinkTag()

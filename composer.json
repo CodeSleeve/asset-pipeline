@@ -24,6 +24,7 @@
     },
     "autoload": {
         "classmap": [
+            "tests/TestCase.php",
             "src/controllers"
         ],
         "psr-0": {

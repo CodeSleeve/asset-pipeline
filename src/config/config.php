@@ -113,7 +113,8 @@ return array(
 	|
 	*/
 	'cache' => new Assetic\Cache\FilesystemCache(storage_path() . '/cache/asset-pipeline'),
-	
+	//'cache' => new Codesleeve\AssetPipeline\Filters\FilesNotCached,
+
 	/*
 	|--------------------------------------------------------------------------
 	| concat
@@ -146,5 +147,45 @@ return array(
 		'require_tree' => new Codesleeve\Sprockets\Directives\RequireTree,
 		'require_self' => new Codesleeve\Sprockets\Directives\RequireSelf,
 	),
+
+	/*
+	|--------------------------------------------------------------------------
+	| javascript_include_tag
+	|--------------------------------------------------------------------------
+	|
+	| This allows us to completely control how the javascript_include_tag function
+	| works for asset pipeline.
+	|
+	| It is probably safe just to leave this alone unless you are familar with 
+	| what is actually going on here.
+	|
+	*/
+	'javascript_include_tag' => function($paths, $attribute_text, $absolute_paths, $attributes)
+	{
+        foreach ($paths as $path)
+        {
+			print "<script src=\"{$path}\" {$attribute_text}></script>" . PHP_EOL;
+        }
+	},
+
+	/*
+	|--------------------------------------------------------------------------
+	| stylesheet_link_tag
+	|--------------------------------------------------------------------------
+	|
+	| This allows us to completely control how the stylesheet_link_tag function
+	| works for asset pipeline.
+	|
+	| It is probably safe just to leave this alone unless you are familar with 
+	| what is actually going on here.
+	|
+	*/
+	'stylesheet_link_tag' => function($paths, $attribute_text, $absolute_paths, $attributes)
+	{
+        foreach ($paths as $path)
+        {
+			print "<link href=\"{$path}\" {$attribute_text} rel=\"stylesheet\" type=\"text/css\">" . PHP_EOL;
+        }
+	},
 
 );
