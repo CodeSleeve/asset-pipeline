@@ -51,12 +51,6 @@ Run the `artisan` command from the Terminal for the `assets:generate` command. T
     php artisan assets:generate
 ```
 
-It is recommended to create a custom package config for [configuration of the asset pipeline.](#configuration)
-
-```php
-  php artisan config:publish codesleeve/asset-pipeline
-```
-
 ## Usage
 
 Place these lines into your Laravel view/layout
@@ -118,6 +112,12 @@ This is how you control your dependencies. Simple right?
 
 ## Configuration
 
+To create a custom package config for [configuration of the asset pipeline.](#configuration) run
+
+```php
+  php artisan config:publish codesleeve/asset-pipeline
+```
+
 ### routing array
 
 ```php
@@ -151,26 +151,26 @@ These are the directories we search for files in. You can think of this like PAT
     '.min.js' => array(
 
     ),
-    '.js' => array(
-      new Codesleeve\AssetPipeline\Filters\MinifyJS(App::environment())
-    ),
     '.min.css' => array(
 
+    ),
+    '.js' => array(
+      new Codesleeve\AssetPipeline\Filters\MinifyJS(App::environment())
     ),
     '.css' => array(
       new Codesleeve\AssetPipeline\Filters\URLRewrite,
       new Codesleeve\AssetPipeline\Filters\MinifyCSS(App::environment())
     ),
-    '.js.coffee' => array(
+    '.coffee' => array(
       new Codesleeve\AssetPipeline\Filters\CoffeeScript,
       new Codesleeve\AssetPipeline\Filters\MinifyJS(App::environment())
     ),
-    '.css.less' => array(
+    '.less' => array(
       new Assetic\Filter\LessphpFilter,
       new Codesleeve\AssetPipeline\Filters\URLRewrite,
       new Codesleeve\AssetPipeline\Filters\MinifyCSS(App::environment())
     ),
-    '.css.scss' => array(
+    '.scss' => array(
       new Assetic\Filter\ScssphpFilter,
       new Codesleeve\AssetPipeline\Filters\URLRewrite,
       new Codesleeve\AssetPipeline\Filters\MinifyCSS(App::environment())
@@ -188,8 +188,8 @@ In order for a file to be included with sprockets, the extension needs to be lis
 
 ```php
   'mimes' => array(
-      'javascripts' => array('.js', '.js.coffee', '.min.js', '.html'),
-      'stylesheets' => array('.css', '.css.less', '.css.scss', '.min.css'),
+      'javascripts' => array('.js', '.coffee', '.html', '.min.js'),
+      'stylesheets' => array('.css', '.less', '.scss', '.min.css'),
   ),
 ```
 
@@ -198,12 +198,18 @@ In order to know which mime type to send back to the server we need to know if i
 ### cache
 
 ```php
-  'cache' => new Assetic\Cache\FilesystemCache(storage_path() . '/cache/asset-pipeline'),
+  'cache' => new Codesleeve\AssetPipeline\Filters\FilesNotCached,
 ```
 
-By default we cache all assets. This will greatly increase performance. However, it is up to the developer to determine how the pipeline should tell Assetic to cache assets. 
+By default we leave caching off. It is up to the developer to determine how the pipeline should tell Assetic to cache assets. 
 
-You can create your own [CacheInterface](https://github.com/kriswallsmith/assetic/blob/master/src/Assetic/Cache) if you want to handle caching differently. If you want to turn off caching completely you can use a CacheInterface that comes already bundled with asset pipeline `Codesleeve\AssetPipeline\Filters\FilesNotCached`
+You can create your own [CacheInterface](https://github.com/kriswallsmith/assetic/blob/master/src/Assetic/Cache) if you want to handle caching differently. 
+
+If you want a simple file cache, you can use this one:
+
+```php
+  'cache' => new Assetic\Cache\FilesystemCache(storage_path() . '/cache/asset-pipeline')
+```
 
 ### concat
 
@@ -211,7 +217,58 @@ You can create your own [CacheInterface](https://github.com/kriswallsmith/asseti
   'concat' => array('production', 'local')
 ```
 
-This allows us to turn on the asset concatenation for the specific environments listed. I recommend keeping this turned on except if you are trying to troubleshoot an javascript issue.
+This allows us to turn on the asset concatenation for the specific environments listed. For performance reasons, we recommend keeping this turned on except if you are trying to troubleshoot an javascript issue.
+
+
+### directives
+
+```php
+  'directives' => array(
+    'require ' => new Codesleeve\Sprockets\Directives\RequireFile,
+    'require_directory' => new Codesleeve\Sprockets\Directives\RequireDirectory,
+    'require_tree' => new Codesleeve\Sprockets\Directives\RequireTree,
+    'require_self' => new Codesleeve\Sprockets\Directives\RequireSelf,
+  ),
+```
+
+These are the directives we try to process inside of manifest files. This allows you to swap out, add new, modify existing directives for your pipeline setup.
+
+
+### javascript_include_tag
+
+```php
+  'javascript_include_tag' => new Codesleeve\AssetPipeline\Composers\JavascriptComposer,
+```
+
+When you do `<?= javascript_include_tag() ?>` this composer class will be invoked. This allows you to compose your own javascript tags if you want to modify how javascript tags are printed.
+
+
+### stylesheet_link_tag
+
+```php
+  'stylesheet_link_tag' => new Codesleeve\AssetPipeline\Composers\StylesheetComposer,
+```
+
+When you do `<?= stylesheet_link_tag() ?>` this composer class will be invoked. This allows you to compose your own stylesheet tags if you want to modify how stylesheet tags are printed.
+
+
+### controller_action
+
+```php
+  'controller_action' => '\Codesleeve\AssetPipeline\AssetPipelineController@file',
+```
+
+This is the controller action the pipeline routes all incoming requests to. If you ever want to swap this out for your own implementation you can edit this. This allows you to completely control how assets are being served to the browser.
+
+
+### sprockets_filter
+
+```php
+  'sprockets_filter' => '\Codesleeve\Sprockets\SprocketsFilter',
+```
+
+When concatenation is turned on, all assets fetched from the sprockets generator are filtered through this filter class. This allows us to modify the sprockets filter if we need to behave differently.
+
 
 ## FAQ
 
@@ -278,6 +335,41 @@ And so if we have an element like this it will run
 ```
 
 If you find yourself having issues with conditionally including assets your best bet may be to break apart your manifest files into sections that make sense for your application. For example, if your application is silo'ed into admin section and user section then it probably makes sense to have a separate manifest file for each section.
+
+### Can I hook in my own packages for asset pipeline?
+
+Yes. By using the event listener `asset.pipeline.boot` you can intercept the pipeline object and modify the configuration array to your own will. But remember with great power comes great responsibility. Here is an example,
+
+```php
+
+Event::listen('asset.pipeline.boot', function($pipeline)
+{
+    $config = $pipeline->getConfig();
+    $config['directives']['awesome_directive'] = new MyAwesomeDirective;
+    $pipeline->setConfig($config);
+});
+
+```
+So what does MyAwesomeDirective look like? That is entirely up to you.
+
+```php
+class MyAwesomeDirective extends Codesleeve\Sprockets\Directives\RequireFile
+{
+    public function process($param)
+    {
+        $files = array();
+
+        if (App::environment() === 'local' && $param == 'foobar')
+        {
+          // do chicken dance and add some files to array
+          // alos, this needs to be an absolute path to file
+          $files[] = __DIR__ . '/chicken/dance.js';
+        }
+
+        return $files;
+    }
+}
+```
 
 ## License
 

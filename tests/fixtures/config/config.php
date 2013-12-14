@@ -59,16 +59,16 @@ return array(
 			new Codesleeve\AssetPipeline\Filters\URLRewrite,
 			new Codesleeve\AssetPipeline\Filters\MinifyCSS('local')
 		),
-		'.js.coffee' => array(
+		'.coffee' => array(
 			new Codesleeve\AssetPipeline\Filters\CoffeeScript,
 			new Codesleeve\AssetPipeline\Filters\MinifyJS('local')
 		),
-		'.css.less' => array(
+		'.less' => array(
 			new Assetic\Filter\LessphpFilter,
 			new Codesleeve\AssetPipeline\Filters\URLRewrite,
 			new Codesleeve\AssetPipeline\Filters\MinifyCSS('local')
 		),
-		'.css.scss' => array(
+		'.scss' => array(
 			new Assetic\Filter\ScssphpFilter,
 			new Codesleeve\AssetPipeline\Filters\URLRewrite,
 			new Codesleeve\AssetPipeline\Filters\MinifyCSS('local')
@@ -91,8 +91,8 @@ return array(
 	|
 	*/
 	'mimes' => array(
-	    'javascripts' => array('.js', '.js.coffee', '.min.js', '.html'),
-	    'stylesheets' => array('.css', '.css.less', '.css.scss', '.min.css'),
+	    'javascripts' => array('.js', '.coffee', '.html', '.min.js'),
+	    'stylesheets' => array('.css', '.less', '.scss', '.min.css'),
 	),
 
 	/*
@@ -188,5 +188,21 @@ return array(
 	| what is actually going on here.
 	|
 	*/
-	'controller_action' => '\Codesleeve\AssetPipeline\AssetPipelineController@file'
+	'controller_action' => '\Codesleeve\AssetPipeline\AssetPipelineController@file',
+
+	/*
+	|--------------------------------------------------------------------------
+	| sprockets_filter
+	|--------------------------------------------------------------------------
+	|
+	| When concatenation is turned on, when an asset is fetched from the sprockets
+	| generator it is filtered through this filter class named below. This allows us
+	| to modify the sprockets filter if we need to behave differently.
+	|
+	| It is probably safe just to leave this alone unless you are familar with 
+	| what is actually going on here.
+	|
+	*/
+	'sprockets_filter' => '\Codesleeve\Sprockets\SprocketsFilter',
+
 );

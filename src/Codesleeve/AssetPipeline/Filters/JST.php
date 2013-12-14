@@ -3,10 +3,8 @@
 use Assetic\Asset\AssetInterface;
 use Assetic\Filter\FilterInterface;
 
-class JST implements FilterInterface
+class JST extends FilterHelper implements FilterInterface
 {
-    use FilterHelper;
-
     public function __construct($basePath = '/app/assets/javascripts/')
     {
         $this->basePath = $basePath;

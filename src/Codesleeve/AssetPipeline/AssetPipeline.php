@@ -30,7 +30,8 @@ class AssetPipeline
             $webPaths[] = $this->parser->absolutePathToWebPath($absolutePath);
         }
 
-        $composer = $this->getConfig()['javascript_include_tag'];
+        $config = $this->getConfig();
+        $composer = $config['javascript_include_tag'];
 
         return $composer->process($webPaths, $absolutePaths, $attributes);
     }
@@ -52,9 +53,34 @@ class AssetPipeline
             $webPaths[] = $this->parser->absolutePathToWebPath($absolutePath);
         }
 
-        $composer = $this->getConfig()['stylesheet_link_tag'];
+        $config = $this->getConfig();
+        $composer = $config['stylesheet_link_tag'];
 
         return $composer->process($webPaths, $absolutePaths, $attributes);
+    }
+
+    /**
+     * Create image tag
+     * 
+     * @param  string $filename  
+     * @param  array $attributes
+     * @return string
+     */
+    public function imageTag($filename, $attributes)
+    {
+        $file = $this->file($filename);
+        $file = $this->parser->absolutePathToWebPath($file);
+        $html = "<img src=\"{$file}\"";
+
+        foreach ($attributes as $key => $value)
+        {
+            $html .= "${key} = \"${value}\" ";
+        }
+    
+        $html = $html . ">";
+        print $html;
+
+        return $html;
     }
 
     /**
