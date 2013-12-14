@@ -31,19 +31,3 @@ if (!function_exists('stylesheetLinkTag'))
 		return App::make('asset')->stylesheetLinkTag($file, $attributes);
 	}	
 }
-
-if (!function_exists('imageTag'))
-{
-	function imageTag($file, $attributes = array())
-	{
-		return App::make('asset')->imageTag($file, $attributes);
-	}	
-}
-
-if (!function_exists('image_tag'))
-{
-	function image_tag($file = 'application', $attributes = array())
-	{
-		return App::make('asset')->imageTag($file, $attributes);
-	}	
-}
