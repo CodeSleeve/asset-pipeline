@@ -59,16 +59,16 @@ return array(
 			new Codesleeve\AssetPipeline\Filters\URLRewrite,
 			new Codesleeve\AssetPipeline\Filters\MinifyCSS(App::environment())
 		),
-		'.js.coffee' => array(
+		'.coffee' => array(
 			new Codesleeve\AssetPipeline\Filters\CoffeeScript,
 			new Codesleeve\AssetPipeline\Filters\MinifyJS(App::environment())
 		),
-		'.css.less' => array(
+		'.less' => array(
 			new Assetic\Filter\LessphpFilter,
 			new Codesleeve\AssetPipeline\Filters\URLRewrite,
 			new Codesleeve\AssetPipeline\Filters\MinifyCSS(App::environment())
 		),
-		'.css.scss' => array(
+		'.scss' => array(
 			new Assetic\Filter\ScssphpFilter,
 			new Codesleeve\AssetPipeline\Filters\URLRewrite,
 			new Codesleeve\AssetPipeline\Filters\MinifyCSS(App::environment())
@@ -91,8 +91,8 @@ return array(
 	|
 	*/
 	'mimes' => array(
-	    'javascripts' => array('.js', '.js.coffee', '.min.js', '.html'),
-	    'stylesheets' => array('.css', '.css.less', '.css.scss', '.min.css'),
+	    'javascripts' => array('.js', '.coffee', '.html', '.min.js'),
+	    'stylesheets' => array('.css', '.less', '.scss', '.min.css'),
 	),
 
 	/*
