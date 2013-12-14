@@ -30,7 +30,8 @@ class AssetPipeline
             $webPaths[] = $this->parser->absolutePathToWebPath($absolutePath);
         }
 
-        $composer = $this->getConfig()['javascript_include_tag'];
+        $config = $this->getConfig();
+        $composer = $config['javascript_include_tag'];
 
         return $composer->process($webPaths, $absolutePaths, $attributes);
     }
@@ -52,7 +53,8 @@ class AssetPipeline
             $webPaths[] = $this->parser->absolutePathToWebPath($absolutePath);
         }
 
-        $composer = $this->getConfig()['stylesheet_link_tag'];
+        $config = $this->getConfig();
+        $composer = $config['stylesheet_link_tag'];
 
         return $composer->process($webPaths, $absolutePaths, $attributes);
     }
