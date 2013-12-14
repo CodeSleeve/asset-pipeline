@@ -2,12 +2,9 @@
 
 use Assetic\Asset\AssetInterface;
 use Assetic\Filter\FilterInterface;
-use Assetic\Filter\BaseCssFilter;
 
-class URLRewrite extends BaseCssFilter implements FilterInterface 
+class URLRewrite extends FilterHelper implements FilterInterface 
 {
-    use FilterHelper;
-
     public function __construct($prefix = '/assets/', $paths = array('/app/assets/stylesheets/', '/provider/assets/stylesheets/', '/lib/assets/stylesheets/'))
     {
         $this->prefix = $prefix;

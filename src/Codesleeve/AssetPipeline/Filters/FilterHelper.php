@@ -1,7 +1,21 @@
 <?php namespace Codesleeve\AssetPipeline\Filters;
 
-trait FilterHelper
+use Assetic\Asset\AssetInterface;
+use Assetic\Filter\FilterInterface;
+use Assetic\Filter\BaseCssFilter;
+
+class FilterHelper extends BaseCssFilter
 {
+    public function filterLoad(AssetInterface $asset)
+    {
+        // do nothing when this is loaded...
+    }
+ 
+    public function filterDump(AssetInterface $asset)
+    {
+        // do nothing when this is dumped...
+    }
+
     public function getRelativePath($basePath, $absolutePath)
     {
         if (!is_array($basePath))
