@@ -151,26 +151,26 @@ These are the directories we search for files in. You can think of this like PAT
     '.min.js' => array(
 
     ),
-    '.js' => array(
-      new Codesleeve\AssetPipeline\Filters\MinifyJS(App::environment())
-    ),
     '.min.css' => array(
 
+    ),
+    '.js' => array(
+      new Codesleeve\AssetPipeline\Filters\MinifyJS(App::environment())
     ),
     '.css' => array(
       new Codesleeve\AssetPipeline\Filters\URLRewrite,
       new Codesleeve\AssetPipeline\Filters\MinifyCSS(App::environment())
     ),
-    '.js.coffee' => array(
+    '.coffee' => array(
       new Codesleeve\AssetPipeline\Filters\CoffeeScript,
       new Codesleeve\AssetPipeline\Filters\MinifyJS(App::environment())
     ),
-    '.css.less' => array(
+    '.less' => array(
       new Assetic\Filter\LessphpFilter,
       new Codesleeve\AssetPipeline\Filters\URLRewrite,
       new Codesleeve\AssetPipeline\Filters\MinifyCSS(App::environment())
     ),
-    '.css.scss' => array(
+    '.scss' => array(
       new Assetic\Filter\ScssphpFilter,
       new Codesleeve\AssetPipeline\Filters\URLRewrite,
       new Codesleeve\AssetPipeline\Filters\MinifyCSS(App::environment())
@@ -188,8 +188,8 @@ In order for a file to be included with sprockets, the extension needs to be lis
 
 ```php
   'mimes' => array(
-      'javascripts' => array('.js', '.js.coffee', '.min.js', '.html'),
-      'stylesheets' => array('.css', '.css.less', '.css.scss', '.min.css'),
+      'javascripts' => array('.js', '.coffee', '.html', '.min.js'),
+      'stylesheets' => array('.css', '.less', '.scss', '.min.css'),
   ),
 ```
 
@@ -198,12 +198,18 @@ In order to know which mime type to send back to the server we need to know if i
 ### cache
 
 ```php
-  'cache' => new Assetic\Cache\FilesystemCache(storage_path() . '/cache/asset-pipeline'),
+  'cache' => new Codesleeve\AssetPipeline\Filters\FilesNotCached,
 ```
 
-By default we cache all assets. This will greatly increase performance. However, it is up to the developer to determine how the pipeline should tell Assetic to cache assets. 
+By default we leave caching off. It is up to the developer to determine how the pipeline should tell Assetic to cache assets. 
 
-You can create your own [CacheInterface](https://github.com/kriswallsmith/assetic/blob/master/src/Assetic/Cache) if you want to handle caching differently. If you want to turn off caching completely you can use a CacheInterface that comes already bundled with asset pipeline `Codesleeve\AssetPipeline\Filters\FilesNotCached`
+You can create your own [CacheInterface](https://github.com/kriswallsmith/assetic/blob/master/src/Assetic/Cache) if you want to handle caching differently. 
+
+If you want a simple file cache, you can use this one:
+
+```php
+  'cache' => new Assetic\Cache\FilesystemCache(storage_path() . '/cache/asset-pipeline')
+```
 
 ### concat
 
@@ -211,7 +217,49 @@ You can create your own [CacheInterface](https://github.com/kriswallsmith/asseti
   'concat' => array('production', 'local')
 ```
 
-This allows us to turn on the asset concatenation for the specific environments listed. I recommend keeping this turned on except if you are trying to troubleshoot an javascript issue.
+This allows us to turn on the asset concatenation for the specific environments listed. For performance reasons, we recommend keeping this turned on except if you are trying to troubleshoot an javascript issue.
+
+
+### directives
+
+```php
+  'directives' => array(
+    'require ' => new Codesleeve\Sprockets\Directives\RequireFile,
+    'require_directory' => new Codesleeve\Sprockets\Directives\RequireDirectory,
+    'require_tree' => new Codesleeve\Sprockets\Directives\RequireTree,
+    'require_self' => new Codesleeve\Sprockets\Directives\RequireSelf,
+  ),
+```
+
+These are the directives we try to process inside of manifest files. This allows you to swap out, add new, modify existing directives for your pipeline setup.
+
+
+### javascript_include_tag
+
+```php
+  'javascript_include_tag' => new Codesleeve\AssetPipeline\Composers\JavascriptComposer,
+```
+
+When you do `<?= javascript_include_tag() ?>` this composer class will be invoked. This allows you to compose your own javascript tags if you want to modify how javascript tags are printed.
+
+
+### stylesheet_link_tag
+
+```php
+  'stylesheet_link_tag' => new Codesleeve\AssetPipeline\Composers\StylesheetComposer,
+```
+
+When you do `<?= stylesheet_link_tag() ?>` this composer class will be invoked. This allows you to compose your own stylesheet tags if you want to modify how stylesheet tags are printed.
+
+
+### controller_action
+
+```php
+  'controller_action' => '\Codesleeve\AssetPipeline\AssetPipelineController@file'
+```
+
+This is the controller action the pipeline routes all incoming requests to. If you ever want to swap this out for your own implementation you can edit this. This allows you to completely control how assets are being served to the browser.
+
 
 ## FAQ
 

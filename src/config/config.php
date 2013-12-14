@@ -49,11 +49,11 @@ return array(
 		'.min.js' => array(
 
 		),
-		'.js' => array(
-			new Codesleeve\AssetPipeline\Filters\MinifyJS(App::environment())
-		),
 		'.min.css' => array(
 			new Codesleeve\AssetPipeline\Filters\URLRewrite
+		),
+		'.js' => array(
+			new Codesleeve\AssetPipeline\Filters\MinifyJS(App::environment())
 		),
 		'.css' => array(
 			new Codesleeve\AssetPipeline\Filters\URLRewrite,
