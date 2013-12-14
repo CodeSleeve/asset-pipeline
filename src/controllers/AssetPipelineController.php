@@ -24,7 +24,7 @@ class AssetPipelineController extends Controller
 
 		$absolutePath = Asset::isFile($path);
 		if ($absolutePath) {
-			return BinaryFileResponse($absolutePath, 200);
+			return new BinaryFileResponse($absolutePath, 200);
 		}
 
 		App::abort(404);
