@@ -51,12 +51,6 @@ Run the `artisan` command from the Terminal for the `assets:generate` command. T
     php artisan assets:generate
 ```
 
-It is recommended to create a custom package config for [configuration of the asset pipeline.](#configuration)
-
-```php
-  php artisan config:publish codesleeve/asset-pipeline
-```
-
 ## Usage
 
 Place these lines into your Laravel view/layout
@@ -117,6 +111,12 @@ This is how you control your dependencies. Simple right?
     This brings in the manifest file itself as an asset. This is already done on `require_tree .` if the manifest file is within that directory. Where you might want to use this is when you have a manifest file that does like `require_tree subdir/`
 
 ## Configuration
+
+To create a custom package config for [configuration of the asset pipeline.](#configuration) run
+
+```php
+  php artisan config:publish codesleeve/asset-pipeline
+```
 
 ### routing array
 
@@ -278,6 +278,41 @@ And so if we have an element like this it will run
 ```
 
 If you find yourself having issues with conditionally including assets your best bet may be to break apart your manifest files into sections that make sense for your application. For example, if your application is silo'ed into admin section and user section then it probably makes sense to have a separate manifest file for each section.
+
+### Can I hook in my own packages for asset pipeline?
+
+Yes. By using the event listener `asset.pipeline.boot` you can intercept the pipeline object and modify the configuration array to your own will. But remember with great power comes great responsibility. Here is an example,
+
+```php
+
+Event::listen('asset.pipeline.boot', function($pipeline)
+{
+    $config = $pipeline->getConfig();
+    $config['directives']['awesome_directive'] = new MyAwesomeDirective;
+    $pipeline->setConfig($config);
+});
+
+```
+So what does MyAwesomeDirective look like? That is entirely up to you.
+
+```php
+class MyAwesomeDirective extends Codesleeve\Sprockets\Directives\RequireFile
+{
+    public function process($param)
+    {
+        $files = array();
+
+        if (App::environment() === 'local' && $param == 'foobar')
+        {
+          // do chicken dance and add some files to array
+          // alos, this needs to be an absolute path to file
+          $files[] = __DIR__ . '/chicken/dance.js';
+        }
+
+        return $files;
+    }
+}
+```
 
 ## License
 
