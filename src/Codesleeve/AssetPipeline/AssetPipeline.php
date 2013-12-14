@@ -60,6 +60,30 @@ class AssetPipeline
     }
 
     /**
+     * Create image tag
+     * 
+     * @param  string $filename  
+     * @param  array $attributes
+     * @return string
+     */
+    public function imageTag($filename, $attributes)
+    {
+        $file = $this->file($filename);
+        $file = $this->parser->absolutePathToWebPath($file);
+        $html = "<img src=\"{$file}\"";
+
+        foreach ($attributes as $key => $value)
+        {
+            $html .= "${key} = \"${value}\" ";
+        }
+    
+        $html = $html . ">";
+        print $html;
+
+        return $html;
+    }
+
+    /**
      * Is this asset a javascript type?
      * 
      * @param  string $filename
