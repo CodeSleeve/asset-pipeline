@@ -152,18 +152,32 @@ These are the directories we search for files in. You can think of this like PAT
 
     ),
     '.min.css' => array(
-
+      new Codesleeve\AssetPipeline\Filters\URLRewrite
     ),
     '.js' => array(
+      new Codesleeve\AssetPipeline\Filters\MinifyJS(App::environment())
+    ),
+    '.js.coffee' => array(
+      new Codesleeve\AssetPipeline\Filters\CoffeeScript,
+      new Codesleeve\AssetPipeline\Filters\MinifyJS(App::environment())
+    ),
+    '.coffee' => array(
+      new Codesleeve\AssetPipeline\Filters\CoffeeScript,
       new Codesleeve\AssetPipeline\Filters\MinifyJS(App::environment())
     ),
     '.css' => array(
       new Codesleeve\AssetPipeline\Filters\URLRewrite,
       new Codesleeve\AssetPipeline\Filters\MinifyCSS(App::environment())
     ),
-    '.coffee' => array(
-      new Codesleeve\AssetPipeline\Filters\CoffeeScript,
-      new Codesleeve\AssetPipeline\Filters\MinifyJS(App::environment())
+    '.css.less' => array(
+      new Assetic\Filter\LessphpFilter,
+      new Codesleeve\AssetPipeline\Filters\URLRewrite,
+      new Codesleeve\AssetPipeline\Filters\MinifyCSS(App::environment())
+    ),
+    '.css.scss' => array(
+      new Assetic\Filter\ScssphpFilter,
+      new Codesleeve\AssetPipeline\Filters\URLRewrite,
+      new Codesleeve\AssetPipeline\Filters\MinifyCSS(App::environment())
     ),
     '.less' => array(
       new Assetic\Filter\LessphpFilter,
@@ -188,8 +202,8 @@ In order for a file to be included with sprockets, the extension needs to be lis
 
 ```php
   'mimes' => array(
-      'javascripts' => array('.js', '.coffee', '.html', '.min.js'),
-      'stylesheets' => array('.css', '.less', '.scss', '.min.css'),
+      'javascripts' => array('.js', '.js.coffee', '.coffee', '.html', '.min.js'),
+      'stylesheets' => array('.css', '.css.less', '.css.scss', '.less', '.scss', '.min.css'),
   ),
 ```
 

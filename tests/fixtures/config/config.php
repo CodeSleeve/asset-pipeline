@@ -49,19 +49,33 @@ return array(
 		'.min.js' => array(
 
 		),
+		'.min.css' => array(
+			new Codesleeve\AssetPipeline\Filters\URLRewrite
+		),
 		'.js' => array(
 			new Codesleeve\AssetPipeline\Filters\MinifyJS('local')
 		),
-		'.min.css' => array(
-			new Codesleeve\AssetPipeline\Filters\URLRewrite
+		'.js.coffee' => array(
+			new Codesleeve\AssetPipeline\Filters\CoffeeScript,
+			new Codesleeve\AssetPipeline\Filters\MinifyJS('local')
+		),
+		'.coffee' => array(
+			new Codesleeve\AssetPipeline\Filters\CoffeeScript,
+			new Codesleeve\AssetPipeline\Filters\MinifyJS('local')
 		),
 		'.css' => array(
 			new Codesleeve\AssetPipeline\Filters\URLRewrite,
 			new Codesleeve\AssetPipeline\Filters\MinifyCSS('local')
 		),
-		'.coffee' => array(
-			new Codesleeve\AssetPipeline\Filters\CoffeeScript,
-			new Codesleeve\AssetPipeline\Filters\MinifyJS('local')
+		'.css.less' => array(
+			new Assetic\Filter\LessphpFilter,
+			new Codesleeve\AssetPipeline\Filters\URLRewrite,
+			new Codesleeve\AssetPipeline\Filters\MinifyCSS('local')
+		),
+		'.css.scss' => array(
+			new Assetic\Filter\ScssphpFilter,
+			new Codesleeve\AssetPipeline\Filters\URLRewrite,
+			new Codesleeve\AssetPipeline\Filters\MinifyCSS('local')
 		),
 		'.less' => array(
 			new Assetic\Filter\LessphpFilter,
@@ -91,8 +105,8 @@ return array(
 	|
 	*/
 	'mimes' => array(
-	    'javascripts' => array('.js', '.coffee', '.html', '.min.js'),
-	    'stylesheets' => array('.css', '.less', '.scss', '.min.css'),
+	    'javascripts' => array('.js', '.js.coffee', '.coffee', '.html', '.min.js'),
+	    'stylesheets' => array('.css', '.css.less', '.css.scss', '.less', '.scss', '.min.css'),
 	),
 
 	/*

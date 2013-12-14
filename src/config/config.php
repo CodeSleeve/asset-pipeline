@@ -55,13 +55,27 @@ return array(
 		'.js' => array(
 			new Codesleeve\AssetPipeline\Filters\MinifyJS(App::environment())
 		),
-		'.css' => array(
-			new Codesleeve\AssetPipeline\Filters\URLRewrite,
-			new Codesleeve\AssetPipeline\Filters\MinifyCSS(App::environment())
+		'.js.coffee' => array(
+			new Codesleeve\AssetPipeline\Filters\CoffeeScript,
+			new Codesleeve\AssetPipeline\Filters\MinifyJS(App::environment())
 		),
 		'.coffee' => array(
 			new Codesleeve\AssetPipeline\Filters\CoffeeScript,
 			new Codesleeve\AssetPipeline\Filters\MinifyJS(App::environment())
+		),
+		'.css' => array(
+			new Codesleeve\AssetPipeline\Filters\URLRewrite,
+			new Codesleeve\AssetPipeline\Filters\MinifyCSS(App::environment())
+		),
+		'.css.less' => array(
+			new Assetic\Filter\LessphpFilter,
+			new Codesleeve\AssetPipeline\Filters\URLRewrite,
+			new Codesleeve\AssetPipeline\Filters\MinifyCSS(App::environment())
+		),
+		'.css.scss' => array(
+			new Assetic\Filter\ScssphpFilter,
+			new Codesleeve\AssetPipeline\Filters\URLRewrite,
+			new Codesleeve\AssetPipeline\Filters\MinifyCSS(App::environment())
 		),
 		'.less' => array(
 			new Assetic\Filter\LessphpFilter,
@@ -91,8 +105,8 @@ return array(
 	|
 	*/
 	'mimes' => array(
-	    'javascripts' => array('.js', '.coffee', '.html', '.min.js'),
-	    'stylesheets' => array('.css', '.less', '.scss', '.min.css'),
+	    'javascripts' => array('.js', '.js.coffee', '.coffee', '.html', '.min.js'),
+	    'stylesheets' => array('.css', '.css.less', '.css.scss', '.less', '.scss', '.min.css'),
 	),
 
 	/*
