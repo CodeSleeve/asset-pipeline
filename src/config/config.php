@@ -188,5 +188,21 @@ return array(
 	| what is actually going on here.
 	|
 	*/
-	'controller_action' => '\Codesleeve\AssetPipeline\AssetPipelineController@file'
+	'controller_action' => '\Codesleeve\AssetPipeline\AssetPipelineController@file',
+
+	/*
+	|--------------------------------------------------------------------------
+	| sprockets_filter
+	|--------------------------------------------------------------------------
+	|
+	| When concatenation is turned on, when an asset is fetched from the sprockets
+	| generator it is filtered through this filter class named below. This allows us
+	| to modify the sprockets filter if we need to behave differently.
+	|
+	| It is probably safe just to leave this alone unless you are familar with 
+	| what is actually going on here.
+	|
+	*/
+	'sprockets_filter' => '\Codesleeve\Sprockets\SprocketsFilter',
+
 );

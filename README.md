@@ -255,10 +255,19 @@ When you do `<?= stylesheet_link_tag() ?>` this composer class will be invoked. 
 ### controller_action
 
 ```php
-  'controller_action' => '\Codesleeve\AssetPipeline\AssetPipelineController@file'
+  'controller_action' => '\Codesleeve\AssetPipeline\AssetPipelineController@file',
 ```
 
 This is the controller action the pipeline routes all incoming requests to. If you ever want to swap this out for your own implementation you can edit this. This allows you to completely control how assets are being served to the browser.
+
+
+### sprockets_filter
+
+```php
+  'sprockets_filter' => '\Codesleeve\Sprockets\SprocketsFilter',
+```
+
+When concatenation is turned on, all assets fetched from the sprockets generator are filtered through this filter class. This allows us to modify the sprockets filter if we need to behave differently.
 
 
 ## FAQ
