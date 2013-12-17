@@ -55,7 +55,7 @@ return array(
 
 		),
 		'.min.css' => array(
-
+			new Codesleeve\AssetPipeline\Filters\URLRewrite,
 		),
 		'.js' => array(
 			new EnvironmentFilter(new Assetic\Filter\JSMinPlusFilter, 'local'),
@@ -69,22 +69,27 @@ return array(
 			new EnvironmentFilter(new Assetic\Filter\JSMinPlusFilter, 'local'),
 		),
 		'.css' => array(
+			new Codesleeve\AssetPipeline\Filters\URLRewrite,
 			new EnvironmentFilter(new Assetic\Filter\CssMinFilter, 'local'),
 		),
 		'.css.less' => array(
 			new Assetic\Filter\LessphpFilter,
+			new Codesleeve\AssetPipeline\Filters\URLRewrite,
 			new EnvironmentFilter(new Assetic\Filter\CssMinFilter, 'local'),
 		),
 		'.css.scss' => array(
 			new Assetic\Filter\ScssphpFilter,
+			new Codesleeve\AssetPipeline\Filters\URLRewrite,
 			new EnvironmentFilter(new Assetic\Filter\CssMinFilter, 'local'),
 		),
 		'.less' => array(
 			new Assetic\Filter\LessphpFilter,
+			new Codesleeve\AssetPipeline\Filters\URLRewrite,
 			new EnvironmentFilter(new Assetic\Filter\CssMinFilter, 'local'),
 		),
 		'.scss' => array(
 			new Assetic\Filter\ScssphpFilter,
+			new Codesleeve\AssetPipeline\Filters\URLRewrite,
 			new EnvironmentFilter(new Assetic\Filter\CssMinFilter, 'local'),
 		),
 		'.html' => array(
@@ -237,12 +242,8 @@ return array(
 	|
 	*/
 	'sprockets_filters' => array(
-		'javascripts' => array(
-
-		),
-		'stylesheets' => array(
-			new Codesleeve\AssetPipeline\Filters\URLRewrite
-		),
+		'javascripts' => array(),
+		'stylesheets' => array(),
 	),
 
 );

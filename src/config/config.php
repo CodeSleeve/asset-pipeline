@@ -55,7 +55,7 @@ return array(
 
 		),
 		'.min.css' => array(
-
+			new Codesleeve\AssetPipeline\Filters\URLRewrite,
 		),
 		'.js' => array(
 			new EnvironmentFilter(new Assetic\Filter\JSMinPlusFilter, App::environment()),
@@ -69,22 +69,27 @@ return array(
 			new EnvironmentFilter(new Assetic\Filter\JSMinPlusFilter, App::environment()),
 		),
 		'.css' => array(
+			new Codesleeve\AssetPipeline\Filters\URLRewrite,
 			new EnvironmentFilter(new Assetic\Filter\CssMinFilter, App::environment()),
 		),
 		'.css.less' => array(
 			new Assetic\Filter\LessphpFilter,
+			new Codesleeve\AssetPipeline\Filters\URLRewrite,
 			new EnvironmentFilter(new Assetic\Filter\CssMinFilter, App::environment()),
 		),
 		'.css.scss' => array(
 			new Assetic\Filter\ScssphpFilter,
+			new Codesleeve\AssetPipeline\Filters\URLRewrite,
 			new EnvironmentFilter(new Assetic\Filter\CssMinFilter, App::environment()),
 		),
 		'.less' => array(
 			new Assetic\Filter\LessphpFilter,
+			new Codesleeve\AssetPipeline\Filters\URLRewrite,
 			new EnvironmentFilter(new Assetic\Filter\CssMinFilter, App::environment()),
 		),
 		'.scss' => array(
 			new Assetic\Filter\ScssphpFilter,
+			new Codesleeve\AssetPipeline\Filters\URLRewrite,
 			new EnvironmentFilter(new Assetic\Filter\CssMinFilter, App::environment()),
 		),
 		'.html' => array(
@@ -237,12 +242,8 @@ return array(
 	|
 	*/
 	'sprockets_filters' => array(
-		'javascripts' => array(
-
-		),
-		'stylesheets' => array(
-			new Codesleeve\AssetPipeline\Filters\URLRewrite
-		),
+		'javascripts' => array(),
+		'stylesheets' => array(),
 	),
 
 );
