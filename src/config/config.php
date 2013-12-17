@@ -20,19 +20,22 @@ return array(
 	| paths
 	|--------------------------------------------------------------------------
 	|
-	| These are the directories we search for files in. 
+	| These are the directories we search for files in.
 	|
-	| NOTE that the '.' in require_tree . is relative to where the manifest file 
+	| NOTE that the '.' in require_tree . is relative to where the manifest file
 	| (i.e. app/assets/javascripts/application.js) is located
 	|
 	*/
 	'paths' => array(
 		'app/assets/javascripts',
 		'app/assets/stylesheets',
+		'app/assets/images',
 		'lib/assets/javascripts',
 		'lib/assets/stylesheets',
+		'lib/assets/images',
 		'provider/assets/javascripts',
-		'provider/assets/stylesheets'
+		'provider/assets/stylesheets',
+		'provider/assets/images'
 	),
 
 	/*
@@ -40,7 +43,7 @@ return array(
 	| filters
 	|--------------------------------------------------------------------------
 	|
-	| In order for a file to be included with sprockets, it needs to be listed 
+	| In order for a file to be included with sprockets, it needs to be listed
 	| here and we can also do any preprocessing on files with the extension if
 	| we choose to.
 	|
@@ -115,7 +118,7 @@ return array(
 	|--------------------------------------------------------------------------
 	|
 	| By default we cache all assets. This will greatly increase performance; however,
-	| it is up to the developer to determine how the pipeline should tell Assetic to 
+	| it is up to the developer to determine how the pipeline should tell Assetic to
 	| cache assets. You can create your own CacheInterface if the filesystem cache is
 	| not up to your standards. See more in CacheInterface.php at
 	|
@@ -150,7 +153,7 @@ return array(
 	| This allows us to turn completely control which directives are used
 	| for the sprockets parser that asset pipeline uses to parse manifest files.
 	|
-	| It is probably safe just to leave this alone unless you are familar with 
+	| It is probably safe just to leave this alone unless you are familar with
 	| what is actually going on here.
 	|
 	*/
@@ -169,7 +172,7 @@ return array(
 	| This allows us to completely control how the javascript_include_tag function
 	| works for asset pipeline.
 	|
-	| It is probably safe just to leave this alone unless you are familar with 
+	| It is probably safe just to leave this alone unless you are familar with
 	| what is actually going on here.
 	|
 	*/
@@ -183,7 +186,7 @@ return array(
 	| This allows us to completely control how the stylesheet_link_tag function
 	| works for asset pipeline.
 	|
-	| It is probably safe just to leave this alone unless you are familar with 
+	| It is probably safe just to leave this alone unless you are familar with
 	| what is actually going on here.
 	|
 	*/
@@ -194,11 +197,11 @@ return array(
 	| controller_action
 	|--------------------------------------------------------------------------
 	|
-	| Asset pipeline will route all requests through the controller action 
-	| listed here. This allows us to completely control how the controller 
+	| Asset pipeline will route all requests through the controller action
+	| listed here. This allows us to completely control how the controller
 	| should behave for incoming requests for assets.
 	|
-	| It is probably safe just to leave this alone unless you are familar with 
+	| It is probably safe just to leave this alone unless you are familar with
 	| what is actually going on here.
 	|
 	*/
@@ -213,7 +216,7 @@ return array(
 	| generator it is filtered through this filter class named below. This allows us
 	| to modify the sprockets filter if we need to behave differently.
 	|
-	| It is probably safe just to leave this alone unless you are familar with 
+	| It is probably safe just to leave this alone unless you are familar with
 	| what is actually going on here.
 	|
 	*/
