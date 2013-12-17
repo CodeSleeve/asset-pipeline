@@ -369,20 +369,32 @@ So what does MyAwesomeDirective look like? That is entirely up to you.
 ```php
 class MyAwesomeDirective extends Codesleeve\Sprockets\Directives\RequireFile
 {
-    public function process($param)
-    {
-        $files = array();
+  public function process($param)
+  {
+      $files = array();
 
-        if (App::environment() === 'local' && $param == 'foobar')
-        {
-          // do chicken dance and add some files to array
-          // alos, this needs to be an absolute path to file
-          $files[] = __DIR__ . '/chicken/dance.js';
-        }
+      if (App::environment() === 'local' && $param == 'foobar')
+      {
+        // do chicken dance and add some files to array
+        // alos, this needs to be an absolute path to file
+        $files[] = __DIR__ . '/chicken/dance.js';
+      }
 
-        return $files;
-    }
+      return $files;
+  }
 }
+```
+
+### I want to use nginx
+
+You may have to configure nginx. The files are not in `/assets/` so you will likely get a 404. Thus you need to tell nginx to route the request through `index.php` if the file is not found. This can be accomplished with something like this:
+
+```js
+  location ~ ^/(assets)/{
+    try_files $uri $uri/ /index.php?q=$uri&$args;
+    expires max;
+    add_header Cache-Control public;
+  }
 ```
 
 ## License
