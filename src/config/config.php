@@ -53,7 +53,7 @@ return array(
 
 		),
 		'.min.css' => array(
-			new Codesleeve\AssetPipeline\Filters\URLRewrite
+
 		),
 		'.js' => array(
 			new Codesleeve\AssetPipeline\Filters\MinifyJS(App::environment())
@@ -67,27 +67,27 @@ return array(
 			new Codesleeve\AssetPipeline\Filters\MinifyJS(App::environment())
 		),
 		'.css' => array(
-			new Codesleeve\AssetPipeline\Filters\URLRewrite,
+
 			new Codesleeve\AssetPipeline\Filters\MinifyCSS(App::environment())
 		),
 		'.css.less' => array(
 			new Assetic\Filter\LessphpFilter,
-			new Codesleeve\AssetPipeline\Filters\URLRewrite,
+
 			new Codesleeve\AssetPipeline\Filters\MinifyCSS(App::environment())
 		),
 		'.css.scss' => array(
 			new Assetic\Filter\ScssphpFilter,
-			new Codesleeve\AssetPipeline\Filters\URLRewrite,
+
 			new Codesleeve\AssetPipeline\Filters\MinifyCSS(App::environment())
 		),
 		'.less' => array(
 			new Assetic\Filter\LessphpFilter,
-			new Codesleeve\AssetPipeline\Filters\URLRewrite,
+
 			new Codesleeve\AssetPipeline\Filters\MinifyCSS(App::environment())
 		),
 		'.scss' => array(
 			new Assetic\Filter\ScssphpFilter,
-			new Codesleeve\AssetPipeline\Filters\URLRewrite,
+
 			new Codesleeve\AssetPipeline\Filters\MinifyCSS(App::environment())
 		),
 		'.html' => array(
@@ -221,5 +221,31 @@ return array(
 	|
 	*/
 	'sprockets_filter' => '\Codesleeve\Sprockets\SprocketsFilter',
+
+	/*
+	|--------------------------------------------------------------------------
+	| sprockets_filter
+	|--------------------------------------------------------------------------
+	|
+	| When concatenation is turned on, assets are filtered via SprocketsFilter
+	| and we can do global filters on the resulting dump file. This would be
+	| useful if you wanted to apply a filter to all javascript or stylesheet files
+	| like minification. Out of the box we don't have any filters here. Add at
+	| your own risk. I don't put minification filters here because the minify
+	| doesn't always work perfectly and can bjork your entire concatenated
+	| javascript or stylesheet file if it messes up.
+	|
+	| It is probably safe just to leave this alone unless you are familar with
+	| what is actually going on here.
+	|
+	*/
+	'sprockets_filters' => array(
+		'javascripts' => array(
+
+		),
+		'stylesheets' => array(
+			new Codesleeve\AssetPipeline\Filters\URLRewrite
+		),
+	),
 
 );
