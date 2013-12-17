@@ -1,5 +1,7 @@
 <?php
 
+use Codesleeve\AssetPipeline\Filters\EnvironmentFilter;
+
 return array(
 
 	/*
@@ -56,43 +58,38 @@ return array(
 
 		),
 		'.js' => array(
-			new Codesleeve\AssetPipeline\Filters\MinifyJS(App::environment())
+			new EnvironmentFilter(new Assetic\Filter\JSMinPlusFilter, App::environment()),
 		),
 		'.js.coffee' => array(
 			new Codesleeve\AssetPipeline\Filters\CoffeeScript,
-			new Codesleeve\AssetPipeline\Filters\MinifyJS(App::environment())
+			new EnvironmentFilter(new Assetic\Filter\JSMinPlusFilter, App::environment()),
 		),
 		'.coffee' => array(
 			new Codesleeve\AssetPipeline\Filters\CoffeeScript,
-			new Codesleeve\AssetPipeline\Filters\MinifyJS(App::environment())
+			new EnvironmentFilter(new Assetic\Filter\JSMinPlusFilter, App::environment()),
 		),
 		'.css' => array(
-
-			new Codesleeve\AssetPipeline\Filters\MinifyCSS(App::environment())
+			new EnvironmentFilter(new Assetic\Filter\CssMinFilter, App::environment()),
 		),
 		'.css.less' => array(
 			new Assetic\Filter\LessphpFilter,
-
-			new Codesleeve\AssetPipeline\Filters\MinifyCSS(App::environment())
+			new EnvironmentFilter(new Assetic\Filter\CssMinFilter, App::environment()),
 		),
 		'.css.scss' => array(
 			new Assetic\Filter\ScssphpFilter,
-
-			new Codesleeve\AssetPipeline\Filters\MinifyCSS(App::environment())
+			new EnvironmentFilter(new Assetic\Filter\CssMinFilter, App::environment()),
 		),
 		'.less' => array(
 			new Assetic\Filter\LessphpFilter,
-
-			new Codesleeve\AssetPipeline\Filters\MinifyCSS(App::environment())
+			new EnvironmentFilter(new Assetic\Filter\CssMinFilter, App::environment()),
 		),
 		'.scss' => array(
 			new Assetic\Filter\ScssphpFilter,
-
-			new Codesleeve\AssetPipeline\Filters\MinifyCSS(App::environment())
+			new EnvironmentFilter(new Assetic\Filter\CssMinFilter, App::environment()),
 		),
 		'.html' => array(
 			new Codesleeve\AssetPipeline\Filters\JST,
-			new Codesleeve\AssetPipeline\Filters\MinifyJS(App::environment())
+			new EnvironmentFilter(new Assetic\Filter\JSMinPlusFilter, App::environment()),
 		)
 	),
 
