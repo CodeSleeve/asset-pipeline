@@ -11,6 +11,12 @@ class URLRewrite extends FilterHelper implements FilterInterface
         $this->paths = $paths;
     }
 
+    public function setAssetPipeline($pipeline)
+    {
+        $config = $pipeline->getConfig();
+        $this->paths = $config['paths'];
+    }
+
     public function filterLoad(AssetInterface $asset)
     {
         // do nothing when this is loaded...

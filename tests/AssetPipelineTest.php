@@ -73,4 +73,10 @@ class AssetPipelineTest extends \PHPUnit_Framework_TestCase
         $output = $this->pipeline->file('some.swf');
         $this->assertEquals($output, "{$this->base}/app/assets/javascripts/some.swf");
     }
+
+    public function testRegisterAssetPipelineFilters()
+    {
+        $output = $this->pipeline->registerAssetPipelineFilters();
+        $this->assertEquals($output, $this->pipeline);
+    }
 }

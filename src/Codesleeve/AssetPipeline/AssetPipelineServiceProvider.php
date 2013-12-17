@@ -40,8 +40,7 @@ class AssetPipelineServiceProvider extends ServiceProvider {
 			// let other packages hook into pipeline configuration
 			$app['events']->fire('asset.pipeline.boot', $pipeline);
 
-
-			return $pipeline;
+			return $pipeline->registerAssetPipelineFilters();
 		});
 	
 		$this->app['assets.generate'] = $this->app->share(function($app)

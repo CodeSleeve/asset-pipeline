@@ -169,5 +169,39 @@ class AssetPipeline
     {
         $this->parser->config = $config;
         $this->generator->config = $config;
+        $this->registerAssetPipelineFilters();
+    }
+
+    /**
+     * This calls a method on every filter we have to pass
+     * in the current pipeline if that method exists
+     * 
+     * @return void
+     */
+    public function registerAssetPipelineFilters()
+    {
+        foreach ($this->parser->config['filters'] as $filters)
+        {
+            foreach ($filters as $filter)
+            {
+                if (method_exists($filter, 'setAssetPipeline'))
+                {
+                    $filter->setAssetPipeline($this);
+                }
+            }
+        }
+
+        foreach ($this->generator->config['filters'] as $filters)
+        {
+            foreach ($filters as $filter)
+            {
+                if (method_exists($filter, 'setAssetPipeline'))
+                {
+                    $filter->setAssetPipeline($this);
+                }
+            }
+        }
+
+        return $this;
     }
 }
