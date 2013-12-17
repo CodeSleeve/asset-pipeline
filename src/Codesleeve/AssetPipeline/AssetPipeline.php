@@ -4,7 +4,7 @@ class AssetPipeline
 {
     /**
      * Create the asset repository based on this setup
-     * 
+     *
      * @param unsure atm...
      */
     public function __construct($parser, $generator)
@@ -15,7 +15,7 @@ class AssetPipeline
 
     /**
      * Create javascript include tag(s)
-     * 
+     *
      * @param  string $filename
      * @param  array $attributes
      * @return string
@@ -38,7 +38,7 @@ class AssetPipeline
 
     /**
      * Create stylesheet link tag(s)
-     * 
+     *
      * @param  string $filename
      * @param  array $attributes
      * @return string
@@ -61,8 +61,8 @@ class AssetPipeline
 
     /**
      * Create image tag
-     * 
-     * @param  string $filename  
+     *
+     * @param  string $filename
      * @param  array $attributes
      * @return string
      */
@@ -76,16 +76,15 @@ class AssetPipeline
         {
             $html .= "${key} = \"${value}\" ";
         }
-    
+
         $html = $html . ">";
-        print $html;
 
         return $html;
     }
 
     /**
      * Is this asset a javascript type?
-     * 
+     *
      * @param  string $filename
      * @return boolean
      */
@@ -96,7 +95,7 @@ class AssetPipeline
 
     /**
      * Is this filename a stylesheet type?
-     *  
+     *
      * @param  string $filename
      * @return boolean
      */
@@ -107,9 +106,9 @@ class AssetPipeline
 
     /**
      * Is this filename any type of file?
-     * 
+     *
      * @param  string  $filename
-     * @return boolean          
+     * @return boolean
      */
     public function isFile($filename)
     {
@@ -120,7 +119,7 @@ class AssetPipeline
 
     /**
      * Return the javascript associated with this path
-     * 
+     *
      * @param  string $path
      * @return string
      */
@@ -131,7 +130,7 @@ class AssetPipeline
 
     /**
      * Return the stylesheet associated with this path
-     * 
+     *
      * @param  string $absolutePath
      * @return string
      */
@@ -142,7 +141,7 @@ class AssetPipeline
 
     /**
      * Return the file download associated with this path
-     * 
+     *
      * @param  string $path
      * @return string | null
      */
@@ -153,7 +152,7 @@ class AssetPipeline
 
     /**
      * Get the config array
-     * 
+     *
      * @return array
      */
     public function getConfig()
@@ -163,7 +162,7 @@ class AssetPipeline
 
     /**
      * Set the config array
-     * 
+     *
      * @param array $config
      */
     public function setConfig(array $config)
