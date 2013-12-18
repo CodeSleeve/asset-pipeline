@@ -9,8 +9,10 @@ class URLRewriteTest extends PHPUnit_Framework_TestCase
 
     }
 
-    public function testRewriteURL()
+    public function testConstruct()
     {
+    	new URLRewrite;
+    	
         // test to see if the url in a css string is rewritten? 
         // Need to mock the AssetInterface and pass it into 
         // the filter.
