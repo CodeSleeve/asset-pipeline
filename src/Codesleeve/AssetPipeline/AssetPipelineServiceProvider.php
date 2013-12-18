@@ -1,4 +1,4 @@
-ik<?php namespace Codesleeve\AssetPipeline;
+<?php namespace Codesleeve\AssetPipeline;
 
 use Illuminate\Support\ServiceProvider;
 use Codesleeve\Sprockets\SprocketsParser;
