@@ -2,6 +2,7 @@
 
 use App;
 use Illuminate\Console\Command;
+use Codesleeve\Watcher\Watcher;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 
