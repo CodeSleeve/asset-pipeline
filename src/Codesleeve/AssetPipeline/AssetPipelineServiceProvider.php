@@ -48,13 +48,7 @@ class AssetPipelineServiceProvider extends ServiceProvider {
             return new Commands\AssetsGenerateCommand;
         });
 
-		$this->app['assets.watch'] = $this->app->share(function($app)
-        {
-            return new Commands\AssetsWatchCommand;
-        });
-
 		$this->commands('assets.generate');
-		$this->commands('assets.watch');
 	}
 
 	/**
