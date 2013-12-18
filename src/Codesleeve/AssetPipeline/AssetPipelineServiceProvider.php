@@ -1,4 +1,4 @@
-<?php namespace Codesleeve\AssetPipeline;
+ik<?php namespace Codesleeve\AssetPipeline;
 
 use Illuminate\Support\ServiceProvider;
 use Codesleeve\Sprockets\SprocketsParser;
@@ -48,7 +48,13 @@ class AssetPipelineServiceProvider extends ServiceProvider {
             return new Commands\AssetsGenerateCommand;
         });
 
+		$this->app['assets.watch'] = $this->app->share(function($app)
+        {
+            return new Commands\AssetsWatchCommand;
+        });
+
 		$this->commands('assets.generate');
+		$this->commands('assets.watch');
 	}
 
 	/**
