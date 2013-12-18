@@ -149,14 +149,14 @@ return array(
 
 	/*
 	|--------------------------------------------------------------------------
-	| watched_paths
+	| watcher_paths
 	|--------------------------------------------------------------------------
 	|
 	| These are the directories and files relative to your application which will
 	| be watched when running the php artisan assets:watch command
 	|
 	*/
-	'watched_paths' => array(
+	'watcher_paths' => array(
 		'app/assets/javascripts',
 		'app/assets/stylesheets',
 		'app/assets/images',
@@ -170,15 +170,15 @@ return array(
 
 	/*
 	|--------------------------------------------------------------------------
-	| watched_events
+	| watcher_events
 	|--------------------------------------------------------------------------
 	|
-	| When the watched_paths are changed the events listened here will be
+	| When the watcher_paths are changed the events listened here will be
 	| called in the order they are listed. These classes should implement the
 	| interface Codesleeve\Watcher\Events\EventInterface.
 	|
 	*/
-	'watched_events' => array(
+	'watcher_events' => array(
 		new Codesleeve\Watcher\Events\LogEvent
 	),
 

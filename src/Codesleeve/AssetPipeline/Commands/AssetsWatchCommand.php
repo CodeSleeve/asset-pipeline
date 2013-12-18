@@ -29,6 +29,23 @@ class AssetsWatchCommand extends Command
     public function fire()
     {
         $asset = App::make('asset');
-        dd($asset);
+        $config = $asset->getConfig();
+
+        $realpaths = array();
+        $base = $config['base_path'];
+        $paths = $config['watcher_paths'];
+        $events = $config['watcher_events'];
+
+        foreach ($paths as $path)
+        {
+            $realpath = realpath($base . '/'. $path);
+
+            if ($realpath) {
+                $realpaths[] = $realpath;
+            }
+        }
+
+        $watcher = new Watcher($realpaths, $events);
+        $watcher->start();
     }
 }
