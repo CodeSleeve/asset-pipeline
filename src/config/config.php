@@ -125,7 +125,7 @@ return array(
 	| When this is set to null, then client_cache will be turned on.
 	|
 	*/
-	'client_cache' => null,
+	'client_cache' => false,
 
 	/*
 	|--------------------------------------------------------------------------
