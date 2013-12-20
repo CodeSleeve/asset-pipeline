@@ -58,15 +58,15 @@ return array(
 			new Codesleeve\AssetPipeline\Filters\URLRewrite,
 		),
 		'.js' => array(
-			new EnvironmentFilter(new Assetic\Filter\JSMinPlusFilter, App::environment()),
+			new EnvironmentFilter(new Codesleeve\AssetPipeline\Filters\JSMinPlusFilter, App::environment()),
 		),
 		'.js.coffee' => array(
 			new Codesleeve\AssetPipeline\Filters\CoffeeScript,
-			new EnvironmentFilter(new Assetic\Filter\JSMinPlusFilter, App::environment()),
+			new EnvironmentFilter(new Codesleeve\AssetPipeline\Filters\JSMinPlusFilter, App::environment()),
 		),
 		'.coffee' => array(
 			new Codesleeve\AssetPipeline\Filters\CoffeeScript,
-			new EnvironmentFilter(new Assetic\Filter\JSMinPlusFilter, App::environment()),
+			new EnvironmentFilter(new Codesleeve\AssetPipeline\Filters\JSMinPlusFilter, App::environment()),
 		),
 		'.css' => array(
 			new Codesleeve\AssetPipeline\Filters\URLRewrite,
@@ -94,7 +94,7 @@ return array(
 		),
 		'.html' => array(
 			new Codesleeve\AssetPipeline\Filters\JST,
-			new EnvironmentFilter(new Assetic\Filter\JSMinPlusFilter, App::environment()),
+			new EnvironmentFilter(new Codesleeve\AssetPipeline\Filters\JSMinPlusFilter, App::environment()),
 		)
 	),
 

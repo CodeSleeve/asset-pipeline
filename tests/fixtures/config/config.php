@@ -58,15 +58,15 @@ return array(
 			new Codesleeve\AssetPipeline\Filters\URLRewrite,
 		),
 		'.js' => array(
-			new EnvironmentFilter(new Assetic\Filter\JSMinPlusFilter, 'local'),
+			new EnvironmentFilter(new Codesleeve\AssetPipeline\Filters\JSMinPlusFilter, 'local'),
 		),
 		'.js.coffee' => array(
 			new Codesleeve\AssetPipeline\Filters\CoffeeScript,
-			new EnvironmentFilter(new Assetic\Filter\JSMinPlusFilter, 'local'),
+			new EnvironmentFilter(new Codesleeve\AssetPipeline\Filters\JSMinPlusFilter, 'local'),
 		),
 		'.coffee' => array(
 			new Codesleeve\AssetPipeline\Filters\CoffeeScript,
-			new EnvironmentFilter(new Assetic\Filter\JSMinPlusFilter, 'local'),
+			new EnvironmentFilter(new Codesleeve\AssetPipeline\Filters\JSMinPlusFilter, 'local'),
 		),
 		'.css' => array(
 			new Codesleeve\AssetPipeline\Filters\URLRewrite,
@@ -94,7 +94,7 @@ return array(
 		),
 		'.html' => array(
 			new Codesleeve\AssetPipeline\Filters\JST,
-			new EnvironmentFilter(new Assetic\Filter\JSMinPlusFilter, 'local'),
+			new EnvironmentFilter(new Codesleeve\AssetPipeline\Filters\JSMinPlusFilter, 'local'),
 		)
 	),
 
@@ -164,6 +164,40 @@ return array(
 		'require_directory' => new Codesleeve\Sprockets\Directives\RequireDirectory,
 		'require_tree' => new Codesleeve\Sprockets\Directives\RequireTree,
 		'require_self' => new Codesleeve\Sprockets\Directives\RequireSelf,
+	),
+
+	/*
+	|--------------------------------------------------------------------------
+	| javascript_files
+	|--------------------------------------------------------------------------
+	|
+	| This allows us to inject in absolute paths to files that we want to always
+	| include. This is useful for packages primarily or if you have a need
+	| to always include certain files.
+	|
+	| It is probably safe just to leave this alone unless you are familar with
+	| what is actually going on here.
+	|
+	*/
+	'javascript_files' => array(
+
+	),
+
+	/*
+	|--------------------------------------------------------------------------
+	| stylesheet_files
+	|--------------------------------------------------------------------------
+	|
+	| This allows us to inject in absolute paths to files that we want to always
+	| include. This is useful for packages primarily or if you have a need
+	| to always include certain files.
+	|
+	| It is probably safe just to leave this alone unless you are familar with
+	| what is actually going on here.
+	|
+	*/
+	'stylesheet_files' => array(
+
 	),
 
 	/*
