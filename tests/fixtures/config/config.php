@@ -58,43 +58,43 @@ return array(
 			new Codesleeve\AssetPipeline\Filters\URLRewrite,
 		),
 		'.js' => array(
-			new EnvironmentFilter(new Codesleeve\AssetPipeline\Filters\JSMinPlusFilter, 'local'),
+			new EnvironmentFilter(new Codesleeve\AssetPipeline\Filters\JSMinPlusFilter, App::environment()),
 		),
 		'.js.coffee' => array(
 			new Codesleeve\AssetPipeline\Filters\CoffeeScript,
-			new EnvironmentFilter(new Codesleeve\AssetPipeline\Filters\JSMinPlusFilter, 'local'),
+			new EnvironmentFilter(new Codesleeve\AssetPipeline\Filters\JSMinPlusFilter, App::environment()),
 		),
 		'.coffee' => array(
 			new Codesleeve\AssetPipeline\Filters\CoffeeScript,
-			new EnvironmentFilter(new Codesleeve\AssetPipeline\Filters\JSMinPlusFilter, 'local'),
+			new EnvironmentFilter(new Codesleeve\AssetPipeline\Filters\JSMinPlusFilter, App::environment()),
 		),
 		'.css' => array(
 			new Codesleeve\AssetPipeline\Filters\URLRewrite,
-			new EnvironmentFilter(new Assetic\Filter\CssMinFilter, 'local'),
+			new EnvironmentFilter(new Codesleeve\AssetPipeline\Filters\CssMinFilter, App::environment()),
 		),
 		'.css.less' => array(
 			new Assetic\Filter\LessphpFilter,
 			new Codesleeve\AssetPipeline\Filters\URLRewrite,
-			new EnvironmentFilter(new Assetic\Filter\CssMinFilter, 'local'),
+			new EnvironmentFilter(new Codesleeve\AssetPipeline\Filters\CssMinFilter, App::environment()),
 		),
 		'.css.scss' => array(
 			new Assetic\Filter\ScssphpFilter,
 			new Codesleeve\AssetPipeline\Filters\URLRewrite,
-			new EnvironmentFilter(new Assetic\Filter\CssMinFilter, 'local'),
+			new EnvironmentFilter(new Codesleeve\AssetPipeline\Filters\CssMinFilter, App::environment()),
 		),
 		'.less' => array(
 			new Assetic\Filter\LessphpFilter,
 			new Codesleeve\AssetPipeline\Filters\URLRewrite,
-			new EnvironmentFilter(new Assetic\Filter\CssMinFilter, 'local'),
+			new EnvironmentFilter(new Codesleeve\AssetPipeline\Filters\CssMinFilter, App::environment()),
 		),
 		'.scss' => array(
 			new Assetic\Filter\ScssphpFilter,
 			new Codesleeve\AssetPipeline\Filters\URLRewrite,
-			new EnvironmentFilter(new Assetic\Filter\CssMinFilter, 'local'),
+			new EnvironmentFilter(new Codesleeve\AssetPipeline\Filters\CssMinFilter, App::environment()),
 		),
 		'.html' => array(
 			new Codesleeve\AssetPipeline\Filters\JST,
-			new EnvironmentFilter(new Codesleeve\AssetPipeline\Filters\JSMinPlusFilter, 'local'),
+			new EnvironmentFilter(new Codesleeve\AssetPipeline\Filters\JSMinPlusFilter, App::environment()),
 		)
 	),
 
