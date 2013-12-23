@@ -29,13 +29,17 @@ Next, update Composer from the Terminal:
     composer update
 ```
 
-Once this operation completes, add the service provider. Open `app/config/app.php`, and add a new item to the providers array.
+Once this operation completes, add the service provider. Open `app/config/app.php`, and the following items to the providers array.
 
 ```php
-    'Codesleeve\AssetPipeline\AssetPipelineServiceProvider'
+    'Codesleeve\AssetPipeline\AssetPipelineServiceProvider',
+    'Codesleeve\Guard\GuardServiceProvider',
+    'Codesleeve\GuardLiveReload\GuardLiveReloadServiceProvider',
 ```
 
-Optionally, ensure your environment is setup correctly because by default the asset pipeline will cache and and minify assets on a production environment.
+For those of you wondering what this GuardServiceProvider is, please [check out this page](https://github.com/CodeSleeve/guard). In a nutshell, this allows you to monitor your files and run commands when those files are changed. It's pretty much a native php implementation of Ruby Guard and Grunt task runner.
+
+Next optionally, ensure your environment is setup correctly because by default the asset pipeline will cache and and minify assets on a production environment.
 
 Inside `bootstrap/start.php`
 
@@ -212,18 +216,12 @@ In order to know which mime type to send back to the server we need to know if i
 ### cache
 
 ```php
-  'cache' => new Codesleeve\AssetPipeline\Filters\FilesNotCached,
+  'cache' => new Codesleeve\AssetPipeline\Filters\CacheEnvironmentFilter(new Assetic\Cache\FilesystemCache(App::make('path.storage') . '/cache/asset-pipeline'), App::environment()),
 ```
 
-By default we leave caching off. It is up to the developer to determine how the pipeline should tell Assetic to cache assets. 
+By default we cache on production environment only. This CacheEnvironmentFilter only runs when `App::environment()` is 'production'. If you want to specify other environments you can pass in an optional 3rd parameter to the constructor, i.e. `array('production', 'staging')`.
 
-You can create your own [CacheInterface](https://github.com/kriswallsmith/assetic/blob/master/src/Assetic/Cache) if you want to handle caching differently. 
-
-If you want a simple file cache, you can use this one:
-
-```php
-  'cache' => new Assetic\Cache\FilesystemCache(storage_path() . '/cache/asset-pipeline')
-```
+Also by default we use Assetic's FilesystemCache but you can create your own [CacheInterface](https://github.com/kriswallsmith/assetic/blob/master/src/Assetic/Cache) if you want to handle caching differently.
 
 ### concat
 
