@@ -119,19 +119,21 @@ return array(
 	| cache
 	|--------------------------------------------------------------------------
 	|
-	| By default we cache all assets. This will greatly increase performance; however,
-	| it is up to the developer to determine how the pipeline should tell Assetic to
-	| cache assets. You can create your own CacheInterface if the filesystem cache is
-	| not up to your standards. See more in CacheInterface.php at
+	| By default we cache all assets on 'production' environment. This will greatly 
+	| increase performance; ultimately though, it is up to the developer to determine
+	| how the pipeline should tell Assetic to cache assets. You can create your 
+	| own CacheInterface if the filesystem cache is not up to your standards.
+	|
+	| See more in CacheInterface.php at
 	|
 	|    https://github.com/kriswallsmith/assetic/blob/master/src/Assetic/Cache
 	|
-	| If you want to turn on caching you could use this CacheInterface
+	| If you want to turn off caching completely you could use this CacheInterface
 	|
-	|	'cache' => new Assetic\Cache\FilesystemCache(storage_path() . '/cache/asset-pipeline'),
+	|	'cache' => new Codesleeve\AssetPipeline\Filters\FilesNotCached,
 	|
 	*/
-	'cache' => new Codesleeve\AssetPipeline\Filters\FilesNotCached,
+	'cache' => new Codesleeve\AssetPipeline\Filters\CacheEnvironmentFilter(new Assetic\Cache\FilesystemCache(App::make('path.storage') . '/cache/asset-pipeline'), App::environment()),
 
 	/*
 	|--------------------------------------------------------------------------

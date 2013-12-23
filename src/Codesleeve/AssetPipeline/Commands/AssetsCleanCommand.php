@@ -18,7 +18,7 @@ class AssetsCleanCommand extends Command
      *
      * @var string
      */
-    protected $description = "Cleans out the cached assets in production";
+    protected $description = "Cleans out all your cached assets";
 
     /**
      * Execute the console command.
@@ -27,8 +27,14 @@ class AssetsCleanCommand extends Command
      */
     public function fire()
     {
-        \Cache::forget('asset_pipeline_manager');
-        \Cache::forget('asset_pipeline_cached');
+        $files = $this->option('file');
+        $asset = \App::make('asset');
+
+        foreach ($files as $file)
+        {
+            $absolutePath = $asset->parser->absoluteFilePath($file);
+            $asset->generator->cached($absolutePath)->remove();
+        }
 
         $this->line('');
         $this->line('Asset pipeline cache cleared!');
@@ -38,4 +44,15 @@ class AssetsCleanCommand extends Command
         $this->line('                          - Codesleeve Team');
     }
 
+    /**
+     * Get the console command options.
+     *
+     * @return array
+     */
+    protected function getOptions()
+    {
+        return array(
+            array('file', 'f', InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY, 'This is files that will have the assets cleaned.', array('application.js', 'application.css')),
+        );
+    }
 }

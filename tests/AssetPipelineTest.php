@@ -11,7 +11,7 @@ class AssetPipelineTest extends \PHPUnit_Framework_TestCase
     {
         $base = __DIR__ . '/fixtures';
 
-        $config = include $base . '/config/config.php';
+        $config = include __DIR__ . '/../src/config/config.php';
         $config['base_path'] = $base;
         $config['environment'] = "local";
         $config['javascript_include_tag'] = $this->getMock('Codesleeve\AssetPipeline\Composers\JavascriptComposer');
