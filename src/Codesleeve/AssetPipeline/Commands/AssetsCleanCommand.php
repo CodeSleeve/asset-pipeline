@@ -33,7 +33,11 @@ class AssetsCleanCommand extends Command
         foreach ($files as $file)
         {
             $absolutePath = $asset->parser->absoluteFilePath($file);
-            $asset->generator->cached($absolutePath)->remove();
+            $removed = $asset->generator->cached($absolutePath)->remove();
+
+            if ($removed === false) {
+                echo PHP_EOL . "<warning> failed to find/remove cache for {$absolutePath}" . PHP_EOL;
+            }
         }
 
         $this->line('');
