@@ -4,6 +4,8 @@ use Assetic\Cache\CacheInterface;
 
 class CacheEnvironmentFilter implements CacheInterface
 {
+    public $cacheOverride = null;
+
     public function __construct(CacheInterface $cache, $environment = 'production', $environments = 'production')
     {
         $this->cache = $cache;
@@ -43,6 +45,6 @@ class CacheEnvironmentFilter implements CacheInterface
 
     private function shouldCache()
     {
-        return in_array($this->environment, $this->environments);
+        return !is_null($this->cacheOverride) ? $this->cacheOverride : in_array($this->environment, $this->environments);
     }
 }
