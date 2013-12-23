@@ -223,6 +223,18 @@ By default we cache on production environment only. This CacheEnvironmentFilter 
 
 Also by default we use Assetic's FilesystemCache but you can create your own [CacheInterface](https://github.com/kriswallsmith/assetic/blob/master/src/Assetic/Cache) if you want to handle caching differently.
 
+If you want to clear your cache you will need to run
+
+```php
+   php artisan assets:clean
+```
+
+This will clear the cached files `application.js` and `application.css`. If you have other files you want cleaned then you can pass them as parameters via `-f` or `--file`
+
+```php
+  php artisan assets:clean -f interior/application.js -f exterior/application.js -f interior/application.css -f exterior/application.css
+```
+
 ### concat
 
 ```php
