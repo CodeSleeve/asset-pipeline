@@ -91,7 +91,7 @@ class URLRewrite extends FilterHelper implements FilterInterface
         $base = $this->base;
         $root = $this->root;
 
-        if (strpos($url, '/') != 0 && $this->fileExists($this->root . $url)) {
+        if ($url[0] != '/' && $this->fileExists($this->root . $url)) {
             return array(true, $this->prefix . $this->base . $url);
         }
 
