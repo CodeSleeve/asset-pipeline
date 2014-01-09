@@ -33,8 +33,6 @@ Once this operation completes, add the service provider. Open `app/config/app.ph
 
 ```php
     'Codesleeve\AssetPipeline\AssetPipelineServiceProvider',
-    'Codesleeve\Guard\GuardServiceProvider',
-    'Codesleeve\GuardLiveReload\GuardLiveReloadServiceProvider',
 ```
 
 For those of you wondering what this GuardServiceProvider is, please [check out this page](https://github.com/CodeSleeve/guard). In a nutshell, this allows you to monitor your files and run commands when those files are changed. It's pretty much a native php implementation of Ruby Guard and Grunt task runner.
