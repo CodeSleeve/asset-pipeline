@@ -29,8 +29,6 @@ Once this operation completes, add the service provider. Open `app/config/app.ph
     'Codesleeve\AssetPipeline\AssetPipelineServiceProvider',
 ```
 
-For those of you wondering what this GuardServiceProvider is, please [check out this page](https://github.com/CodeSleeve/guard). In a nutshell, this allows you to monitor your files and run commands when those files are changed. It's pretty much a native php implementation of Ruby Guard and Grunt task runner.
-
 Next optionally, ensure your environment is setup correctly because by default the asset pipeline will cache and and minify assets on a production environment.
 
 Inside `bootstrap/start.php`
