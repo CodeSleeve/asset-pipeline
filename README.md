@@ -129,68 +129,17 @@ Sprockets parser also uses this to help generate the correct web path for our as
   'paths' => array(
     'app/assets/javascripts',
     'app/assets/stylesheets',
+    'app/assets/images',
     'lib/assets/javascripts',
     'lib/assets/stylesheets',
+    'lib/assets/images',
     'provider/assets/javascripts',
-    'provider/assets/stylesheets'
+    'provider/assets/stylesheets',
+    'provider/assets/images'
   ),
 ```
   
 These are the directories we search for files in. You can think of this like PATH environment variable on your OS. We search for files in the path order listed below.
-
-### filters
-
-```php
-  'filters' => array(
-    '.min.js' => array(
-
-    ),
-    '.min.css' => array(
-      new Codesleeve\AssetPipeline\Filters\URLRewrite
-    ),
-    '.js' => array(
-      new Codesleeve\AssetPipeline\Filters\MinifyJS(App::environment())
-    ),
-    '.js.coffee' => array(
-      new Codesleeve\AssetPipeline\Filters\CoffeeScript,
-      new Codesleeve\AssetPipeline\Filters\MinifyJS(App::environment())
-    ),
-    '.coffee' => array(
-      new Codesleeve\AssetPipeline\Filters\CoffeeScript,
-      new Codesleeve\AssetPipeline\Filters\MinifyJS(App::environment())
-    ),
-    '.css' => array(
-      new Codesleeve\AssetPipeline\Filters\URLRewrite,
-      new Codesleeve\AssetPipeline\Filters\MinifyCSS(App::environment())
-    ),
-    '.css.less' => array(
-      new Assetic\Filter\LessphpFilter,
-      new Codesleeve\AssetPipeline\Filters\URLRewrite,
-      new Codesleeve\AssetPipeline\Filters\MinifyCSS(App::environment())
-    ),
-    '.css.scss' => array(
-      new Assetic\Filter\ScssphpFilter,
-      new Codesleeve\AssetPipeline\Filters\URLRewrite,
-      new Codesleeve\AssetPipeline\Filters\MinifyCSS(App::environment())
-    ),
-    '.less' => array(
-      new Assetic\Filter\LessphpFilter,
-      new Codesleeve\AssetPipeline\Filters\URLRewrite,
-      new Codesleeve\AssetPipeline\Filters\MinifyCSS(App::environment())
-    ),
-    '.scss' => array(
-      new Assetic\Filter\ScssphpFilter,
-      new Codesleeve\AssetPipeline\Filters\URLRewrite,
-      new Codesleeve\AssetPipeline\Filters\MinifyCSS(App::environment())
-    ),
-    '.html' => array(
-      new Codesleeve\AssetPipeline\Filters\JST,
-      new Codesleeve\AssetPipeline\Filters\MinifyJS(App::environment())
-    )
-  ),
-```
-
-In order for a file to be included with sprockets, the extension needs to be listed here. We can also preprocess those extension types with Assetic Filters.
 
 ### mimes
 
@@ -202,6 +151,60 @@ In order for a file to be included with sprockets, the extension needs to be lis
 ```
 
 In order to know which mime type to send back to the server we need to know if it is a javascript or stylesheet type. If the extension is not found below then we just return a regular download. You should include all extensions in your `filters` here or you will likely experience unexpected behavior. This should allow developers to mix javascript and css files in the same directory.
+
+### filters
+
+```php
+  'filters' => array(
+    '.min.js' => array(
+
+    ),
+    '.min.css' => array(
+      new Codesleeve\AssetPipeline\Filters\URLRewrite,
+    ),
+    '.js' => array(
+      new EnvironmentFilter(new Codesleeve\AssetPipeline\Filters\JSMinPlusFilter, App::environment()),
+    ),
+    '.js.coffee' => array(
+      new Codesleeve\AssetPipeline\Filters\CoffeeScript,
+      new EnvironmentFilter(new Codesleeve\AssetPipeline\Filters\JSMinPlusFilter, App::environment()),
+    ),
+    '.coffee' => array(
+      new Codesleeve\AssetPipeline\Filters\CoffeeScript,
+      new EnvironmentFilter(new Codesleeve\AssetPipeline\Filters\JSMinPlusFilter, App::environment()),
+    ),
+    '.css' => array(
+      new Codesleeve\AssetPipeline\Filters\URLRewrite,
+      new EnvironmentFilter(new Codesleeve\AssetPipeline\Filters\CssMinFilter, App::environment()),
+    ),
+    '.css.less' => array(
+      new Assetic\Filter\LessphpFilter,
+      new Codesleeve\AssetPipeline\Filters\URLRewrite,
+      new EnvironmentFilter(new Codesleeve\AssetPipeline\Filters\CssMinFilter, App::environment()),
+    ),
+    '.css.scss' => array(
+      new Assetic\Filter\ScssphpFilter,
+      new Codesleeve\AssetPipeline\Filters\URLRewrite,
+      new EnvironmentFilter(new Codesleeve\AssetPipeline\Filters\CssMinFilter, App::environment()),
+    ),
+    '.less' => array(
+      new Assetic\Filter\LessphpFilter,
+      new Codesleeve\AssetPipeline\Filters\URLRewrite,
+      new EnvironmentFilter(new Codesleeve\AssetPipeline\Filters\CssMinFilter, App::environment()),
+    ),
+    '.scss' => array(
+      new Assetic\Filter\ScssphpFilter,
+      new Codesleeve\AssetPipeline\Filters\URLRewrite,
+      new EnvironmentFilter(new Codesleeve\AssetPipeline\Filters\CssMinFilter, App::environment()),
+    ),
+    '.html' => array(
+      new Codesleeve\AssetPipeline\Filters\JST,
+      new EnvironmentFilter(new Codesleeve\AssetPipeline\Filters\JSMinPlusFilter, App::environment()),
+    )
+  ),
+```
+
+In order for a file to be included with sprockets, the extension needs to be listed here. We can also preprocess those extension types with Assetic Filters.
 
 ### cache
 

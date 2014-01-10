@@ -42,6 +42,22 @@ return array(
 
 	/*
 	|--------------------------------------------------------------------------
+	| mimes
+	|--------------------------------------------------------------------------
+	|
+	| In order to know which mime type to send back to the server
+	| we need to know if it is a javascript or stylesheet type. If
+	| the extension is not found below then we just return a regular
+	| download.
+	|
+	*/
+	'mimes' => array(
+	    'javascripts' => array('.js', '.js.coffee', '.coffee', '.html', '.min.js'),
+	    'stylesheets' => array('.css', '.css.less', '.css.scss', '.less', '.scss', '.min.css'),
+	),
+
+	/*
+	|--------------------------------------------------------------------------
 	| filters
 	|--------------------------------------------------------------------------
 	|
@@ -96,22 +112,6 @@ return array(
 			new Codesleeve\AssetPipeline\Filters\JST,
 			new EnvironmentFilter(new Codesleeve\AssetPipeline\Filters\JSMinPlusFilter, App::environment()),
 		)
-	),
-
-	/*
-	|--------------------------------------------------------------------------
-	| mimes
-	|--------------------------------------------------------------------------
-	|
-	| In order to know which mime type to send back to the server
-	| we need to know if it is a javascript or stylesheet type. If
-	| the extension is not found below then we just return a regular
-	| download.
-	|
-	*/
-	'mimes' => array(
-	    'javascripts' => array('.js', '.js.coffee', '.coffee', '.html', '.min.js'),
-	    'stylesheets' => array('.css', '.css.less', '.css.scss', '.less', '.scss', '.min.css'),
 	),
 
 	/*
