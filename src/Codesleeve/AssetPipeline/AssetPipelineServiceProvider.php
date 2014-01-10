@@ -43,9 +43,9 @@ class AssetPipelineServiceProvider extends ServiceProvider {
 			return $pipeline->registerAssetPipelineFilters();
 		});
 	
-		$this->app['assets.generate'] = $this->app->share(function($app)
+		$this->app['assets.setup'] = $this->app->share(function($app)
         {
-            return new Commands\AssetsGenerateCommand;
+            return new Commands\AssetsSetupCommand;
         });
 
 		$this->app['assets.clean'] = $this->app->share(function($app)
@@ -53,7 +53,7 @@ class AssetPipelineServiceProvider extends ServiceProvider {
             return new Commands\AssetsCleanCommand;
         });
 
-		$this->commands('assets.generate');
+		$this->commands('assets.setup');
 		$this->commands('assets.clean');
 	}
 

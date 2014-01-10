@@ -4,21 +4,21 @@ use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 
-class AssetsGenerateCommand extends Command
+class AssetsSetupCommand extends Command
 {
     /**
      * The console command name.
      *
      * @var string
      */
-    protected $name = 'assets:generate';
+    protected $name = 'assets:setup';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = "Generates the default asset pipeline folders for you";
+    protected $description = "Setup the default asset pipeline folders in your new laravel project";
 
     /**
      * Execute the console command.

@@ -47,10 +47,10 @@ Inside `bootstrap/start.php`
   ));
 ```
 
-Run the `artisan` command from the Terminal for the `assets:generate` command. This will create the default folder structure for you.
+Run the `artisan` command from the Terminal for the `assets:setup` command. This will create the default folder structure for you.
 
 ```php
-    php artisan assets:generate
+    php artisan assets:setup
 ```
 
 ## Usage
