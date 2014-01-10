@@ -5,7 +5,7 @@ use Assetic\Filter\FilterInterface;
 
 class URLRewrite extends FilterHelper implements FilterInterface 
 {
-    public function __construct($prefix = '/assets/', $paths = array('/app/assets/stylesheets/', '/provider/assets/stylesheets/', '/lib/assets/stylesheets/'))
+    public function __construct($prefix = '/assets', $paths = array('/app/assets/stylesheets/', '/provider/assets/stylesheets/', '/lib/assets/stylesheets/'))
     {
         $this->prefix = $prefix;
         $this->paths = $paths;
