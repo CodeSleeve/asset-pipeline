@@ -23,7 +23,7 @@ Next, update Composer from the Terminal:
     composer update
 ```
 
-Once this operation completes, add the service provider. Open `app/config/app.php`, and the following items to the providers array.
+Once this operation completes, add the service provider. Open `app/config/app.php`, add the following items to the providers array.
 
 ```php
     'Codesleeve\AssetPipeline\AssetPipelineServiceProvider',
