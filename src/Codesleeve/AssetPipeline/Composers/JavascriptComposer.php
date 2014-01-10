@@ -12,11 +12,12 @@ class JavascriptComposer extends BaseComposer implements ComposerInterface
      */
     public function process($paths, $absolutePaths, $attributes)
     {
-        $text = $this->attributesArrayToText($attributes);
+        $url = url();
+        $attributesAsText = $this->attributesArrayToText($attributes);
 
         foreach ($paths as $path)
         {
-            print "<script src=\"{$path}\" {$text}></script>" . PHP_EOL;
+            print "<script src=\"${url}{$path}\" {$attributesAsText}></script>" . PHP_EOL;
         }
     }
 }

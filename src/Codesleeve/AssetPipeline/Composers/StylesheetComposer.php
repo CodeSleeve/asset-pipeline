@@ -12,11 +12,12 @@ class StylesheetComposer extends BaseComposer implements ComposerInterface
      */
     public function process($paths, $absolutePaths, $attributes)
     {
-        $text = $this->attributesArrayToText($attributes);
+        $url = url();
+        $attributesAsText = $this->attributesArrayToText($attributes);
 
         foreach ($paths as $path)
         {
-            print "<link href=\"{$path}\" {$text} rel=\"stylesheet\" type=\"text/css\">" . PHP_EOL;
+            print "<link href=\"{$url}{$path}\" {$attributesAsText} rel=\"stylesheet\" type=\"text/css\">" . PHP_EOL;
         }
     }
 }
