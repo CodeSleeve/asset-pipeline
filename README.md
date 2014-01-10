@@ -1,9 +1,3 @@
-### NEW Asset Pipeline for 4.1
-
-The asset pipeline has been refactored to be smarter, cleaner, better. It also has breaking changes (because things work a little differently). So if you have existing projects that were pointing to dev-master, you should probably just use tag v1.3 or...
-
-### You will need to re-publish your config file to use the new version of asset pipeline.
-
 ## What is Asset Pipeline?
 
 For those of you familar with Rails asset pipeline and sprockets, you will hopefully feel right at home using this package.
@@ -393,7 +387,7 @@ class MyAwesomeDirective extends Codesleeve\Sprockets\Directives\RequireFile
 }
 ```
 
-### I want to use nginx
+### Can I use nginx
 
 You may have to configure nginx. The files are not in `/assets/` so you will likely get a 404. Thus you need to tell nginx to route the request through `index.php` if the file is not found. This can be accomplished with something like this:
 
@@ -405,13 +399,17 @@ You may have to configure nginx. The files are not in `/assets/` so you will lik
   }
 ```
 
+### Can I use an older version of asset pipeline
+
+The asset pipeline has been refactored to be smarter, cleaner, better. However, with that brought along breaking changes because things work differently. So if you have older existing projects that were pointing to `dev-master`, you should probably find a tag version that works for you. If it just recently broke, try the latest tag minus 1. Also, I typically push out my changes to `dev-testing`.
+
 ## License
 
 The codesleeve asset pipeline is open-source software licensed under the [MIT license](http://opensource.org/licenses/MIT)
 
 ## Support
 
-Before you do a pull request for a new feature please place in a proposal request. For bug fixes, please place in issues to track those, even if you fix the bug yourself and submit a pull request.
+Before you do a pull request for a new feature please place in a proposal request. For bug fixes, please place in issues to track those, even if you fix the bug yourself and submit a pull request. All pull requests go to `dev-testing` before `dev-master`.
 
 We use Travis CI for testing which you can see at: https://travis-ci.org/CodeSleeve/asset-pipeline
 
