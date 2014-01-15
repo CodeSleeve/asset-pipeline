@@ -394,7 +394,7 @@ You may have to configure nginx. The files are not in `/assets/` so you will lik
 
 ```js
   location ~ ^/(assets)/{
-    try_files $uri $uri/ /index.php?q=$uri&$args;
+    try_files $uri $uri/ /index.php?$args;
     expires max;
     add_header Cache-Control public;
   }
