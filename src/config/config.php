@@ -132,8 +132,16 @@ return array(
 	|
 	|	'cache' => new Codesleeve\AssetPipeline\Filters\FilesNotCached,
 	|
+	| Info about the out of the box CacheInterfaces we are using below
+	|
+	|    CacheEnvironmentFilter -> only cache when in_array(App::environment, 'production')
+	|    ClientCacheFilter -> creates a 304 response header when the underlying cache is not dirty
+	|    FilesystemCache -> creates a cached file in the directory given to the constructor (we use laravel's storage path)
+	|
 	*/
-	'cache' => new Codesleeve\AssetPipeline\Filters\CacheEnvironmentFilter(new Assetic\Cache\FilesystemCache(App::make('path.storage') . '/cache/asset-pipeline'), App::environment()),
+	'cache' => 	new Codesleeve\AssetPipeline\Filters\CacheEnvironmentFilter(
+					new Codesleeve\AssetPipeline\Filters\ClientCacheFilter(
+						new Assetic\Cache\FilesystemCache(App::make('path.storage') . '/cache/asset-pipeline')), App::environment()),
 
 	/*
 	|--------------------------------------------------------------------------

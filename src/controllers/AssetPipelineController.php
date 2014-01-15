@@ -25,7 +25,7 @@ class AssetPipelineController extends Controller
 		$absolutePath = Asset::isFile($path);
 		if ($absolutePath)
 		{
-			$this->prepareClientCache($absolutePath);
+			$this->clientCacheForFile($absolutePath);
 			return new BinaryFileResponse($absolutePath, 200);
 		}
 
@@ -39,8 +39,6 @@ class AssetPipelineController extends Controller
 	 */
 	private function javascript($path)
 	{
-		$this->prepareClientCache($path);
-
 		$response = Response::make(Asset::javascript($path), 200);
 
 		$response->header('Content-Type', 'application/javascript');
@@ -55,8 +53,6 @@ class AssetPipelineController extends Controller
 	 */
 	private function stylesheet($path)
 	{
-		$this->prepareClientCache($path);
-
 		$response = Response::make(Asset::stylesheet($path), 200);
 
 		$response->header('Content-Type', 'text/css');
@@ -65,16 +61,17 @@ class AssetPipelineController extends Controller
 	}
 
 	/**
-	 * Prepare client cache so the client doesn't have to download 
-	 * the asset again if it has not changed
-	 *
+	 * Client cache regular files that are not 
+	 * javascript or stylesheets files
+	 * 
+	 * @param  string $path
 	 * @return void
-	*/
-	private function prepareClientCache($path)
+	 */
+	private function clientCacheForFile($path)
 	{
-		$lastLastModified = filemtime($path);
-		header('Last-Modified: '. gmdate('r', $lastLastModified));
-		if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) && strtotime($_SERVER['HTTP_IF_MODIFIED_SINCE']) >= $lastLastModified)
+		$lastModified = filemtime($path);
+
+		if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) && strtotime($_SERVER['HTTP_IF_MODIFIED_SINCE']) >= $lastModified)
 		{
 			header('HTTP/1.0 304 Not Modified');
 			exit;
