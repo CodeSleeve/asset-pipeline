@@ -93,7 +93,8 @@ class ClientCacheFilter implements CacheInterface
     {
         if (!isset($_SESSION["client.cache.filter.$key"]))
         {
-            $_SESSION["client.cache.filter.$key"] = (new DateTime)->format('r');
+            $date = new DateTime;
+            $_SESSION["client.cache.filter.$key"] = $date->format('r');
         }
 
         return $_SESSION["client.cache.filter.$key"];
