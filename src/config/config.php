@@ -281,5 +281,22 @@ return array(
 		'javascripts' => array(),
 		'stylesheets' => array(),
 	),
-
+	
+	/*
+	|--------------------------------------------------------------------------
+	| recurse_directives
+	|--------------------------------------------------------------------------
+	|
+	| When you use directives inside of files included with require, require_self or require_tree
+	| the parser will not proceed directives inside these files by default.
+	| If you want to change this behavior you can do it here.
+	|
+	| WARNING: This option makes the processing cost a few more resources so it is reasonable
+	| to use it together with an appropriate caching mechanism.
+	| 
+	| It is probably safe just to leave this alone unless you are familar with
+	| what is actually going on here.
+	|
+	*/
+	'recurse_directives' => true
 );
