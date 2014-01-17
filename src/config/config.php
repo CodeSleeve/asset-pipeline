@@ -298,5 +298,5 @@ return array(
 	| what is actually going on here.
 	|
 	*/
-	'recurse_directives' => true
+	'recurse_directives' => false
 );
