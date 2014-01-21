@@ -14,7 +14,7 @@
         "codesleeve/sprockets": "v1.0",
         "leafo/lessphp": "v0.4.0",
         "coffeescript/coffeescript": "1.3.1",
-        "nitra/php-min": "dev-master",
+        "nitra/php-min": "@dev",
         "leafo/scssphp": "0.0.9"
     },
     "require-dev": {
