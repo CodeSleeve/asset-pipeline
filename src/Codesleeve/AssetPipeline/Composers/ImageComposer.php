@@ -1,6 +1,6 @@
 <?php namespace Codesleeve\AssetPipeline\Composers;
 
-class StylesheetComposer extends BaseComposer implements ComposerInterface
+class ImageComposer extends BaseComposer implements ComposerInterface
 {
     /**
      * Process the paths that come through the asset pipeline
