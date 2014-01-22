@@ -5,8 +5,11 @@ use Assetic\Filter\FilterInterface;
 
 class URLRewrite extends FilterHelper implements FilterInterface 
 {
-    public function __construct($prefix = '/assets', $paths = array('/app/assets/stylesheets/', '/provider/assets/stylesheets/', '/lib/assets/stylesheets/'))
+    private $baseurl = '';
+    
+    public function __construct($baseurl = '', $prefix = '/assets', $paths = array('/app/assets/stylesheets/', '/provider/assets/stylesheets/', '/lib/assets/stylesheets/'))
     {
+        $this->baseurl = $baseurl;
         $this->prefix = $prefix;
         $this->paths = $paths;
     }
@@ -80,7 +83,7 @@ class URLRewrite extends FilterHelper implements FilterInterface
             return array(false, $url);
         }
 
-        return array(true, $this->prefix . $base . $url);
+        return array(true, $this->baseurl . $this->prefix . $base . $url);
     }
 
     /**
@@ -94,7 +97,7 @@ class URLRewrite extends FilterHelper implements FilterInterface
     public function found_file_match($url)
     {
         if ($url[0] != '/' && $this->fileExists($this->root . $url)) {
-            return array(true, $this->prefix . $this->base . $url);
+            return array(true, $this->baseurl . $this->prefix . $this->base . $url);
         }
 
         return array(false, $url);
