@@ -68,18 +68,13 @@ class AssetPipeline
      */
     public function imageTag($filename, $attributes)
     {
-        $file = $this->file($filename);
-        $file = $this->parser->absolutePathToWebPath($file);
-        $html = "<img src=\"{$file}\"";
+        $absolutePaths = array($this->file($filename));
+        $webPaths = array($this->parser->absolutePathToWebPath($file));
 
-        foreach ($attributes as $key => $value)
-        {
-            $html .= "${key} = \"${value}\" ";
-        }
+        $config = $this->getConfig();
+        $composer = $config['image_tag'];
 
-        $html = $html . ">";
-
-        return $html;
+        return $composer->process($webPaths, $absolutePaths, $attributes);
     }
 
     /**

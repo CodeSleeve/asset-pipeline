@@ -240,6 +240,20 @@ return array(
 
 	/*
 	|--------------------------------------------------------------------------
+	| image_tag
+	|--------------------------------------------------------------------------
+	|
+	| This allows us to completely control how the image_tag function
+	| works for asset pipeline.
+	|
+	| It is probably safe just to leave this alone unless you are familar with
+	| what is actually going on here.
+	|
+	*/
+	'image_tag' => new Codesleeve\AssetPipeline\Composers\ImageComposer,
+
+	/*
+	|--------------------------------------------------------------------------
 	| controller_action
 	|--------------------------------------------------------------------------
 	|
