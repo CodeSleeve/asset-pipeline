@@ -80,7 +80,7 @@ class URLRewrite extends FilterHelper implements FilterInterface
             return array(false, $url);
         }
 
-        return array(true, $this->prefix . $base . $url);
+        return array(true, url() . $this->prefix . $base . $url);
     }
 
     /**
@@ -94,7 +94,7 @@ class URLRewrite extends FilterHelper implements FilterInterface
     public function found_file_match($url)
     {
         if ($url[0] != '/' && $this->fileExists($this->root . $url)) {
-            return array(true, $this->prefix . $this->base . $url);
+            return array(true, url() . $this->prefix . $this->base . $url);
         }
 
         return array(false, $url);
