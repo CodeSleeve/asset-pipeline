@@ -1,5 +1,12 @@
 <?php
 
+class Url
+{
+	function to()
+	{
+		return '';
+	}
+}
 
 class App
 {
@@ -12,6 +19,10 @@ class App
 	{
 		if ($make == 'path.storage') {
 			return __DIR__ . "/storage";
+		}
+
+		if ($make == 'url') {
+			return new Url;
 		}
 
 		return null;

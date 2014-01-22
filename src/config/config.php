@@ -71,7 +71,7 @@ return array(
 
 		),
 		'.min.css' => array(
-			new Codesleeve\AssetPipeline\Filters\URLRewrite,
+			new Codesleeve\AssetPipeline\Filters\URLRewrite(App::make('url')->to(null)),
 		),
 		'.js' => array(
 			new EnvironmentFilter(new Codesleeve\AssetPipeline\Filters\JSMinPlusFilter, App::environment()),
@@ -85,27 +85,27 @@ return array(
 			new EnvironmentFilter(new Codesleeve\AssetPipeline\Filters\JSMinPlusFilter, App::environment()),
 		),
 		'.css' => array(
-			new Codesleeve\AssetPipeline\Filters\URLRewrite,
+			new Codesleeve\AssetPipeline\Filters\URLRewrite(App::make('url')->to(null)),
 			new EnvironmentFilter(new Codesleeve\AssetPipeline\Filters\CssMinFilter, App::environment()),
 		),
 		'.css.less' => array(
 			new Assetic\Filter\LessphpFilter,
-			new Codesleeve\AssetPipeline\Filters\URLRewrite,
+			new Codesleeve\AssetPipeline\Filters\URLRewrite(App::make('url')->to(null)),
 			new EnvironmentFilter(new Codesleeve\AssetPipeline\Filters\CssMinFilter, App::environment()),
 		),
 		'.css.scss' => array(
 			new Assetic\Filter\ScssphpFilter,
-			new Codesleeve\AssetPipeline\Filters\URLRewrite,
+			new Codesleeve\AssetPipeline\Filters\URLRewrite(App::make('url')->to(null)),
 			new EnvironmentFilter(new Codesleeve\AssetPipeline\Filters\CssMinFilter, App::environment()),
 		),
 		'.less' => array(
 			new Assetic\Filter\LessphpFilter,
-			new Codesleeve\AssetPipeline\Filters\URLRewrite,
+			new Codesleeve\AssetPipeline\Filters\URLRewrite(App::make('url')->to(null)),
 			new EnvironmentFilter(new Codesleeve\AssetPipeline\Filters\CssMinFilter, App::environment()),
 		),
 		'.scss' => array(
 			new Assetic\Filter\ScssphpFilter,
-			new Codesleeve\AssetPipeline\Filters\URLRewrite,
+			new Codesleeve\AssetPipeline\Filters\URLRewrite(App::make('url')->to(null)),
 			new EnvironmentFilter(new Codesleeve\AssetPipeline\Filters\CssMinFilter, App::environment()),
 		),
 		'.html' => array(
