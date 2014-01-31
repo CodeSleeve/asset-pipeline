@@ -17,7 +17,7 @@ class StylesheetComposer extends BaseComposer implements ComposerInterface
 
         foreach ($paths as $path)
         {
-            print "<link href=\"{$url}{$path}\" {$attributesAsText} rel=\"stylesheet\" type=\"text/css\">" . PHP_EOL;
+            print "<link href=\"{$url}{$path}\"{$attributesAsText} rel=\"stylesheet\">" . PHP_EOL;
         }
     }
 }

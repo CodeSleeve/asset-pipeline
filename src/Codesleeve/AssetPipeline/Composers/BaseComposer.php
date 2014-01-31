@@ -14,9 +14,14 @@ class BaseComposer
 
         foreach ($attributes as $name => $value)
         {
-            $text .= "{$name} = \"{$value}\" ";
+            $text .= "{$name}=\"{$value}\" ";
         }
-
+        
+        /**
+         * remove space at the end
+        */
+        $text = rtrim($text);
+        
         return $text;
     }
 }
