@@ -20,7 +20,7 @@ class BaseComposer
         /**
          * remove space at the end
         */
-        $text = substr($text, 0, -1);
+        $text = rtrim($text);
         
         return $text;
     }
