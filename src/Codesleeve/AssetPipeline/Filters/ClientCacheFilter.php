@@ -2,6 +2,7 @@
 
 use DateTime;
 use Assetic\Cache\CacheInterface;
+use Session;
 
 class ClientCacheFilter implements CacheInterface
 {
@@ -72,9 +73,9 @@ class ClientCacheFilter implements CacheInterface
      */
     public function remove($key)
     {
-        if (isset($_SESSION["client.cache.filter.$key"]))
+        if (Session::has("client.cache.filter." . $key))
         {
-            unset($_SESSION["client.cache.filter.$key"]);
+            Session::forget("client.cache.filter." . $key);
         }
 
         return $this->cache->remove($key);
@@ -91,12 +92,14 @@ class ClientCacheFilter implements CacheInterface
      */
     private function getLastTimeModified($key)
     {
-        if (!isset($_SESSION["client.cache.filter.$key"]))
+        $clientCacheFilter = Session::get("client.cache.filter." . $key, false);
+        if (!$clientCacheFilter)
         {
             $date = new DateTime;
-            $_SESSION["client.cache.filter.$key"] = $date->format('r');
+            $clientCacheFilter = $date->format('r');
+            Session::put("client.cache.filter." . $key, $clientCacheFilter);
         }
 
-        return $_SESSION["client.cache.filter.$key"];
+        return $clientCacheFilter;
     }
 }
