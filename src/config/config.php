@@ -173,7 +173,8 @@ return array(
 	| If you want to handle 304's and what not, to keep users from refetching
 	| your assets and saving your bandwidth you can use a cache_client driver
 	| that handles this. This doesn't handle assets on the server-side, use 
-	| cache_server for that.
+	| cache_server for that. This only works when the current environment is 
+	| listed within `cache`
 	|
 	| Note that this needs to implement the interface
 	|
