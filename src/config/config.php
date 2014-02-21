@@ -100,7 +100,7 @@ return array(
 			new EnvironmentFilter(new Codesleeve\AssetPipeline\Filters\CssMinFilter, App::environment()),
 		),
 		'.css.less' => array(
-			new Assetic\Filter\LessphpFilter,
+			new Codesleeve\AssetPipeline\Filters\LessphpFilter,
 			new Codesleeve\AssetPipeline\Filters\URLRewrite(App::make('url')->to('/')),
 			new EnvironmentFilter(new Codesleeve\AssetPipeline\Filters\CssMinFilter, App::environment()),
 		),
@@ -110,7 +110,7 @@ return array(
 			new EnvironmentFilter(new Codesleeve\AssetPipeline\Filters\CssMinFilter, App::environment()),
 		),
 		'.less' => array(
-			new Assetic\Filter\LessphpFilter,
+			new Codesleeve\AssetPipeline\Filters\LessphpFilter,
 			new Codesleeve\AssetPipeline\Filters\URLRewrite(App::make('url')->to('/')),
 			new EnvironmentFilter(new Codesleeve\AssetPipeline\Filters\CssMinFilter, App::environment()),
 		),
