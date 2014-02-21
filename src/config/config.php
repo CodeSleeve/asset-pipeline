@@ -220,40 +220,6 @@ return array(
 
 	/*
 	|--------------------------------------------------------------------------
-	| javascript_files
-	|--------------------------------------------------------------------------
-	|
-	| This allows us to inject in absolute paths to files that we want to always
-	| include. This is useful for packages primarily or if you have a need
-	| to always include certain files.
-	|
-	| It is probably safe just to leave this alone unless you are familar with
-	| what is actually going on here.
-	|
-	*/
-	'javascript_files' => array(
-
-	),
-
-	/*
-	|--------------------------------------------------------------------------
-	| stylesheet_files
-	|--------------------------------------------------------------------------
-	|
-	| This allows us to inject in absolute paths to files that we want to always
-	| include. This is useful for packages primarily or if you have a need
-	| to always include certain files.
-	|
-	| It is probably safe just to leave this alone unless you are familar with
-	| what is actually going on here.
-	|
-	*/
-	'stylesheet_files' => array(
-
-	),
-
-	/*
-	|--------------------------------------------------------------------------
 	| javascript_include_tag
 	|--------------------------------------------------------------------------
 	|
