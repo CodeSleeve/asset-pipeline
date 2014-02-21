@@ -1,4 +1,5 @@
 /vendor
+/tests/fixtures/storage
 composer.phar
 composer.lock
 .DS_Store
