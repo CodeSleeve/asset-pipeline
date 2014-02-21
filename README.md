@@ -209,24 +209,53 @@ In order for a file to be included with sprockets, the extension needs to be lis
 ### cache
 
 ```php
-  'cache' => new Codesleeve\AssetPipeline\Filters\CacheEnvironmentFilter(new Assetic\Cache\FilesystemCache(App::make('path.storage') . '/cache/asset-pipeline'), App::environment()),
+  'cache' => array('production'),
 ```
 
-By default we cache on production environment only. This CacheEnvironmentFilter only runs when `App::environment()` is 'production'. If you want to specify other environments you can pass in an optional 3rd parameter to the constructor, i.e. `array('production', 'staging')`.
+**By default we cache all files regardless of the environment.**
 
-Also by default we use Assetic's FilesystemCache but you can create your own [CacheInterface](https://github.com/kriswallsmith/assetic/blob/master/src/Assetic/Cache) if you want to handle caching differently.
+However, we only cache manifest files when in production mode or whatever environments are supplied to `cache`.
 
-If you want to clear your cache you will need to run
+
+### cache_server
+
+```php
+  'cache_server' => new Assetic\Cache\FilesystemCache(App::make('path.storage') . '/cache/asset-pipeline'),
+```
+
+By default we use Assetic's FilesystemCache to handle caching but you can create your own [CacheInterface](https://github.com/kriswallsmith/assetic/blob/master/src/Assetic/Cache) if you want to handle caching differently.
+
+Caching is used here to speed up when developing locally and production as well. To get an idea of how this works, let's say you are dealing with 80 coffeescript files. You wouldn't want to run pre-compilation on all 80 files each time you load a page. Pipeline will cache all 80 coffeescript files so we only run pre-compilation if one of those files is changed. This makes your pages load faster in when developing.
+
+The only downside to this is if you change your Laravel environment or config for asset pipeline then you will need to clear your cache to see the changes reflected.
+
+If you want to clear your cache then run
 
 ```php
    php artisan assets:clean
 ```
 
-This will clear the cached files `application.js` and `application.css`. If you have other files you want cleaned then you can pass them as parameters via `-f` or `--file`
+This will clear the cached files `application.js` and `application.css` and all required files from within the manifest files. If you have other files you want cleaned then you can pass them as parameters via `-f` or `--file`
 
 ```php
   php artisan assets:clean -f interior/application.js -f exterior/application.js -f interior/application.css -f exterior/application.css
 ```
+
+If you don't want to recursively remove cache files for a manifest file then you can pass the `--recurisve=false` flag.
+
+### cache_client
+
+```php
+  'cache_client' => new Codesleeve\AssetPipeline\Filters\ClientCacheFilter,
+```
+
+If you want to handle 304's and what not, to keep users from refetching your assets and saving your bandwidth you can use a cache_client driver that handles this. This doesn't handle assets on the server-side, use cache_server for that.
+
+Note that this needs to implement the interface
+
+    Codesleeve\Sprockets\Interfaces\ClientCacheInterface
+
+or this won't work correctly. It is a wrapper class around your cache_server driver and also uses the AssetCache class to help access files `lastModifiedTime` because `Assetic\Cache\CacheInterface` doesn't give us this ability.
 
 ### concat
 
