@@ -1,16 +1,64 @@
 <?php namespace Codesleeve\AssetPipeline\Filters;
 
 use DateTime;
+use Assetic\Asset\AssetInterface;
 use Assetic\Cache\CacheInterface;
+use Codesleeve\Sprockets\Interfaces\ClientCacheInterface;
 
-class ClientCacheFilter implements CacheInterface
+class ClientCacheFilter implements ClientCacheInterface
 {
     /**
-     * This is a decorator class which uses an underlying CacheInterface
+     * Underlying cache driver we use
      * 
-     * @param CacheInterface $cache
+     * @var CacheInterface
      */
-    public function __construct(CacheInterface $cache)
+    protected $driver;
+
+    /**
+     * AssetCache that asset pipeline will pass to us
+     * 
+     * @var AssetCache
+     */
+    protected $cache;
+
+    /**
+     * Allows us to get the existing cache
+     * 
+     * @return CacheInterface
+     */
+    public function getServerCache()
+    {
+        return $this->driver;
+    }
+
+    /**
+     * Allows us to delegate the cache driver to this client cache
+     * 
+     * @param CacheInterface $driver
+     */
+    public function setServerCache(CacheInterface $driver)
+    {
+        $this->driver = $driver;
+    }
+
+    /**
+     * Allows us to know our parent asset cache so we can do stuff like
+     * last modified time
+     * 
+     * @return AssetCache
+     */
+    public function getAssetCache()
+    {
+        return $this->cache;
+    }
+
+    /**
+     * Allows us to set our parent asset cache (from asset pipeline)
+     * so we can do stuff like last modified time
+     * 
+     * @param AssetInterface $cache
+     */
+    public function setAssetCache(AssetInterface $cache)
     {
         $this->cache = $cache;
     }

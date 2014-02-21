@@ -1,5 +1,16 @@
 <?php
 
+/*
+|--------------------------------------------------------------------------
+| EnvironmentFilter
+|--------------------------------------------------------------------------
+|
+| This is used to run filters on specific environments. For example, if you
+| only want to run a filter on production and staging environments
+|
+| new EnvironmentFilter(new FilterExample, App::environment(), array('production', 'staging')),
+|
+*/
 use Codesleeve\AssetPipeline\Filters\EnvironmentFilter;
 
 return array(
@@ -121,27 +132,58 @@ return array(
 	|
 	| By default we cache all assets on 'production' environment. This will greatly 
 	| increase performance; ultimately though, it is up to the developer to determine
-	| how the pipeline should tell Assetic to cache assets. You can create your 
-	| own CacheInterface if the filesystem cache is not up to your standards.
+	| how the pipeline should tell Assetic to cache assets.
+	| 
+	| Below is the cache_driver which allows the developer to control how exactly
+	| how we should cache assets.
+	|
+	*/
+	'cache' => 	array('production'),
+
+	/*
+	|--------------------------------------------------------------------------
+	| cache_server
+	|--------------------------------------------------------------------------
+	|
+	| You can create your own CacheInterface if the filesystem cache is not up to 
+	| your standards. This is for caching asset files on the server-side.
+	|
+	| Please note that caching is used on **ALL** environments always. This is done
+	| to increase performance of the pipeline. Cached files will be busted when the 
+	| file changes. 
+	|
+	| However, manifest files are regenerated (not cached) when the environment is
+	| not found within the 'cache' array. This lets you develop on local and still
+	| utilize caching, so you don't have to regenerate all precompiled files while
+	| developing on your assets.
 	|
 	| See more in CacheInterface.php at
 	|
 	|    https://github.com/kriswallsmith/assetic/blob/master/src/Assetic/Cache
 	|
-	| If you want to turn off caching completely you could use this CacheInterface
-	|
-	|	'cache' => new Codesleeve\AssetPipeline\Filters\FilesNotCached,
-	|
-	| Info about the out of the box CacheInterfaces we are using below
-	|
-	|    CacheEnvironmentFilter -> only cache when in_array(App::environment, 'production')
-	|    ClientCacheFilter -> creates a 304 response header when the underlying cache is not dirty
-	|    FilesystemCache -> creates a cached file in the directory given to the constructor (we use laravel's storage path)
 	|
 	*/
-	'cache' => 	new Codesleeve\AssetPipeline\Filters\CacheEnvironmentFilter(
-					new Codesleeve\AssetPipeline\Filters\ClientCacheFilter(
-						new Assetic\Cache\FilesystemCache(App::make('path.storage') . '/cache/asset-pipeline')), App::environment()),
+	'cache_server' => new Assetic\Cache\FilesystemCache(App::make('path.storage') . '/cache/asset-pipeline'),
+
+	/*
+	|--------------------------------------------------------------------------
+	| cache_client
+	|--------------------------------------------------------------------------
+	|
+	| If you want to handle 304's and what not, to keep users from refetching
+	| your assets and saving your bandwidth you can use a cache_client driver
+	| that handles this. This doesn't handle assets on the server-side, use 
+	| cache_server for that.
+	|
+	| Note that this needs to implement the interface
+	|
+	|	Codesleeve\Sprockets\Interfaces\ClientCacheInterface
+	|
+	| or this won't work correctly. It is a wrapper class around your cache_server
+	| driver and also uses the AssetCache class to help access files.
+	|
+	*/
+	'cache_client' => new Codesleeve\AssetPipeline\Filters\ClientCacheFilter,
 
 	/*
 	|--------------------------------------------------------------------------
