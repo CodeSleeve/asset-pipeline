@@ -2,6 +2,7 @@
 
 use Assetic\Asset\AssetInterface;
 use Assetic\Filter\FilterInterface;
+use lessc;
 
 class LessphpFilter implements FilterInterface
 {
@@ -19,9 +20,9 @@ class LessphpFilter implements FilterInterface
     {       
         $content = $asset->getContent();
 
-        $parser = new Less_Parser();
-		$parser->parse($content);
-		$content = $parser->getCss();
+        $parser = new lessc();
+       
+		$content = $parser->parse($content);
 
         $asset->setContent($content);
     }
