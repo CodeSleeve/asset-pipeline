@@ -6,9 +6,20 @@ use lessc;
 
 class LessphpFilter implements FilterInterface
 {
+    private $base = array();
+    private $paths = array();
+
     public function __construct()
     {
 
+    }
+
+    public function setAssetPipeline($pipeline)
+    {
+        $config = $pipeline->getConfig();
+
+        $this->base = $config['base_path'];
+        $this->paths = $config['paths'];
     }
 
     public function filterLoad(AssetInterface $asset)
@@ -20,10 +31,17 @@ class LessphpFilter implements FilterInterface
     {       
         $content = $asset->getContent();
 
-        $parser = new lessc();
-       
+        $parser = $this->lessParser();
+
 		$content = $parser->parse($content);
 
         $asset->setContent($content);
+    }
+
+    protected function lessParser()
+    {
+        $parser = new lessc();
+
+        return $parser;
     }
 }
