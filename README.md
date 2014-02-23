@@ -433,6 +433,13 @@ You may have to configure nginx. The files are not in `/assets/` so you will lik
 
 The asset pipeline has been refactored to be smarter, cleaner, better. However, with that brought along breaking changes because things work differently. So if you have older existing projects that were pointing to `dev-master`, you should probably find a tag version that works for you. If it just recently broke, try the latest tag minus 1. Also, I typically push out my changes to `dev-testing`.
 
+
+### Can I do image optimization?
+
+The asset pipeline doesn't do this for you. However, there is nothing stopping you from handling image optimization via a seperate script and then including those optimized images through asset pipeline.
+
+For more information [check out this issue](https://github.com/CodeSleeve/asset-pipeline/issues/128).
+
 ## License
 
 The codesleeve asset pipeline is open-source software licensed under the [MIT license](http://opensource.org/licenses/MIT)
