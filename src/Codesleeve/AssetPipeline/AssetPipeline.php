@@ -3,6 +3,19 @@
 class AssetPipeline
 {
     /**
+     * Parser
+     * 
+     * @var Sprockets\Parser
+     */
+    private $parser;
+
+    /**
+     * Generator
+     * @var Sprockets\Generator
+     */
+    private $generator;
+
+    /**
      * Create the asset repository based on this setup
      *
      * @param unsure atm...
@@ -165,6 +178,46 @@ class AssetPipeline
         $this->parser->config = $config;
         $this->generator->config = $config;
         $this->registerAssetPipelineFilters();
+    }
+
+    /**
+     * Get the generator
+     * 
+     * @return Sprockets\Generator
+     */
+    public function getGenerator()
+    {
+        return $this->generator;
+    }
+
+    /**
+     * Set the generator
+     * 
+     * @param Sprockets\Generator $generator
+     */
+    public function setGenerator($generator)
+    {
+        $this->generator = $generator;
+    }
+
+    /**
+     * Get the parser
+     * 
+     * @return Sprockets\Parser
+     */
+    public function getParser()
+    {
+        return $this->parser;
+    }
+
+    /**
+     * Set the parser
+     * 
+     * @param Sprockets\Parser $parser
+     */
+    public function setParser($parser)
+    {
+        $this->parser = $parser;
     }
 
     /**
