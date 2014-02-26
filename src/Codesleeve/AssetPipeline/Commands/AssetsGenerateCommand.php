@@ -33,12 +33,12 @@ class AssetsGenerateCommand extends Command
 	// since we are spitting out assets
 
         $config = $asset->getConfig();
-	$config['environment'] = $this->option('env');
+	$config['environment'] = ($this->option('env') == '') ? 'production' : $this->option('env');
 	$asset->setConfig($config);
 
-	$generator = new Codesleeve\Sprockets\StaticFileGenerator($asset->getGenerator());
+	$generator = new Codesleeve\Sprockets\StaticFilesGenerator($asset->getGenerator());
  
-        $generated = $generator->generate(public_path() . '/' . $config['routing.prefix']);
+        $generated = $generator->generate(public_path() . '/' . $config['routing']['prefix']);
 
         foreach ($generated as $file)
         {
@@ -55,8 +55,6 @@ class AssetsGenerateCommand extends Command
      */
     protected function getOptions()
     {
-        return array(
-		array('env', 'e', InputOption::VALUE_OPTIONAL, 'What environment should we generate assets for? Default: production', 'production'),
-	);
+        return array();
     }
 }
