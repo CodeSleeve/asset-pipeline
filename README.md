@@ -54,7 +54,7 @@ Place these lines into your Laravel view/layout
     <?= javascript_include_tag() ?>
 ```
 
-This will generate a listing of script and link tags for all the dependencies listed in `app/assets/application.js` and `app/assets/application.css`. 
+This will generate a listing of script and link tags for all the dependencies listed in `app/assets/application.js` and `app/assets/application.css`.
 
 #### Parameters
 
@@ -68,7 +68,7 @@ and assuming `concat => array('production')` and we are on a production environm
 
 ```php
     <script src="assets/interior/application.js" data-foo="bar"></script>
-```    
+```
 
 ## Introduction to Directives
 
@@ -89,11 +89,11 @@ This is how you control your dependencies. Simple right?
 #### Here is a list of directives you can use
 
   - **require** filename
- 
+
     This brings in a specific asset file found within your `paths`.
 
   - **require_directory** some/directory
- 
+
     This brings in assets only within some/directory (non-recurisve). You can also use '.' and '..' to resolve paths relative to the manifest file itself.
 
   - **require_tree** some/directory
@@ -138,7 +138,7 @@ Sprockets parser also uses this to help generate the correct web path for our as
     'provider/assets/images'
   ),
 ```
-  
+
 These are the directories we search for files in. You can think of this like PATH environment variable on your OS. We search for files in the path order listed below.
 
 ### mimes
