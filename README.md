@@ -100,7 +100,7 @@ This is how you control your dependencies. Simple right?
 
     Just like require_directory except it recursively brings in all sub directories and files.
 
-  - **require_tree_df some/directory
+  - **require_tree_df** some/directory
 
     This works just like require_tree but it includes directories first and files last where as
     require_tree brings in files first then directories. You might use this if you have dependencies
