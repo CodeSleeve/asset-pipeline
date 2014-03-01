@@ -110,7 +110,7 @@ This is how you control your dependencies. Simple right?
 
     This brings in the manifest file itself as an asset. This is already done on `require_tree .` if the manifest file is within that directory. Where you might want to use this is when you have a manifest file that does like `require_tree subdir/`
 
-  - ** include ** filename
+  - **include** filename
 
     This brings in a specific asset file found withint your `paths`. It differs from **require** though
     because if the file is not found then it does not throw an exception.
