@@ -18,7 +18,7 @@ class AssetsSetupCommand extends Command
      *
      * @var string
      */
-    protected $description = "Setup the default asset pipeline folders in your new laravel project";
+    protected $description = "Setup the default asset pipeline folders in your new Laravel project";
 
     /**
      * Execute the console command.
