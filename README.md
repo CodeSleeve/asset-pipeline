@@ -54,7 +54,7 @@ Place these lines into your Laravel view/layout
     <?= javascript_include_tag() ?>
 ```
 
-This will generate a listing of script and link tags for all the dependencies listed in `app/assets/application.js` and `app/assets/application.css`. 
+This will generate a listing of script and link tags for all the dependencies listed in `app/assets/application.js` and `app/assets/application.css`.
 
 #### Parameters
 
@@ -68,7 +68,7 @@ and assuming `concat => array('production')` and we are on a production environm
 
 ```php
     <script src="assets/interior/application.js" data-foo="bar"></script>
-```    
+```
 
 ## Introduction to Directives
 
@@ -89,20 +89,39 @@ This is how you control your dependencies. Simple right?
 #### Here is a list of directives you can use
 
   - **require** filename
- 
+
     This brings in a specific asset file found within your `paths`.
 
   - **require_directory** some/directory
- 
+
     This brings in assets only within some/directory (non-recurisve). You can also use '.' and '..' to resolve paths relative to the manifest file itself.
 
   - **require_tree** some/directory
 
     Just like require_directory except it recursively brings in all sub directories and files.
 
+  - **require_tree_df** some/directory
+
+    This works just like require_tree but it includes directories first and files last where as
+    require_tree brings in files first then directories. You might use this if you have dependencies
+    inside of sub-directories that you want to include first before a file in that same directory.
+
   - **require_self**
 
     This brings in the manifest file itself as an asset. This is already done on `require_tree .` if the manifest file is within that directory. Where you might want to use this is when you have a manifest file that does like `require_tree subdir/`
+
+  - **include** filename
+
+    This brings in a specific asset file found withint your `paths`. It differs from **require** though
+    because if the file is not found then it does not throw an exception.
+
+  - **stub** path
+
+    Blacklists the given path. This can be a file or an entire directory. Note that once a path is blacklisted it will be ignored no matter how many times you try to included it.
+
+  - **depend_on** filename
+
+    Let asset pipeline know about a dependency not required through the manifest file. If file1 **depend_on** file2 then the local cache for file1 will be busted when file2 changes. This is very useful for when you are using `@import` in less.
 
 ## Configuration
 
@@ -138,7 +157,7 @@ Sprockets parser also uses this to help generate the correct web path for our as
     'provider/assets/images'
   ),
 ```
-  
+
 These are the directories we search for files in. You can think of this like PATH environment variable on your OS. We search for files in the path order listed below.
 
 ### mimes
@@ -271,9 +290,13 @@ This allows us to turn on the asset concatenation for the specific environments 
 ```php
   'directives' => array(
     'require ' => new Codesleeve\Sprockets\Directives\RequireFile,
-    'require_directory' => new Codesleeve\Sprockets\Directives\RequireDirectory,
-    'require_tree' => new Codesleeve\Sprockets\Directives\RequireTree,
+    'require_directory ' => new Codesleeve\Sprockets\Directives\RequireDirectory,
+    'require_tree ' => new Codesleeve\Sprockets\Directives\RequireTree,
+    'require_tree_df ' => new Codesleeve\Sprockets\Directives\RequireTreeDf,
     'require_self' => new Codesleeve\Sprockets\Directives\RequireSelf,
+    'include ' => new Codesleeve\Sprockets\Directives\IncludeFile,
+    'stub ' => new Codesleeve\Sprockets\Directives\Stub,
+    'depend_on ' => new Codesleeve\Sprockets\Directives\DependOn,
   ),
 ```
 
