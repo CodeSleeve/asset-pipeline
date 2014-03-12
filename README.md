@@ -228,7 +228,7 @@ In order for a file to be included with sprockets, the extension needs to be lis
 ### cache
 
 ```php
-  'cache' => array('production'),
+  'cache' => array(),   // add 'production' here if you want to cache permanently
 ```
 
 **By default we cache all files regardless of the environment.**
@@ -261,6 +261,12 @@ This will clear the cached files `application.js` and `application.css` and all 
 ```
 
 If you don't want to recursively remove cache files for a manifest file then you can pass the `--recurisve=false` flag.
+
+**NOTE** If you are using the default configuration for pipeline you can remove your cached files in this directory
+
+```
+  $ rm -f app/storage/cache/asset-pipeline/*
+```
 
 ### cache_client
 
@@ -462,6 +468,13 @@ The asset pipeline has been refactored to be smarter, cleaner, better. However, 
 The asset pipeline doesn't do this for you. However, there is nothing stopping you from handling image optimization via a seperate script and then including those optimized images through asset pipeline.
 
 For more information [check out this issue](https://github.com/CodeSleeve/asset-pipeline/issues/128).
+
+
+### How does caching work?
+
+For performance reasons, all files are cached using the `cache_server` driver in asset pipeline's configuration file. This is done so you don't have to pre-compile 100's of coffeescript and less/sass files each time you reload the page and fetch assets. However, this can cause confusion sometimes, for example, if you update a [filter](#filters) in the asset pipeline config and then refresh the page and things are still be cached. In this case you should [manually clear the cache](#cache_server).
+
+When your environment matches an environment found in the configured [cache](#cache) array then assets will be permanently cached until manually cleared using `assets:clean`. By default this used to be `production`, however due to the frustration and confusion many developers were having this was removed. So if you want to use caching on your server you need to opt-in and edit your configuration file.
 
 ## License
 
