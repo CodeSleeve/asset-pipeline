@@ -130,15 +130,12 @@ return array(
 	| cache
 	|--------------------------------------------------------------------------
 	|
-	| By default we cache all assets on 'production' environment. This will greatly
-	| increase performance; ultimately though, it is up to the developer to determine
-	| how the pipeline should tell Assetic to cache assets.
-	|
-	| Below is the cache_driver which allows the developer to control how exactly
-	| how we should cache assets.
+	| By default we don't cache any assets permanently. We do cache all files
+	| using the `cache_server` driver below but the cache is busted anytime those
+	| files are modified.
 	|
 	*/
-	'cache' => 	array('production'),
+	'cache' => 	array(),
 
 	/*
 	|--------------------------------------------------------------------------
