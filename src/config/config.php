@@ -135,7 +135,7 @@ return array(
 	| files are modified.
 	|
 	*/
-	'cache' => 	array(),
+	'cache' => 	array(),	// add 'production' if you want to permanently cache
 
 	/*
 	|--------------------------------------------------------------------------
