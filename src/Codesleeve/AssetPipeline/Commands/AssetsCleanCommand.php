@@ -71,13 +71,13 @@ class AssetsCleanCommand extends Command
      */
     protected function removeAssetCache($file, $recursive)
     {
-        $files = $this->asset->isJavascript($file) ? $this->asset->parser->javascriptFiles($file) : $this->asset->parser->stylesheetFiles($file);
+        $files = $this->asset->isJavascript($file) ? $this->asset->getParser()->javascriptFiles($file) : $this->asset->getParser()->stylesheetFiles($file);
 
-        array_push($files, $this->asset->parser->absoluteFilePath($file));
+        array_push($files, $this->asset->getParser()->absoluteFilePath($file));
 
         foreach ($files as $file)
         {
-            $removed = $this->asset->generator->cachedFile($file)->remove();
+            $removed = $this->asset->getGenerator()->cachedFile($file)->remove();
 
             if ($removed === false) {
                 $this->writeln(PHP_EOL . "<warning> failed to find/remove cache for {$file}");
