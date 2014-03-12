@@ -38,7 +38,8 @@ class FilterHelper extends BaseCssFilter
 
     public function fileExists($filename)
     {
-        $queryless = strtok($filename, '?');
+        $parsed = parse_url($filename);
+        $queryless = isset($parsed['path']) ? $parsed['path'] : $filename;
 
         return (file_exists($filename) && is_file($filename)) || (file_exists($queryless) && is_file($queryless));
     }
