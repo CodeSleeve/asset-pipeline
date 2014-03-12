@@ -3,10 +3,10 @@
 use Assetic\Asset\AssetInterface;
 use Assetic\Filter\FilterInterface;
 
-class URLRewrite extends FilterHelper implements FilterInterface 
+class URLRewrite extends FilterHelper implements FilterInterface
 {
     private $baseurl = '';
-    
+
     public function __construct($baseurl = '', $prefix = '/assets', $paths = array('/app/assets/stylesheets/', '/provider/assets/stylesheets/', '/lib/assets/stylesheets/'))
     {
         $this->baseurl = $baseurl;
@@ -24,7 +24,7 @@ class URLRewrite extends FilterHelper implements FilterInterface
     {
         // do nothing when this is loaded...
     }
- 
+
     public function filterDump(AssetInterface $asset)
     {
         $this->root = $asset->getSourceRoot() . '/';
@@ -37,10 +37,10 @@ class URLRewrite extends FilterHelper implements FilterInterface
 
     /**
      * My attempt at rewriting CSS urls. I am looking for all url tags and
-     * then I am going to try and resolve the correct absolute path from 
+     * then I am going to try and resolve the correct absolute path from
      * those urls. If the file actually exists then we are good, else I just
      * leave the thing alone.
-     * 
+     *
      * @param  [type] $matches [description]
      * @return [type]          [description]
      */
@@ -61,7 +61,7 @@ class URLRewrite extends FilterHelper implements FilterInterface
 
     /**
      * Search for cases like url(../fonts/blah.eot)
-     * 
+     *
      * @param  string $url
      * @return array(bool, string)
      */
@@ -90,7 +90,7 @@ class URLRewrite extends FilterHelper implements FilterInterface
      * Search for the case where we might be concatenating
      * and so long as the url doesn't start with a '/' we
      * will see if there is a file relative to this directory.
-     * 
+     *
      * @param  string $url
      * @return array(bool, string)
      */

@@ -10,7 +10,7 @@ class FilterHelper extends BaseCssFilter
     {
         // do nothing when this is loaded...
     }
- 
+
     public function filterDump(AssetInterface $asset)
     {
         // do nothing when this is dumped...
@@ -18,6 +18,8 @@ class FilterHelper extends BaseCssFilter
 
     public function getRelativePath($basePath, $absolutePath)
     {
+        $absolutePath = $this->forwardSlashes($absolutePath);
+
         if (!is_array($basePath))
         {
             list($changed, $newPath) = $this->_getRelativePath($basePath, $absolutePath);
@@ -27,7 +29,7 @@ class FilterHelper extends BaseCssFilter
         foreach ($basePath as $path)
         {
             list($changed, $newPath) = $this->_getRelativePath($path, $absolutePath);
-            
+
             if ($changed) return $newPath;
         }
 
@@ -54,5 +56,17 @@ class FilterHelper extends BaseCssFilter
         }
 
         return array(false, $absolutePath);
+    }
+
+    /**
+     * Swap out any back slashes with forward slashes for
+     * windows compatability
+     *
+     * @param  string $filename
+     * @return string
+     */
+    private function forwardSlashes($filename)
+    {
+        return str_replace('\\', '/', $filename);
     }
 }
