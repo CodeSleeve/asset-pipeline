@@ -37,7 +37,7 @@ class AssetsGenerateCommand extends Command
 	$asset->setConfig($config);
 
 	$generator = new Codesleeve\Sprockets\StaticFileGenerator($asset->getGenerator());
- 
+
         $generated = $generator->generate(public_path() . '/' . $config['routing.prefix']);
 
         foreach ($generated as $file)

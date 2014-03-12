@@ -19,7 +19,7 @@ class MinifyCSS implements FilterInterface
     public function filterDump(AssetInterface $asset)
     {
     	if (in_array($this->env, $this->environments)) {
-			$asset->setContent(\CssMin::minify($asset->getContent()));    		
+			$asset->setContent(\CssMin::minify($asset->getContent()));
     	}
     }
 }

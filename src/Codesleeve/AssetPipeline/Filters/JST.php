@@ -14,7 +14,7 @@ class JST extends FilterHelper implements FilterInterface
     {
         // do nothing when asset is loaded
     }
- 
+
     public function filterDump(AssetInterface $asset)
     {
         $relativePath = $this->getRelativePath($this->basePath, $asset->getSourceRoot() . '/');

@@ -34,7 +34,7 @@ class AssetsCleanCommand extends Command
         // in this manifest file
         $config = $this->asset->getConfig();
         $config['concat'] = array();
-        $this->asset->setConfig($config);        
+        $this->asset->setConfig($config);
     }
 
     /**
@@ -64,7 +64,7 @@ class AssetsCleanCommand extends Command
 
     /**
      * Removes the AssetCache for this file
-     * 
+     *
      * @param  [type] $file      [description]
      * @param  [type] $recursive [description]
      * @return [type]            [description]
@@ -87,7 +87,7 @@ class AssetsCleanCommand extends Command
 
     /**
      * Output messages to the user if verbose is on
-     * 
+     *
      * @param  `[type] $message [description]
      * @return [type]          [description]
      */

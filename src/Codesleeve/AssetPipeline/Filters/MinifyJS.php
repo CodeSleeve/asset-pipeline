@@ -15,7 +15,7 @@ class MinifyJS implements FilterInterface
     {
 
     }
- 
+
     public function filterDump(AssetInterface $asset)
     {
     	if (in_array($this->env, $this->environments)) {

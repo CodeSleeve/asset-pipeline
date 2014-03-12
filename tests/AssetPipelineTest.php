@@ -6,7 +6,7 @@ use Codesleeve\Sprockets\SprocketsGenerator;
 require_once 'fixtures/App.php';
 
 class AssetPipelineTest extends \PHPUnit_Framework_TestCase
-{ 
+{
     public function setUp()
     {
         $base = __DIR__ . '/fixtures';

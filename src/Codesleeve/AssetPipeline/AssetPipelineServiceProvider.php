@@ -23,7 +23,7 @@ class AssetPipelineServiceProvider extends ServiceProvider {
 		$this->package('codesleeve/asset-pipeline');
 
 		include __DIR__.'/../../routes.php';
-		
+
 		include_once __DIR__.'/AssetPipelineGlobalHelpers.php';
 
 		$this->app['asset'] = $this->app->share(function($app)
@@ -31,7 +31,7 @@ class AssetPipelineServiceProvider extends ServiceProvider {
 			$config = $app->config->get('asset-pipeline::config');
 			$config['base_path'] = base_path();
 			$config['environment'] = $app['env'];
-			
+
 			$parser = new SprocketsParser($config);
 			$generator = new SprocketsGenerator($config);
 
@@ -42,7 +42,7 @@ class AssetPipelineServiceProvider extends ServiceProvider {
 
 			return $pipeline->registerAssetPipelineFilters();
 		});
-	
+
 		$this->app['assets.setup'] = $this->app->share(function($app)
         {
             return new Commands\AssetsSetupCommand;

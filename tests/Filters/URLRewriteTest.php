@@ -3,7 +3,7 @@
 use PHPUnit_Framework_TestCase;
 
 class URLRewriteTest extends PHPUnit_Framework_TestCase
-{ 
+{
     public function setUp()
     {
 
@@ -12,9 +12,9 @@ class URLRewriteTest extends PHPUnit_Framework_TestCase
     public function testConstruct()
     {
     	new URLRewrite;
-    	
-        // test to see if the url in a css string is rewritten? 
-        // Need to mock the AssetInterface and pass it into 
+
+        // test to see if the url in a css string is rewritten?
+        // Need to mock the AssetInterface and pass it into
         // the filter.
     }
 }

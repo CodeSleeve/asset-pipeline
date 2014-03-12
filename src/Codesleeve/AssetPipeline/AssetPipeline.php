@@ -4,7 +4,7 @@ class AssetPipeline
 {
     /**
      * Parser
-     * 
+     *
      * @var Sprockets\Parser
      */
     private $parser;
@@ -182,7 +182,7 @@ class AssetPipeline
 
     /**
      * Get the generator
-     * 
+     *
      * @return Sprockets\Generator
      */
     public function getGenerator()
@@ -192,7 +192,7 @@ class AssetPipeline
 
     /**
      * Set the generator
-     * 
+     *
      * @param Sprockets\Generator $generator
      */
     public function setGenerator($generator)
@@ -202,7 +202,7 @@ class AssetPipeline
 
     /**
      * Get the parser
-     * 
+     *
      * @return Sprockets\Parser
      */
     public function getParser()
@@ -212,7 +212,7 @@ class AssetPipeline
 
     /**
      * Set the parser
-     * 
+     *
      * @param Sprockets\Parser $parser
      */
     public function setParser($parser)
@@ -223,7 +223,7 @@ class AssetPipeline
     /**
      * This calls a method on every filter we have to pass
      * in the current pipeline if that method exists
-     * 
+     *
      * @return void
      */
     public function registerAssetPipelineFilters()

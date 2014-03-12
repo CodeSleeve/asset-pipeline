@@ -7,7 +7,7 @@ class AssetPipelineController extends Controller
 {
 	/**
 	 * Returns a file in the assets directory
-	 * 
+	 *
 	 * @return \Illuminate\Support\Facades\Response
 	 */
 	public function file($path)
@@ -34,7 +34,7 @@ class AssetPipelineController extends Controller
 
 	/*
 	 * Returns a javascript file for the given path.
-	 * 
+	 *
 	 * @return \Illuminate\Support\Facades\Response
 	 */
 	private function javascript($path)
@@ -48,7 +48,7 @@ class AssetPipelineController extends Controller
 
 	/**
 	 * Returns css for the given path
-	 * 
+	 *
 	 * @return \Illuminate\Support\Facades\Response
 	 */
 	private function stylesheet($path)
@@ -61,9 +61,9 @@ class AssetPipelineController extends Controller
 	}
 
 	/**
-	 * Client cache regular files that are not 
+	 * Client cache regular files that are not
 	 * javascript or stylesheets files
-	 * 
+	 *
 	 * @param  string $path
 	 * @return void
 	 */

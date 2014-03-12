@@ -9,7 +9,7 @@ class JSMinPlusFilter implements FilterInterface
     {
 
     }
- 
+
     public function filterDump(AssetInterface $asset)
     {
 		$asset->setContent(\JSMinPlus::minify($asset->getContent()) . ';');

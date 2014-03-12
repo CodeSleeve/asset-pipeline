@@ -15,11 +15,11 @@ class CoffeeScript implements FilterInterface
     {
 
     }
- 
+
     public function filterDump(AssetInterface $asset)
-    {       
+    {
         $content = $asset->getContent();
-        
+
 		$content = Compiler::compile($content, array('filename' => $asset->getSourcePath()));
 
         $asset->setContent($content);

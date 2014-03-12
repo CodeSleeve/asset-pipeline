@@ -4,10 +4,10 @@ class JavascriptComposer extends BaseComposer implements ComposerInterface
 {
     /**
      * Process the paths that come through the asset pipeline
-     * 
-     * @param  array $paths        
+     *
+     * @param  array $paths
      * @param  array $absolutePaths
-     * @param  array $attributes   
+     * @param  array $attributes
      * @return void
      */
     public function process($paths, $absolutePaths, $attributes)

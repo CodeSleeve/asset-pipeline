@@ -4,7 +4,7 @@ class BaseComposer
 {
     /**
      * Convert the attributes array to a html text attributes
-     * 
+     *
      * @param  array $attributes
      * @return string
      */
@@ -16,9 +16,9 @@ class BaseComposer
         {
             $text .= "{$name}=\"{$value}\" ";
         }
-       
+
         $text = rtrim($text);
- 
+
         return $text;
     }
 }
