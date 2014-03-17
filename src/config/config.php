@@ -216,6 +216,8 @@ return array(
 		'require_tree_df ' => new Codesleeve\Sprockets\Directives\RequireTreeDf,
 		'require_self' => new Codesleeve\Sprockets\Directives\RequireSelf,
 		'include ' => new Codesleeve\Sprockets\Directives\IncludeFile,
+		'include_directory ' => new Codesleeve\Sprockets\Directives\IncludeDirectory,
+		'include_tree ' => new Codesleeve\Sprockets\Directives\IncludeTree,
 		'stub ' => new Codesleeve\Sprockets\Directives\Stub,
 		'depend_on ' => new Codesleeve\Sprockets\Directives\DependOn,
 	),
