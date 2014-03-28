@@ -1,6 +1,6 @@
 language: php
 
-php: 
+php:
   - 5.3
   - 5.4
   - 5.5
@@ -9,4 +9,4 @@ before_script:
   - curl -s http://getcomposer.org/installer | php
   - php composer.phar install --dev
 
-script: phpunit
+script: vendor/bin/phpspec run
