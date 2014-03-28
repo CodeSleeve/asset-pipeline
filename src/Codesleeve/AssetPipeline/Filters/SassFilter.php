@@ -3,6 +3,8 @@
 use Assetic\Asset\AssetInterface;
 use Assetic\Filter\FilterInterface;
 
+use SassParser;
+
 class SassFilter implements FilterInterface
 {
 	public function filterLoad(AssetInterface $asset)
