@@ -104,8 +104,8 @@ return array(
 			new Codesleeve\AssetPipeline\Filters\URLRewrite(App::make('url')->to('/')),
 			new EnvironmentFilter(new Codesleeve\AssetPipeline\Filters\CssMinFilter, App::environment()),
 		),
-		'.css.scss' => array(
-			new Assetic\Filter\ScssphpFilter,
+		'.css.sass' => array(
+			new Codesleeve\AssetPipeline\Filters\SassFilter,
 			new Codesleeve\AssetPipeline\Filters\URLRewrite(App::make('url')->to('/')),
 			new EnvironmentFilter(new Codesleeve\AssetPipeline\Filters\CssMinFilter, App::environment()),
 		),
@@ -119,8 +119,8 @@ return array(
 			new Codesleeve\AssetPipeline\Filters\URLRewrite(App::make('url')->to('/')),
 			new EnvironmentFilter(new Codesleeve\AssetPipeline\Filters\CssMinFilter, App::environment()),
 		),
-		'.scss' => array(
-			new Assetic\Filter\ScssphpFilter,
+		'.sass' => array(
+			new Codesleeve\AssetPipeline\Filters\SassFilter,
 			new Codesleeve\AssetPipeline\Filters\URLRewrite(App::make('url')->to('/')),
 			new EnvironmentFilter(new Codesleeve\AssetPipeline\Filters\CssMinFilter, App::environment()),
 		),
