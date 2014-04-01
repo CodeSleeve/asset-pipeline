@@ -6,13 +6,11 @@ use CoffeeScript\Compiler;
 
 class CoffeeScript implements FilterInterface
 {
-    var $config = array();
-    public function __construct($config=null)
+    var $config;
+    
+    public function __construct($config=array())
     {
-	if($config)
-	{
-		$this->config = $config;
-	}
+	$this->config = $config;
     }
 
     public function filterLoad(AssetInterface $asset)
@@ -24,7 +22,7 @@ class CoffeeScript implements FilterInterface
     {
         $content = $asset->getContent();
         
-        $config = array_merge(array('filename' => $asset->getSourcePath()), $this->config);
+        $config = array_merge( array( 'filename' => $asset->getSourcePath() ), $this->config );
 
 		$content = Compiler::compile($content, $config);
 
