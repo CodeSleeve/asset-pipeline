@@ -140,12 +140,14 @@ return array(
 	| cache
 	|--------------------------------------------------------------------------
 	|
-	| By default we don't cache any assets permanently. We do cache all files
-	| using the `cache_server` driver below but the cache is busted anytime those
-	| files are modified.
+	| By default we cache assets on production environment permanently. We also cache
+	| all files using the `cache_server` driver below but the cache is busted anytime
+	| those files are modified. On production we will cache and the only way to bust
+	| the cache is to delete files from app/storage/cache/asset-pipeline or run a
+	| command php artisan assets:clean -f somefilename.js -f application.css ...
 	|
 	*/
-	'cache' => 	array(),	// add 'production' if you want to permanently cache
+	'cache' => 	array('production'),
 
 	/*
 	|--------------------------------------------------------------------------
