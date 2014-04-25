@@ -82,7 +82,7 @@ return array(
 
 		),
 		'.min.css' => array(
-			new Codesleeve\AssetPipeline\Filters\URLRewrite(App::make('url')->to('/')),
+			new Codesleeve\AssetPipeline\Filters\URLRewrite(''),
 		),
 		'.js' => array(
 			new EnvironmentFilter(new Codesleeve\AssetPipeline\Filters\JSMinPlusFilter, App::environment()),
@@ -96,37 +96,37 @@ return array(
 			new EnvironmentFilter(new Codesleeve\AssetPipeline\Filters\JSMinPlusFilter, App::environment()),
 		),
 		'.css' => array(
-			new Codesleeve\AssetPipeline\Filters\URLRewrite(App::make('url')->to('/')),
+			new Codesleeve\AssetPipeline\Filters\URLRewrite(''),
 			new EnvironmentFilter(new Codesleeve\AssetPipeline\Filters\CssMinFilter, App::environment()),
 		),
 		'.css.less' => array(
 			new Codesleeve\AssetPipeline\Filters\LessphpFilter,
-			new Codesleeve\AssetPipeline\Filters\URLRewrite(App::make('url')->to('/')),
+			new Codesleeve\AssetPipeline\Filters\URLRewrite(''),
 			new EnvironmentFilter(new Codesleeve\AssetPipeline\Filters\CssMinFilter, App::environment()),
 		),
 		'.css.sass' => array(
 			new Codesleeve\AssetPipeline\Filters\SassFilter,
-			new Codesleeve\AssetPipeline\Filters\URLRewrite(App::make('url')->to('/')),
+			new Codesleeve\AssetPipeline\Filters\URLRewrite(''),
 			new EnvironmentFilter(new Codesleeve\AssetPipeline\Filters\CssMinFilter, App::environment()),
 		),
 		'.css.scss' => array(
 			new Assetic\Filter\ScssphpFilter,
-			new Codesleeve\AssetPipeline\Filters\URLRewrite(App::make('url')->to('/')),
+			new Codesleeve\AssetPipeline\Filters\URLRewrite(''),
 			new EnvironmentFilter(new Codesleeve\AssetPipeline\Filters\CssMinFilter, App::environment()),
 		),
 		'.less' => array(
 			new Codesleeve\AssetPipeline\Filters\LessphpFilter,
-			new Codesleeve\AssetPipeline\Filters\URLRewrite(App::make('url')->to('/')),
+			new Codesleeve\AssetPipeline\Filters\URLRewrite(''),
 			new EnvironmentFilter(new Codesleeve\AssetPipeline\Filters\CssMinFilter, App::environment()),
 		),
 		'.sass' => array(
 			new Codesleeve\AssetPipeline\Filters\SassFilter,
-			new Codesleeve\AssetPipeline\Filters\URLRewrite(App::make('url')->to('/')),
+			new Codesleeve\AssetPipeline\Filters\URLRewrite(''),
 			new EnvironmentFilter(new Codesleeve\AssetPipeline\Filters\CssMinFilter, App::environment()),
 		),
 		'.scss' => array(
 			new Assetic\Filter\ScssphpFilter,
-			new Codesleeve\AssetPipeline\Filters\URLRewrite(App::make('url')->to('/')),
+			new Codesleeve\AssetPipeline\Filters\URLRewrite(''),
 			new EnvironmentFilter(new Codesleeve\AssetPipeline\Filters\CssMinFilter, App::environment()),
 		),
 		'.html' => array(
