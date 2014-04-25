@@ -1,6 +1,7 @@
 <?php namespace Codesleeve\AssetPipeline;
 
-use App, Response, Controller;
+use App, Response;
+use Illuminate\Routing\Controller;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class AssetPipelineController extends Controller
