@@ -1,8 +1,8 @@
 ## What is Asset Pipeline?
 
-For those of you familar with Rails asset pipeline and sprockets, you will hopefully feel right at home using this package.
+For those of you familiar with Rails asset pipeline and sprockets, you will hopefully feel right at home using this package.
 
-For those of you unfamilar with Rails asset pipeline and sprockets, I suggest reading [introduction to directives](#introduction-to-directives).
+For those of you unfamiliar with Rails asset pipeline and sprockets, I suggest reading [introduction to directives](#introduction-to-directives).
 
 ## Installation
 
@@ -94,7 +94,7 @@ This is how you control your dependencies. Simple right?
 
   - **require_directory** some/directory
 
-    This brings in assets only within some/directory (non-recurisve). You can also use '.' and '..' to resolve paths relative to the manifest file itself.
+    This brings in assets only within some/directory (non-recursive). You can also use '.' and '..' to resolve paths relative to the manifest file itself.
 
   - **require_tree** some/directory
 
@@ -112,7 +112,7 @@ This is how you control your dependencies. Simple right?
 
   - **include** filename
 
-    This brings in a specific asset file found withint your `paths`. It differs from **require** though
+    This brings in a specific asset file found within your `paths`. It differs from **require** though
     because if the file is not found then it does not throw an exception.
 
   - **stub** path
@@ -260,7 +260,7 @@ This will clear the cached files `application.js` and `application.css` and all 
   php artisan assets:clean -f interior/application.js -f exterior/application.js -f interior/application.css -f exterior/application.css
 ```
 
-If you don't want to recursively remove cache files for a manifest file then you can pass the `--recurisve=false` flag.
+If you don't want to recursively remove cache files for a manifest file then you can pass the `--recursive=false` flag.
 
 **NOTE** If you are using the default configuration for pipeline you can remove your cached files in this directory
 
@@ -437,7 +437,7 @@ class MyAwesomeDirective extends Codesleeve\Sprockets\Directives\RequireFile
       if (App::environment() === 'local' && $param == 'foobar')
       {
         // do chicken dance and add some files to array
-        // alos, this needs to be an absolute path to file
+        // also, this needs to be an absolute path to file
         $files[] = __DIR__ . '/chicken/dance.js';
       }
 
@@ -460,12 +460,12 @@ You may have to configure nginx. The files are not in `/assets/` so you will lik
 
 ### Can I use an older version of asset pipeline
 
-The asset pipeline has been refactored to be smarter, cleaner, better. However, with that brought along breaking changes because things work differently. So if you have older existing projects that were pointing to `dev-master`, you should probably find a tag version that works for you. If it just recently broke, try the latest tag minus 1. Also, I typically push out my changes to `dev-testing`.
+The asset pipeline has been re-factored to be smarter, cleaner, better. However, with that brought along breaking changes because things work differently. So if you have older existing projects that were pointing to `dev-master`, you should probably find a tag version that works for you. If it just recently broke, try the latest tag minus 1. Also, I typically push out my changes to `dev-testing`.
 
 
 ### Can I do image optimization?
 
-The asset pipeline doesn't do this for you. However, there is nothing stopping you from handling image optimization via a seperate script and then including those optimized images through asset pipeline.
+The asset pipeline doesn't do this for you. However, there is nothing stopping you from handling image optimization via a separate script and then including those optimized images through asset pipeline.
 
 For more information [check out this issue](https://github.com/CodeSleeve/asset-pipeline/issues/128).
 
