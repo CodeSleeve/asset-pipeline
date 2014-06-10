@@ -32,8 +32,8 @@ class AssetsGenerateCommand extends Command
 	// we need to turn on concatenation
 	// since we are spitting out assets
 
-        $config = $asset->getConfig();
-	$config['environment'] = $this->option('env');
+    $config = $asset->getConfig();
+	$config['environment'] = $this->option('env') ?: 'production' ;
 	$asset->setConfig($config);
 
 	$generator = new Codesleeve\Sprockets\StaticFileGenerator($asset->getGenerator());
@@ -56,7 +56,7 @@ class AssetsGenerateCommand extends Command
     protected function getOptions()
     {
         return array(
-		array('env', 'e', InputOption::VALUE_OPTIONAL, 'What environment should we generate assets for? Default: production', 'production'),
-	);
+
+    	);
     }
 }
