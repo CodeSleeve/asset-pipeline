@@ -217,7 +217,7 @@ return array(
 	| This allows us to turn completely control which directives are used
 	| for the sprockets parser that asset pipeline uses to parse manifest files.
 	|
-	| It is probably safe just to leave this alone unless you are familar with
+	| It is probably safe just to leave this alone unless you are familiar with
 	| what is actually going on here.
 	|
 	*/
@@ -242,7 +242,7 @@ return array(
 	| This allows us to completely control how the javascript_include_tag function
 	| works for asset pipeline.
 	|
-	| It is probably safe just to leave this alone unless you are familar with
+	| It is probably safe just to leave this alone unless you are familiar with
 	| what is actually going on here.
 	|
 	*/
@@ -256,7 +256,7 @@ return array(
 	| This allows us to completely control how the stylesheet_link_tag function
 	| works for asset pipeline.
 	|
-	| It is probably safe just to leave this alone unless you are familar with
+	| It is probably safe just to leave this alone unless you are familiar with
 	| what is actually going on here.
 	|
 	*/
@@ -270,7 +270,7 @@ return array(
 	| This allows us to completely control how the image_tag function
 	| works for asset pipeline.
 	|
-	| It is probably safe just to leave this alone unless you are familar with
+	| It is probably safe just to leave this alone unless you are familiar with
 	| what is actually going on here.
 	|
 	*/
@@ -285,7 +285,7 @@ return array(
 	| listed here. This allows us to completely control how the controller
 	| should behave for incoming requests for assets.
 	|
-	| It is probably safe just to leave this alone unless you are familar with
+	| It is probably safe just to leave this alone unless you are familiar with
 	| what is actually going on here.
 	|
 	*/
@@ -300,7 +300,7 @@ return array(
 	| generator it is filtered through this filter class named below. This allows us
 	| to modify the sprockets filter if we need to behave differently.
 	|
-	| It is probably safe just to leave this alone unless you are familar with
+	| It is probably safe just to leave this alone unless you are familiar with
 	| what is actually going on here.
 	|
 	*/
@@ -319,7 +319,7 @@ return array(
 	| doesn't always work perfectly and can bjork your entire concatenated
 	| javascript or stylesheet file if it messes up.
 	|
-	| It is probably safe just to leave this alone unless you are familar with
+	| It is probably safe just to leave this alone unless you are familiar with
 	| what is actually going on here.
 	|
 	*/
