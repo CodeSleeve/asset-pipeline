@@ -21,7 +21,7 @@ class JST extends FilterHelper implements FilterInterface
         $filename =  pathinfo($asset->getSourcePath(), PATHINFO_FILENAME);
 
     	$content = str_replace('"', '\\"', $asset->getContent());
-    	$content = str_replace(PHP_EOL, "", $content);
+        $content = preg_replace("/[\r?\n]+/", "", $content);
 
     	$jst = 'JST = (typeof JST === "undefined") ? JST = {} : JST;' . PHP_EOL;
     	$jst .= 'JST["' . $relativePath . $filename . '"] = "';
