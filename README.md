@@ -82,7 +82,7 @@ Let's open up the default javascript manifest file `app/assets/javascripts/appli
 
 ```
 
-This will bring in the file  `/providers/assets/javascripts/jquery.min.js` and also all files and sub directories within in `/app/assets/javascripts` folder.
+This will bring in the file  `/provider/assets/javascripts/jquery.min.js` and also all files and sub directories within in `/app/assets/javascripts` folder.
 
 This is how you control your dependencies. Simple right?
 
