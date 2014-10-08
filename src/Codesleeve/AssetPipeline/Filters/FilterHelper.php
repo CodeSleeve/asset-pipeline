@@ -1,9 +1,25 @@
 <?php namespace Codesleeve\AssetPipeline\Filters;
 
-trait FilterHelper
+use Assetic\Asset\AssetInterface;
+use Assetic\Filter\FilterInterface;
+use Assetic\Filter\BaseCssFilter;
+
+class FilterHelper extends BaseCssFilter
 {
+    public function filterLoad(AssetInterface $asset)
+    {
+        // do nothing when this is loaded...
+    }
+
+    public function filterDump(AssetInterface $asset)
+    {
+        // do nothing when this is dumped...
+    }
+
     public function getRelativePath($basePath, $absolutePath)
     {
+        $absolutePath = $this->forwardSlashes($absolutePath);
+
         if (!is_array($basePath))
         {
             list($changed, $newPath) = $this->_getRelativePath($basePath, $absolutePath);
@@ -13,7 +29,7 @@ trait FilterHelper
         foreach ($basePath as $path)
         {
             list($changed, $newPath) = $this->_getRelativePath($path, $absolutePath);
-            
+
             if ($changed) return $newPath;
         }
 
@@ -22,7 +38,8 @@ trait FilterHelper
 
     public function fileExists($filename)
     {
-        $queryless = strtok($filename, '?');
+        $parsed = parse_url($filename);
+        $queryless = isset($parsed['path']) ? $parsed['path'] : $filename;
 
         return (file_exists($filename) && is_file($filename)) || (file_exists($queryless) && is_file($queryless));
     }
@@ -40,5 +57,17 @@ trait FilterHelper
         }
 
         return array(false, $absolutePath);
+    }
+
+    /**
+     * Swap out any back slashes with forward slashes for
+     * windows compatability
+     *
+     * @param  string $filename
+     * @return string
+     */
+    private function forwardSlashes($filename)
+    {
+        return str_replace('\\', '/', $filename);
     }
 }
