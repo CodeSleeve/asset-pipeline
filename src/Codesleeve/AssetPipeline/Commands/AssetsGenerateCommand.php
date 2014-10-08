@@ -29,14 +29,14 @@ class AssetsGenerateCommand extends Command
     {
         $asset = \App::make('asset');
 
-	// we need to turn on concatenation
-	// since we are spitting out assets
+		// we need to turn on concatenation
+		// since we are spitting out assets
 
         $config = $asset->getConfig();
-	$config['environment'] = $this->option('env');
-	$asset->setConfig($config);
+		$config['environment'] = $this->option('env')?: 'production' ;
+		$asset->setConfig($config);
 
-	$generator = new Codesleeve\Sprockets\StaticFileGenerator($asset->getGenerator());
+		$generator = new Codesleeve\Sprockets\StaticFileGenerator($asset->getGenerator());
 
         $generated = $generator->generate(public_path() . '/' . $config['routing.prefix']);
 
@@ -46,17 +46,5 @@ class AssetsGenerateCommand extends Command
         }
 
         $this->line('Finished. Have a nice day! :)');
-    }
-
-    /**
-     * Get the console command options.
-     *
-     * @return array
-     */
-    protected function getOptions()
-    {
-        return array(
-		array('env', 'e', InputOption::VALUE_OPTIONAL, 'What environment should we generate assets for? Default: production', 'production'),
-	);
     }
 }
