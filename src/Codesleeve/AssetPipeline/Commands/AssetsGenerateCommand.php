@@ -1,6 +1,7 @@
 <?php namespace Codesleeve\AssetPipeline\Commands;
 
 use Illuminate\Console\Command;
+use Codesleeve\Sprockets\StaticFileGenerator;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 
@@ -29,19 +30,18 @@ class AssetsGenerateCommand extends Command
     {
         $asset = \App::make('asset');
 
-		// we need to turn on concatenation
-		// since we are spitting out assets
+        // we need to turn on concatenation
+        // since we are spitting out assets
 
         $config = $asset->getConfig();
-		$config['environment'] = $this->option('env')?: 'production' ;
-		$asset->setConfig($config);
+        $config['environment'] = $this->option('env') ? : 'production';
+        $asset->setConfig($config);
 
-		$generator = new Codesleeve\Sprockets\StaticFileGenerator($asset->getGenerator());
+        $generator = new StaticFileGenerator($asset->getGenerator());
 
         $generated = $generator->generate(public_path() . '/' . $config['routing.prefix']);
 
-        foreach ($generated as $file)
-        {
+        foreach ($generated as $file) {
             $this->line($file);
         }
 
