@@ -1,3 +1,8 @@
+
+# Asset Pipeline (depreciated)
+
+The new Laravel 5 feature called [Elixir](http://laravel.com/docs/5.0/elixir) which runs on gulp should help you manage your assets. There are no plans (from us at Codesleeve) to continue development on this project to include L5 support. Asset pipeline will continue to accept community pull requests. Please feel free to contribute if you'd like.
+
 ## What is Asset Pipeline?
 
 For those of you familiar with Rails asset pipeline and sprockets, you will hopefully feel right at home using this package.
