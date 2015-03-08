@@ -35,7 +35,7 @@ class AssetsSetupCommand extends Command
         $this->xcopy(realpath($structure), realpath($base));
 
         $this->line('');
-        $this->line('<info>codesleeve\asset-pipeline completed directory setup');
+        $this->line('<info>codesleeve\asset-pipeline completed directory setup</info>');
     }
 
     private function xcopy($source, $dest)
