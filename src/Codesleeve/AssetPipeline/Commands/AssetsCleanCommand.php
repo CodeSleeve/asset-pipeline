@@ -54,12 +54,8 @@ class AssetsCleanCommand extends Command
             $this->removeAssetCache($file, $recursive);
         }
 
-        $this->line('');
-        $this->line('Asset pipeline cache cleared!');
-        $this->line('Cache will be re-built on next page request');
-        $this->line('');
-        $this->line('Finished. Have a nice day! :)');
-        $this->line('                          - Codesleeve Team');
+        $this->line('<info>codesleeve/asset-pipeline cache cleared!</info>');
+        $this->line('<info>Cache will be re-built on next page request.</info>');
     }
 
     /**
@@ -80,7 +76,7 @@ class AssetsCleanCommand extends Command
             $removed = $this->asset->getGenerator()->cachedFile($file)->remove();
 
             if ($removed === false) {
-                $this->writeln(PHP_EOL . "<warning> failed to find/remove cache for {$file}");
+                $this->writeln(PHP_EOL . "<warning> failed to find/remove cache for {$file}</warning>");
             }
         }
     }
