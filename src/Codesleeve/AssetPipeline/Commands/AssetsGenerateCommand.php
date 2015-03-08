@@ -45,6 +45,6 @@ class AssetsGenerateCommand extends Command
             $this->line($file);
         }
 
-        $this->line('Finished. Have a nice day! :)');
+        $this->line('<info>codesleeve\asset-pipeline assets generated! :)</info>');
     }
 }
