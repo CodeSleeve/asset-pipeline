@@ -30,15 +30,12 @@ class AssetsSetupCommand extends Command
         $structure = __DIR__ . '/../../../../structure';
         $base = base_path();
 
-        $this->line('');
-        $this->line('Creating initial directory structure and copying some general purpose assets over.');
-        $this->line('');
+        $this->line('<info>codesleeve\asset-pipeline creating initial directory structure and copying some general purpose assets over</info>');
 
         $this->xcopy(realpath($structure), realpath($base));
 
         $this->line('');
-        $this->line('Finished. Have a nice day!');
-        $this->line('         - Codesleeve Team');
+        $this->line('<info>codesleeve\asset-pipeline completed directory setup</info>');
     }
 
     private function xcopy($source, $dest)
